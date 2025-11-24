@@ -1,0 +1,20 @@
+#ifndef ORBFIT_VERSION_HPP
+#define ORBFIT_VERSION_HPP
+
+#define ORBFIT_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#define ORBFIT_VERSION_MINOR @PROJECT_VERSION_MINOR@
+#define ORBFIT_VERSION_PATCH @PROJECT_VERSION_PATCH@
+#define ORBFIT_VERSION_STRING "@PROJECT_VERSION@"
+
+namespace orbfit {
+
+struct Version {
+    static constexpr int major = ORBFIT_VERSION_MAJOR;
+    static constexpr int minor = ORBFIT_VERSION_MINOR;
+    static constexpr int patch = ORBFIT_VERSION_PATCH;
+    static constexpr const char* string = ORBFIT_VERSION_STRING;
+};
+
+} // namespace orbfit
+
+#endif // ORBFIT_VERSION_HPP

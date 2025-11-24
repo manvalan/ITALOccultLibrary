@@ -1,0 +1,31 @@
+#ifndef ORBFIT_CONFIG_HPP
+#define ORBFIT_CONFIG_HPP
+
+// Build configuration
+#cmakedefine ORBFIT_USE_SPICE
+#cmakedefine ORBFIT_ENABLE_PROFILING
+
+// Build type
+#define ORBFIT_BUILD_TYPE "@CMAKE_BUILD_TYPE@"
+
+namespace orbfit {
+
+struct Config {
+    static constexpr const char* build_type = ORBFIT_BUILD_TYPE;
+    
+#ifdef ORBFIT_USE_SPICE
+    static constexpr bool use_spice = true;
+#else
+    static constexpr bool use_spice = false;
+#endif
+
+#ifdef ORBFIT_ENABLE_PROFILING
+    static constexpr bool profiling_enabled = true;
+#else
+    static constexpr bool profiling_enabled = false;
+#endif
+};
+
+} // namespace orbfit
+
+#endif // ORBFIT_CONFIG_HPP

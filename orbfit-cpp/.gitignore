@@ -1,0 +1,57 @@
+# Build artifacts
+build/
+build-*/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+_deps/
+compile_commands.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Generated files
+*.autosave
+*.user
+*.suo
+*.vcxproj.user
+
+# Documentation
+docs/html/
+docs/latex/
+docs/build/
+
+# Test outputs
+Testing/
+*.gcov
+*.gcda
+*.gcno
+
+# Profiling
+gmon.out
+*.prof
+*.pprof
+
+# Package managers
+vcpkg_installed/
+conan.lock
+conanbuildinfo.*
+graph_info.json
