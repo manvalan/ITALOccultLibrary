@@ -135,14 +135,14 @@ endif()
 # Generate version header
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Version.hpp.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/include/orbfit/Version.hpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/astdyn/Version.hpp"
     @ONLY
 )
 
 # Generate config header
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.hpp.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/include/orbfit/Config.hpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/astdyn/Config.hpp"
     @ONLY
 )
 
@@ -180,13 +180,13 @@ endif()
 include(GNUInstallDirs)
 
 # Install headers
-install(DIRECTORY include/orbfit
+install(DIRECTORY include/astdyn
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     FILES_MATCHING PATTERN "*.hpp"
 )
 
 # Install generated headers
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/orbfit
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/astdyn
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     FILES_MATCHING PATTERN "*.hpp"
 )
@@ -195,13 +195,13 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/orbfit
 include(CMakePackageConfigHelpers)
 
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/OrbFitConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/AstDynConfigVersion.cmake"
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
 install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/OrbFitConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/AstDynConfigVersion.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/OrbFit
 )
 

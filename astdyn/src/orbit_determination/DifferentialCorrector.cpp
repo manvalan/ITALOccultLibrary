@@ -5,17 +5,17 @@
  * @date 2025-11-24
  */
 
-#include "orbfit/orbit_determination/DifferentialCorrector.hpp"
-#include "orbfit/orbit_determination/Residuals.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/orbit_determination/DifferentialCorrector.hpp"
+#include "astdyn/orbit_determination/Residuals.hpp"
+#include "astdyn/core/Constants.hpp"
 #include <iostream>
 #include <iomanip>
 #include <cmath>
 
-namespace orbfit::orbit_determination {
+namespace astdyn::orbit_determination {
 
-using namespace orbfit::observations;
-using namespace orbfit::propagation;
+using namespace astdyn::observations;
+using namespace astdyn::propagation;
 
 // ============================================================================
 // DifferentialCorrector Implementation
@@ -368,4 +368,4 @@ void DifferentialCorrectorResult::print_summary() const {
     std::cout << "========================================\n\n";
 }
 
-} // namespace orbfit::orbit_determination
+} // namespace astdyn::orbit_determination

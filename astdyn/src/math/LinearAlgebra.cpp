@@ -5,13 +5,13 @@
  * @date 2025-11-23
  */
 
-#include <orbfit/math/LinearAlgebra.hpp>
-#include <orbfit/core/Constants.hpp>
+#include <astdyn/math/LinearAlgebra.hpp>
+#include <astdyn/core/Constants.hpp>
 #include <Eigen/SVD>
 #include <unsupported/Eigen/MatrixFunctions>
 #include <cmath>
 
-namespace orbfit {
+namespace astdyn {
 namespace math {
 
 // ============================================================================
@@ -344,4 +344,4 @@ MatrixXd kronecker_product(const MatrixXd& A, const MatrixXd& B) {
 }
 
 } // namespace math
-} // namespace orbfit
+} // namespace astdyn

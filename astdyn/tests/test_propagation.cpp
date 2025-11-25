@@ -4,15 +4,15 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/propagation/OrbitalElements.hpp"
-#include "orbfit/propagation/Integrator.hpp"
-#include "orbfit/propagation/Propagator.hpp"
-#include "orbfit/ephemeris/PlanetaryEphemeris.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/propagation/OrbitalElements.hpp"
+#include "astdyn/propagation/Integrator.hpp"
+#include "astdyn/propagation/Propagator.hpp"
+#include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
+#include "astdyn/core/Constants.hpp"
 #include <cmath>
 
-using namespace orbfit;
-using namespace orbfit::propagation;
+using namespace astdyn;
+using namespace astdyn::propagation;
 
 // ============================================================================
 // Orbital Elements Conversion Tests

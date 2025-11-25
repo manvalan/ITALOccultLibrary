@@ -11,17 +11,17 @@
  * 4. Demonstrate orbital periods validation
  */
 
-#include <orbfit/ephemeris/PlanetaryEphemeris.hpp>
-#include <orbfit/ephemeris/PlanetaryData.hpp>
-#include <orbfit/core/Constants.hpp>
-#include <orbfit/coordinates/ReferenceFrame.hpp>
+#include <astdyn/ephemeris/PlanetaryEphemeris.hpp>
+#include <astdyn/ephemeris/PlanetaryData.hpp>
+#include <astdyn/core/Constants.hpp>
+#include <astdyn/coordinates/ReferenceFrame.hpp>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
 
-using namespace orbfit;
-using namespace orbfit::ephemeris;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::ephemeris;
+using namespace astdyn::constants;
 
 void printHeader(const std::string& title) {
     std::cout << "\n" << std::string(70, '=') << "\n";

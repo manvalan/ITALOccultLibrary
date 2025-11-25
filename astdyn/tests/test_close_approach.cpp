@@ -6,19 +6,19 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/close_approach/CloseApproach.hpp"
-#include "orbfit/propagation/OrbitalElements.hpp"
-#include "orbfit/propagation/Propagator.hpp"
-#include "orbfit/propagation/Integrator.hpp"
-#include "orbfit/ephemeris/PlanetaryEphemeris.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/close_approach/CloseApproach.hpp"
+#include "astdyn/propagation/OrbitalElements.hpp"
+#include "astdyn/propagation/Propagator.hpp"
+#include "astdyn/propagation/Integrator.hpp"
+#include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
+#include "astdyn/core/Constants.hpp"
 #include <memory>
 #include <cmath>
 
-using namespace orbfit::close_approach;
-using namespace orbfit::propagation;
-using namespace orbfit::ephemeris;
-using namespace orbfit::constants;
+using namespace astdyn::close_approach;
+using namespace astdyn::propagation;
+using namespace astdyn::ephemeris;
+using namespace astdyn::constants;
 
 // Test fixture
 class CloseApproachTest : public ::testing::Test {
@@ -193,8 +193,8 @@ TEST_F(CloseApproachTest, BPlaneCalculationStructure) {
     ca.distance = 0.01;
     
     // Set relative position and velocity
-    ca.rel_position = orbfit::Vector3d(0.008, 0.006, 0.0);  // In plane
-    ca.rel_velocity = orbfit::Vector3d(0.0, 0.0, 0.02);     // Perpendicular approach
+    ca.rel_position = astdyn::Vector3d(0.008, 0.006, 0.0);  // In plane
+    ca.rel_velocity = astdyn::Vector3d(0.0, 0.0, 0.02);     // Perpendicular approach
     ca.relative_velocity = ca.rel_velocity.norm();
     
     // Compute b-plane

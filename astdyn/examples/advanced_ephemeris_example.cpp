@@ -9,18 +9,18 @@
  * 4. Integrating with orbit propagation
  */
 
-#include <orbfit/ephemeris/PlanetaryEphemeris.hpp>
-#include <orbfit/ephemeris/JPLDEProvider.hpp>
-#include <orbfit/ephemeris/AsteroidPerturbations.hpp>
-#include <orbfit/ephemeris/EphemerisFactory.hpp>
-#include <orbfit/propagation/Propagator.hpp>
+#include <astdyn/ephemeris/PlanetaryEphemeris.hpp>
+#include <astdyn/ephemeris/JPLDEProvider.hpp>
+#include <astdyn/ephemeris/AsteroidPerturbations.hpp>
+#include <astdyn/ephemeris/EphemerisFactory.hpp>
+#include <astdyn/propagation/Propagator.hpp>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
 
-using namespace orbfit;
-using namespace orbfit::ephemeris;
-using namespace orbfit::propagation;
+using namespace astdyn;
+using namespace astdyn::ephemeris;
+using namespace astdyn::propagation;
 
 void example1_jpl_de_usage() {
     std::cout << "\n========================================\n";

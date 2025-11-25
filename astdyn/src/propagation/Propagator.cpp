@@ -3,10 +3,10 @@
  * @brief Implementation of orbital propagation
  */
 
-#include "orbfit/propagation/Propagator.hpp"
+#include "astdyn/propagation/Propagator.hpp"
 #include <cmath>
 
-namespace orbfit::propagation {
+namespace astdyn::propagation {
 
 using ephemeris::CelestialBody;
 
@@ -240,4 +240,4 @@ double TwoBodyPropagator::mean_anomaly_at_epoch(const KeplerianElements& initial
     return M;
 }
 
-} // namespace orbfit::propagation
+} // namespace astdyn::propagation

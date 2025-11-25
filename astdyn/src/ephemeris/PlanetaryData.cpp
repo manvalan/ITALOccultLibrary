@@ -5,10 +5,10 @@
  * @date 2025-11-23
  */
 
-#include "orbfit/ephemeris/PlanetaryData.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/ephemeris/PlanetaryData.hpp"
+#include "astdyn/core/Constants.hpp"
 
-namespace orbfit {
+namespace astdyn {
 namespace ephemeris {
 
 PlanetaryBody PlanetaryData::getBodyData(CelestialBody body) {
@@ -75,4 +75,4 @@ PlanetaryBody PlanetaryData::getBodyData(CelestialBody body) {
 }
 
 } // namespace ephemeris
-} // namespace orbfit
+} // namespace astdyn

@@ -4,15 +4,15 @@
 
 #include <iostream>
 #include <iomanip>
-#include "orbfit/propagation/OrbitalElements.hpp"
-#include "orbfit/propagation/Propagator.hpp"
-#include "orbfit/propagation/Integrator.hpp"
-#include "orbfit/ephemeris/PlanetaryEphemeris.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/propagation/OrbitalElements.hpp"
+#include "astdyn/propagation/Propagator.hpp"
+#include "astdyn/propagation/Integrator.hpp"
+#include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
+#include "astdyn/core/Constants.hpp"
 
-using namespace orbfit;
-using namespace orbfit::propagation;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::propagation;
+using namespace astdyn::constants;
 
 int main() {
     std::cout << std::setprecision(12);

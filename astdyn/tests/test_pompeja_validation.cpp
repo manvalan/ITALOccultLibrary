@@ -8,20 +8,20 @@
  */
 
 #include <gtest/gtest.h>
-#include <orbfit/propagation/OrbitalElements.hpp>
-#include <orbfit/propagation/Propagator.hpp>
-#include <orbfit/ephemeris/PlanetaryEphemeris.hpp>
-#include <orbfit/coordinates/ReferenceFrame.hpp>
-#include <orbfit/core/Constants.hpp>
+#include <astdyn/propagation/OrbitalElements.hpp>
+#include <astdyn/propagation/Propagator.hpp>
+#include <astdyn/ephemeris/PlanetaryEphemeris.hpp>
+#include <astdyn/coordinates/ReferenceFrame.hpp>
+#include <astdyn/core/Constants.hpp>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
 
-using namespace orbfit;
-using namespace orbfit::propagation;
-using namespace orbfit::ephemeris;
-using namespace orbfit::coordinates;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::propagation;
+using namespace astdyn::ephemeris;
+using namespace astdyn::coordinates;
+using namespace astdyn::constants;
 
 // JPL Horizons reference data for 2027-Jan-01 00:00 UTC
 // Source: https://ssd.jpl.nasa.gov/api/horizons.api (Query: 2024-Nov-24)

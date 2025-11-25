@@ -4,13 +4,13 @@
  */
 
 #include <gtest/gtest.h>
-#include <orbfit/ephemeris/AsteroidPerturbations.hpp>
-#include <orbfit/core/Constants.hpp>
+#include <astdyn/ephemeris/AsteroidPerturbations.hpp>
+#include <astdyn/core/Constants.hpp>
 #include <cmath>
 
-using namespace orbfit;
-using namespace orbfit::ephemeris;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::ephemeris;
+using namespace astdyn::constants;
 
 class AsteroidPerturbationsTest : public ::testing::Test {
 protected:

@@ -3,11 +3,11 @@
  * @brief Implementation of Keplerian elements conversions
  */
 
-#include "orbfit/coordinates/KeplerianElements.hpp"
-#include "orbfit/math/MathUtils.hpp"
+#include "astdyn/coordinates/KeplerianElements.hpp"
+#include "astdyn/math/MathUtils.hpp"
 #include <stdexcept>
 
-namespace orbfit {
+namespace astdyn {
 namespace coordinates {
 
 CartesianState KeplerianElements::to_cartesian() const {
@@ -281,4 +281,4 @@ Matrix6d KeplerianElements::jacobian_from_cartesian(const CartesianState& state)
 }
 
 } // namespace coordinates
-} // namespace orbfit
+} // namespace astdyn

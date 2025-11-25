@@ -4,10 +4,10 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/math/MathUtils.hpp"
-#include "orbfit/math/LinearAlgebra.hpp"
+#include "astdyn/math/MathUtils.hpp"
+#include "astdyn/math/LinearAlgebra.hpp"
 
-using namespace orbfit::math;
+using namespace astdyn::math;
 
 // ========== MathUtils Tests ==========
 

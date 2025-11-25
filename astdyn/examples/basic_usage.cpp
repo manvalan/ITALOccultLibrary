@@ -5,12 +5,12 @@
  * @date 2025-11-23
  */
 
-#include <orbfit/OrbFit.hpp>
+#include <astdyn/AstDyn.hpp>
 #include <iostream>
 #include <iomanip>
 
-using namespace orbfit;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::constants;
 
 void print_separator() {
     std::cout << std::string(70, '=') << "\n";

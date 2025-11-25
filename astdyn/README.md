@@ -1,14 +1,14 @@
-# OrbFit C++
+# AstDyn C++
 
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
 [![CMake](https://img.shields.io/badge/CMake-3.15+-blue.svg)](https://cmake.org/)
 [![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](LICENSE)
 
-Modern C++ port of **OrbFit** - A comprehensive software package for orbit determination and propagation of asteroids and celestial objects.
+Modern C++ port of **AstDyn** - A comprehensive software package for orbit determination and propagation of asteroids and celestial objects.
 
 ## 📖 Overview
 
-OrbFit C++ is a complete rewrite of the original Fortran 90 OrbFit software, bringing modern C++ design patterns, improved performance, and enhanced maintainability to orbital mechanics computations.
+AstDyn C++ is a complete rewrite of the original Fortran 90 AstDyn software, bringing modern C++ design patterns, improved performance, and enhanced maintainability to orbital mechanics computations.
 
 ### Features
 
@@ -137,37 +137,37 @@ cmake -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake ..
 ## 📚 Usage Example
 
 ```cpp
-#include <orbfit/OrbFit.hpp>
+#include <astdyn/AstDyn.hpp>
 #include <iostream>
 
 int main() {
     // Initialize library
-    if (!orbfit::initialize()) {
-        std::cerr << "Failed to initialize OrbFit\n";
+    if (!astdyn::initialize()) {
+        std::cerr << "Failed to initialize AstDyn\n";
         return 1;
     }
     
     // Print version
-    std::cout << "OrbFit C++ v" << orbfit::Version::string << "\n";
+    std::cout << "AstDyn C++ v" << astdyn::Version::string << "\n";
     
     // Access constants
-    using namespace orbfit::constants;
+    using namespace astdyn::constants;
     std::cout << "AU = " << AU << " km\n";
     std::cout << "Speed of light = " << C_LIGHT << " km/s\n";
     
     // Create a 3D vector
-    orbfit::Vector3d position(1.0, 0.0, 0.0);  // 1 AU on x-axis
+    astdyn::Vector3d position(1.0, 0.0, 0.0);  // 1 AU on x-axis
     std::cout << "Position: " << position.transpose() << "\n";
     
     // Cleanup
-    orbfit::shutdown();
+    astdyn::shutdown();
     return 0;
 }
 ```
 
 Compile and link:
 ```bash
-g++ -std=c++17 example.cpp -lorbfit -I/usr/local/include -L/usr/local/lib
+g++ -std=c++17 example.cpp -lastdyn -I/usr/local/include -L/usr/local/lib
 ```
 
 ## 🧪 Testing
@@ -180,7 +180,7 @@ ctest --output-on-failure
 
 Run specific test:
 ```bash
-./tests/orbfit_tests --gtest_filter=ConstantsTest.*
+./tests/astdyn_tests --gtest_filter=ConstantsTest.*
 ```
 
 ## 📁 Project Structure
@@ -194,8 +194,8 @@ astdyn/
 │   ├── FindCSPICE.cmake
 │   ├── Version.hpp.in
 │   └── Config.hpp.in
-├── include/orbfit/             # Public headers
-│   ├── OrbFit.hpp             # Main include file
+├── include/astdyn/             # Public headers
+│   ├── AstDyn.hpp             # Main include file
 │   ├── core/
 │   │   ├── Constants.hpp      # Physical constants
 │   │   └── Types.hpp          # Type definitions
@@ -234,7 +234,7 @@ astdyn/
 
 ### Adding New Features
 
-1. Create header in `include/orbfit/module/`
+1. Create header in `include/astdyn/module/`
 2. Implement in `src/module/`
 3. Add unit tests in `tests/`
 4. Update CMakeLists.txt
@@ -271,11 +271,11 @@ Contributions are welcome! Please:
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
 
-Original Fortran OrbFit © 1997-2020 OrbFit Consortium
+Original Fortran AstDyn © 1997-2020 AstDyn Consortium
 
 ## 🙏 Acknowledgments
 
-- **Original OrbFit Team**: Andrea Milani, Steven Chesley, Mario Carpino, and contributors
+- **Original AstDyn Team**: Andrea Milani, Steven Chesley, Mario Carpino, and contributors
 - **Eigen3 Library**: Linear algebra foundation
 - **NASA JPL**: SPICE Toolkit and ephemerides
 - **IAU**: Standard astronomical constants

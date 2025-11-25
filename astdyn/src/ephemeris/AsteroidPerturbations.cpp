@@ -3,14 +3,14 @@
  * @brief Implementation of asteroid perturbation calculations
  */
 
-#include <orbfit/ephemeris/AsteroidPerturbations.hpp>
-#include <orbfit/propagation/OrbitalElements.hpp>
+#include <astdyn/ephemeris/AsteroidPerturbations.hpp>
+#include <astdyn/propagation/OrbitalElements.hpp>
 #include <cmath>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
 
-namespace orbfit {
+namespace astdyn {
 namespace ephemeris {
 
 using namespace constants;
@@ -315,4 +315,4 @@ std::vector<AsteroidData> getDefaultAsteroids() {
 } // namespace ast17
 
 } // namespace ephemeris
-} // namespace orbfit
+} // namespace astdyn

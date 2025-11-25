@@ -109,7 +109,7 @@ astdyn/
 #### 2.1 Sistema di Tipo e Costanti (`Constants.hpp`)
 **Fortran → C++:**
 ```cpp
-namespace orbfit::constants {
+namespace astdyn::constants {
     constexpr double AU = 149597870.66;  // km
     constexpr double G_SUN = 0.2959122082855911e-03;
     constexpr double C_LIGHT = 299792.458;  // km/s
@@ -132,7 +132,7 @@ namespace orbfit::constants {
 ```cpp
 // Fortran: CALL tchol(c, g, n, 0, ising)
 // C++:
-namespace orbfit::math {
+namespace astdyn::math {
     class CholeskyDecomposition {
     public:
         bool decompose(const Eigen::MatrixXd& matrix);
@@ -149,7 +149,7 @@ namespace orbfit::math {
   - Gestione leap seconds
 
 ```cpp
-namespace orbfit::time {
+namespace astdyn::time {
     class TimeScale {
     public:
         static double mjd_to_jd(double mjd);
@@ -166,7 +166,7 @@ namespace orbfit::time {
   - Parsing namelist → JSON/YAML/TOML
 
 ```cpp
-namespace orbfit::io {
+namespace astdyn::io {
     class ConfigReader {
     public:
         void readFromFile(const std::string& filename);
@@ -310,7 +310,7 @@ Matrix6d P_cart = J * P_kep * J.transpose();
 - Impatto: ~0.1-1 m/s² a 1 AU per propagazioni > 1 anno
 
 ```cpp
-namespace orbfit::ephemeris {
+namespace astdyn::ephemeris {
     enum class CelestialBody {
         SUN, MERCURY, VENUS, EARTH, MARS, 
         JUPITER, SATURN, URANUS, NEPTUNE, PLUTO, MOON
@@ -368,7 +368,7 @@ namespace orbfit::ephemeris {
 - `station_coordinates.f90` → `ObservatoryDatabase.cpp`
 
 ```cpp
-namespace orbfit::observations {
+namespace astdyn::observations {
     struct Observation {
         double mjd_utc;
         double ra, dec;          // radians
@@ -403,7 +403,7 @@ namespace orbfit::observations {
   - Elementi equinoziali
 
 ```cpp
-namespace orbfit::orbit {
+namespace astdyn::orbit {
     class KeplerianElements {
     public:
         double a, e, i, omega, Omega, M;  // semi-major axis, ecc, incl, ...
@@ -438,7 +438,7 @@ namespace orbfit::orbit {
 **Opzione:** Usare **Boost.Odeint** o implementare custom
 
 ```cpp
-namespace orbfit::integrators {
+namespace astdyn::integrators {
     class Integrator {
     public:
         virtual ~Integrator() = default;
@@ -460,7 +460,7 @@ namespace orbfit::integrators {
 - `non_grav.f90` → `NonGravForce.cpp`
 
 ```cpp
-namespace orbfit::forces {
+namespace astdyn::forces {
     class Force {
     public:
         virtual Eigen::Vector3d compute(const StateVector& state, double jd_tdb) = 0;
@@ -487,7 +487,7 @@ namespace orbfit::forces {
 - `propag_state.f90` → `OrbitPropagator.cpp`
 
 ```cpp
-namespace orbfit::propagation {
+namespace astdyn::propagation {
     class OrbitPropagator {
         std::unique_ptr<Integrator> integrator_;
         std::unique_ptr<CompositeForce> force_model_;
@@ -519,7 +519,7 @@ namespace orbfit::propagation {
 
 **Componenti Implementati:**
 ```cpp
-namespace orbfit::orbit_determination {
+namespace astdyn::orbit_determination {
     class ResidualCalculator {
         // O-C per osservazioni ottiche (RA/Dec)
         // Correzioni topocentriche e aberrazione
@@ -607,7 +607,7 @@ namespace orbfit::orbit_determination {
 
 **Componenti Implementati:**
 ```cpp
-namespace orbfit::close_approach {
+namespace astdyn::close_approach {
     struct CloseApproach {
         double mjd_tdb;
         BodyType body;

@@ -3,11 +3,11 @@
  * @brief Implementation of orbital element conversions
  */
 
-#include "orbfit/propagation/OrbitalElements.hpp"
+#include "astdyn/propagation/OrbitalElements.hpp"
 #include <cmath>
 #include <stdexcept>
 
-namespace orbfit::propagation {
+namespace astdyn::propagation {
 
 // ============================================================================
 // KeplerianElements methods
@@ -513,4 +513,4 @@ KeplerianElements osculating_to_mean(
     return mean;
 }
 
-} // namespace orbfit::propagation
+} // namespace astdyn::propagation

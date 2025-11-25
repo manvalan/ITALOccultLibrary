@@ -4,19 +4,19 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/propagation/Integrator.hpp"
-#include "orbfit/propagation/OrbitalElements.hpp"
-#include "orbfit/propagation/Propagator.hpp"
-#include "orbfit/ephemeris/PlanetaryEphemeris.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/propagation/Integrator.hpp"
+#include "astdyn/propagation/OrbitalElements.hpp"
+#include "astdyn/propagation/Propagator.hpp"
+#include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
+#include "astdyn/core/Constants.hpp"
 #include <iostream>
 #include <chrono>
 #include <thread>
 
-using namespace orbfit;
-using namespace orbfit::propagation;
-using namespace orbfit::ephemeris;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::propagation;
+using namespace astdyn::ephemeris;
+using namespace astdyn::constants;
 
 // Test con timeout per evitare che il test si blocchi indefinitamente
 class TimeoutTest {

@@ -4,9 +4,9 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/time/TimeScale.hpp"
+#include "astdyn/time/TimeScale.hpp"
 
-using namespace orbfit::time;
+using namespace astdyn::time;
 
 TEST(TimeScaleTest, MJDJDConversion) {
     double mjd = 51544.5; // 2000-01-01 12:00:00

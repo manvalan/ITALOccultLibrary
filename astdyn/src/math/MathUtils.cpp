@@ -5,12 +5,12 @@
  * @date 2025-11-23
  */
 
-#include <orbfit/math/MathUtils.hpp>
+#include <astdyn/math/MathUtils.hpp>
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
 
-namespace orbfit {
+namespace astdyn {
 namespace math {
 
 // ============================================================================
@@ -311,4 +311,4 @@ double angular_difference(double angle1, double angle2) {
 }
 
 } // namespace math
-} // namespace orbfit
+} // namespace astdyn

@@ -4,10 +4,10 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/utils/StringUtils.hpp"
-#include "orbfit/utils/Logger.hpp"
+#include "astdyn/utils/StringUtils.hpp"
+#include "astdyn/utils/Logger.hpp"
 
-using namespace orbfit::utils;
+using namespace astdyn::utils;
 
 // ========== StringUtils Tests ==========
 

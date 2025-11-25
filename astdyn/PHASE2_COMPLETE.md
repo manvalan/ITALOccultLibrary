@@ -1,4 +1,4 @@
-# OrbFit C++ - Fase 2 Completata ✅
+# AstDyn C++ - Fase 2 Completata ✅
 
 **Data completamento:** 23 Novembre 2025  
 **Durata stimata:** 3-4 settimane (completata)  
@@ -14,7 +14,7 @@ Implementare i moduli di base per:
 
 ## Moduli Implementati
 
-### 1. **MathUtils** (`include/orbfit/math/MathUtils.hpp`, `src/math/MathUtils.cpp`)
+### 1. **MathUtils** (`include/astdyn/math/MathUtils.hpp`, `src/math/MathUtils.cpp`)
 
 **Funzionalità implementate:**
 - **Decomposizione e Inversione Matriciale:**
@@ -51,7 +51,7 @@ Implementare i moduli di base per:
 
 ---
 
-### 2. **LinearAlgebra** (`include/orbfit/math/LinearAlgebra.hpp`, `src/math/LinearAlgebra.cpp`)
+### 2. **LinearAlgebra** (`include/astdyn/math/LinearAlgebra.hpp`, `src/math/LinearAlgebra.cpp`)
 
 **Funzionalità implementate:**
 
@@ -92,7 +92,7 @@ Implementare i moduli di base per:
 
 ---
 
-### 3. **TimeScale** (`include/orbfit/time/TimeScale.hpp`, `src/time/TimeScale.cpp`)
+### 3. **TimeScale** (`include/astdyn/time/TimeScale.hpp`, `src/time/TimeScale.cpp`)
 
 **Funzionalità implementate:**
 
@@ -123,7 +123,7 @@ Implementare i moduli di base per:
 
 ---
 
-### 4. **StringUtils** (`include/orbfit/utils/StringUtils.hpp`)
+### 4. **StringUtils** (`include/astdyn/utils/StringUtils.hpp`)
 
 **Funzionalità (header-only):**
 - `trim()` - Rimozione whitespace
@@ -138,7 +138,7 @@ Implementare i moduli di base per:
 
 ---
 
-### 5. **Logger** (`include/orbfit/utils/Logger.hpp`)
+### 5. **Logger** (`include/astdyn/utils/Logger.hpp`)
 
 **Funzionalità:**
 - Pattern Singleton thread-safe
@@ -150,7 +150,7 @@ Implementare i moduli di base per:
 **Esempio d'uso:**
 ```cpp
 Logger::getInstance().setLogLevel(LogLevel::DEBUG);
-Logger::getInstance().setLogFile("orbfit.log");
+Logger::getInstance().setLogFile("astdyn.log");
 
 LOG_INFO("Orbit propagation started");
 LOG_WARNING("Low precision mode enabled");
@@ -163,7 +163,7 @@ LOG_ERROR("Failed to converge: iteration limit reached");
 
 ```
 astdyn/
-├── include/orbfit/
+├── include/astdyn/
 │   ├── math/
 │   │   ├── MathUtils.hpp        (336 righe)
 │   │   └── LinearAlgebra.hpp    (309 righe)
@@ -235,7 +235,7 @@ astdyn/
 
 ## Conversioni da Fortran
 
-| Fortran (OrbFit) | C++ (astdyn) | Note |
+| Fortran (AstDyn) | C++ (astdyn) | Note |
 |------------------|--------------|------|
 | `math_lib.f90` | `MathUtils.cpp` | Decomposizioni, norme, statistiche |
 | `linal_lib.f90` | `LinearAlgebra.cpp` | QR, SVD, minimi quadrati |
@@ -249,11 +249,11 @@ astdyn/
 
 ```bash
 $ cd build && cmake .. && make -j4
-[100%] Built target orbfit
-[100%] Built target orbfit_tests
-[100%] Built target orbfit_math_tests
-[100%] Built target orbfit_time_tests
-[100%] Built target orbfit_utils_tests
+[100%] Built target astdyn
+[100%] Built target astdyn_tests
+[100%] Built target astdyn_math_tests
+[100%] Built target astdyn_time_tests
+[100%] Built target astdyn_utils_tests
 [100%] Built target example_basic
 
 $ ctest --output-on-failure
@@ -281,9 +281,9 @@ Moduli da implementare:
 6. **Reference frames** (J2000, ITRF, rotation matrices)
 
 **File da creare:**
-- `include/orbfit/coordinates/CartesianState.hpp`
-- `include/orbfit/coordinates/KeplerianElements.hpp`
-- `include/orbfit/coordinates/Transformations.hpp`
+- `include/astdyn/coordinates/CartesianState.hpp`
+- `include/astdyn/coordinates/KeplerianElements.hpp`
+- `include/astdyn/coordinates/Transformations.hpp`
 - `tests/test_coordinates.cpp`
 
 ---
@@ -293,7 +293,7 @@ Moduli da implementare:
 ### Scelte Architetturali
 
 1. **Separazione Header/Implementation:**
-   - Headers in `include/orbfit/` (interfaccia pubblica)
+   - Headers in `include/astdyn/` (interfaccia pubblica)
    - Implementazioni in `src/` (dettagli nascosti)
    - Inlining per funzioni piccole (StringUtils)
 
@@ -303,9 +303,9 @@ Moduli da implementare:
    - `Result<T, Error>` pattern per errori complessi (futuro)
 
 3. **Namespace:**
-   - `orbfit::math` - Matematica
-   - `orbfit::time` - Tempo
-   - `orbfit::utils` - Utilità
+   - `astdyn::math` - Matematica
+   - `astdyn::time` - Tempo
+   - `astdyn::utils` - Utilità
 
 4. **Testing Strategy:**
    - Test unitari per ogni funzione

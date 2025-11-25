@@ -5,14 +5,14 @@
  * @date 2025-11-23
  */
 
-#include "orbfit/observations/ObservatoryDatabase.hpp"
-#include "orbfit/coordinates/ReferenceFrame.hpp"
+#include "astdyn/observations/ObservatoryDatabase.hpp"
+#include "astdyn/coordinates/ReferenceFrame.hpp"
 #include <fstream>
 #include <sstream>
 #include <cmath>
 #include <iomanip>
 
-namespace orbfit {
+namespace astdyn {
 namespace observations {
 
 // WGS84 ellipsoid parameters
@@ -264,4 +264,4 @@ void computeParallaxConstants(
 }
 
 } // namespace observations
-} // namespace orbfit
+} // namespace astdyn

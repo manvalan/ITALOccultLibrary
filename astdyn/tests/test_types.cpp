@@ -4,10 +4,10 @@
  */
 
 #include <gtest/gtest.h>
-#include <orbfit/core/Types.hpp>
+#include <astdyn/core/Types.hpp>
 #include <cmath>
 
-using namespace orbfit;
+using namespace astdyn;
 
 class TypesTest : public ::testing::Test {
 protected:

@@ -4,10 +4,10 @@
  */
 
 #include <gtest/gtest.h>
-#include <orbfit/core/Constants.hpp>
+#include <astdyn/core/Constants.hpp>
 #include <cmath>
 
-using namespace orbfit::constants;
+using namespace astdyn::constants;
 
 class ConstantsTest : public ::testing::Test {
 protected:

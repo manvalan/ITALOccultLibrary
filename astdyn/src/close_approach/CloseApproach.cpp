@@ -5,18 +5,18 @@
  * @date 2025-11-24
  */
 
-#include "orbfit/close_approach/CloseApproach.hpp"
-#include "orbfit/core/Constants.hpp"
-#include "orbfit/propagation/OrbitalElements.hpp"
+#include "astdyn/close_approach/CloseApproach.hpp"
+#include "astdyn/core/Constants.hpp"
+#include "astdyn/propagation/OrbitalElements.hpp"
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
 
-namespace orbfit::close_approach {
+namespace astdyn::close_approach {
 
-using namespace orbfit::propagation;
-using namespace orbfit::ephemeris;
-using namespace orbfit::constants;
+using namespace astdyn::propagation;
+using namespace astdyn::ephemeris;
+using namespace astdyn::constants;
 
 // ============================================================================
 // Planet Physical Data
@@ -519,4 +519,4 @@ double MOIDCalculator::distance_squared(
     return dx*dx + dy*dy + dz*dz;
 }
 
-} // namespace orbfit::close_approach
+} // namespace astdyn::close_approach

@@ -3,12 +3,12 @@
  * @brief Implementation of numerical integrators
  */
 
-#include "orbfit/propagation/Integrator.hpp"
+#include "astdyn/propagation/Integrator.hpp"
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
 
-namespace orbfit::propagation {
+namespace astdyn::propagation {
 
 // ============================================================================
 // RK4Integrator Implementation
@@ -366,4 +366,4 @@ void RKF78Integrator::integrate_steps(const DerivativeFunction& f,
     stats_.final_time = t;
 }
 
-} // namespace orbfit::propagation
+} // namespace astdyn::propagation

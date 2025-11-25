@@ -4,12 +4,12 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/coordinates/KeplerianElements.hpp"
-#include "orbfit/coordinates/CartesianState.hpp"
+#include "astdyn/coordinates/KeplerianElements.hpp"
+#include "astdyn/coordinates/CartesianState.hpp"
 
-using namespace orbfit;
-using namespace orbfit::coordinates;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::coordinates;
+using namespace astdyn::constants;
 
 // ========== Jacobian Matrix Tests ==========
 

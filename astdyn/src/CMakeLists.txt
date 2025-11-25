@@ -14,21 +14,21 @@ file(GLOB_RECURSE ORBFIT_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/close_approach/*.cpp
 )
 
-# Add OrbFitEngine to the library
-list(APPEND ORBFIT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/OrbFitEngine.cpp)
+# Add AstDynEngine to the library
+list(APPEND ORBFIT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/AstDynEngine.cpp)
 
 # Create main library
-add_library(orbfit ${ORBFIT_SOURCES})
+add_library(astdyn ${ORBFIT_SOURCES})
 
 # Set library properties
-set_target_properties(orbfit PROPERTIES
+set_target_properties(astdyn PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
-    PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/../include/orbfit/OrbFit.hpp"
+    PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/../include/astdyn/AstDyn.hpp"
 )
 
 # Link dependencies
-target_link_libraries(orbfit
+target_link_libraries(astdyn
     PUBLIC
         Eigen3::Eigen
         Boost::filesystem
@@ -38,11 +38,11 @@ target_link_libraries(orbfit
 
 # Optionally link CSPICE
 if(ORBFIT_USE_SPICE AND CSPICE_FOUND)
-    target_link_libraries(orbfit PUBLIC CSPICE::CSPICE)
+    target_link_libraries(astdyn PUBLIC CSPICE::CSPICE)
 endif()
 
 # Include directories
-target_include_directories(orbfit
+target_include_directories(astdyn
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
@@ -50,12 +50,12 @@ target_include_directories(orbfit
 )
 
 # Install library
-install(TARGETS orbfit
+install(TARGETS astdyn
     EXPORT OrbFitTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/orbfit
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/astdyn
 )
 
 # Install export targets
@@ -69,32 +69,32 @@ install(EXPORT OrbFitTargets
 # Main Programs
 # ============================================================================
 
-# orbfit - Main orbit determination program
-add_executable(orbfit_program
-    orbfit_main.cpp
+# astdyn - Main orbit determination program
+add_executable(astdyn_program
+    astdyn_main.cpp
 )
 
-target_link_libraries(orbfit_program
+target_link_libraries(astdyn_program
     PRIVATE
-        orbfit
+        astdyn
 )
 
-set_target_properties(orbfit_program PROPERTIES
-    OUTPUT_NAME orbfit
+set_target_properties(astdyn_program PROPERTIES
+    OUTPUT_NAME astdyn
 )
 
-# orbfit_convert - Configuration converter tool
-add_executable(orbfit_convert
-    orbfit_convert.cpp
-    io/OrbFitConfig.cpp
+# astdyn_convert - Configuration converter tool
+add_executable(astdyn_convert
+    astdyn_convert.cpp
+    io/AstDynConfig.cpp
 )
 
-target_link_libraries(orbfit_convert
+target_link_libraries(astdyn_convert
     PRIVATE
-        orbfit
+        astdyn
 )
 
 # Install programs
-install(TARGETS orbfit_program orbfit_convert
+install(TARGETS astdyn_program astdyn_convert
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

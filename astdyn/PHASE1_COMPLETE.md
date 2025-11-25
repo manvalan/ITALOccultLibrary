@@ -1,4 +1,4 @@
-# OrbFit C++ - Phase 1 Completion Summary
+# AstDyn C++ - Phase 1 Completion Summary
 
 ## ✅ Phase 1: Setup Progetto e Infrastruttura - COMPLETATA
 
@@ -19,8 +19,8 @@ astdyn/
 │   ├── Version.hpp.in               # Template versioning
 │   └── Config.hpp.in                # Template configurazione
 │
-├── include/orbfit/                   # Header pubblici
-│   ├── OrbFit.hpp                   # Main include file
+├── include/astdyn/                   # Header pubblici
+│   ├── AstDyn.hpp                   # Main include file
 │   ├── core/
 │   │   ├── Constants.hpp            # Costanti fisiche/astronomiche
 │   │   └── Types.hpp                # Definizioni tipi comuni
@@ -96,10 +96,10 @@ astdyn/
 - Valori speciali (NaN, Infinity)
 - Tipo `Result<T>` per error handling
 
-**OrbFit.hpp** - Include principale:
+**AstDyn.hpp** - Include principale:
 - Singolo header per accesso completo
 - Funzioni `initialize()` / `shutdown()`
-- Namespace `orbfit`
+- Namespace `astdyn`
 
 #### 4. **Sistema di Testing**
 - ✅ Integrazione Google Test
@@ -160,7 +160,7 @@ cd build
 cd build
 ctest --output-on-failure
 # oppure
-./tests/orbfit_tests
+./tests/astdyn_tests
 ```
 
 ### Metriche
@@ -211,7 +211,7 @@ Nessuno. La Fase 1 è completa e funzionale.
 
 ### Risorse
 
-- Repository originale: https://github.com/Fenu24/OrbFit
+- Repository originale: https://github.com/Fenu24/AstDyn
 - Piano completo: `ORBFIT_CPP_CONVERSION_PLAN.md`
 - Documentazione API: Eseguire `make docs` (richiede Doxygen)
 

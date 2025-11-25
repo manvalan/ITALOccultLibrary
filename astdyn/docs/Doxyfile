@@ -1,6 +1,6 @@
-# Doxyfile configuration for OrbFit C++
+# Doxyfile configuration for AstDyn C++
 
-PROJECT_NAME           = "OrbFit C++"
+PROJECT_NAME           = "AstDyn C++"
 PROJECT_NUMBER         = "1.0.0"
 PROJECT_BRIEF          = "Modern C++ orbit determination and propagation software"
 PROJECT_LOGO           = 
@@ -20,7 +20,7 @@ JAVADOC_AUTOBRIEF      = YES
 MARKDOWN_SUPPORT       = YES
 
 # Input configuration
-INPUT                  = ../include/orbfit ../src
+INPUT                  = ../include/astdyn ../src
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.hpp *.cpp *.md
 RECURSIVE              = YES

@@ -6,12 +6,12 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/propagation/OrbitalElements.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/propagation/OrbitalElements.hpp"
+#include "astdyn/core/Constants.hpp"
 #include <cmath>
 
-using namespace orbfit::propagation;
-using namespace orbfit::constants;
+using namespace astdyn::propagation;
+using namespace astdyn::constants;
 
 class MeanOsculatingTest : public ::testing::Test {
 protected:

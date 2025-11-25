@@ -2,7 +2,7 @@
 
 ## Overview
 
-OrbFit C++ now supports multiple ephemeris sources and asteroid perturbations:
+AstDyn C++ now supports multiple ephemeris sources and asteroid perturbations:
 
 1. **VSOP87** - Built-in analytical planetary ephemerides (1-20 arcsec accuracy)
 2. **JPL DE405/DE441** - High-precision numerical ephemerides via CSPICE
@@ -45,7 +45,7 @@ OrbFit C++ now supports multiple ephemeris sources and asteroid perturbations:
 ### 1. Using VSOP87 (Default)
 
 ```cpp
-#include <orbfit/ephemeris/PlanetaryEphemeris.hpp>
+#include <astdyn/ephemeris/PlanetaryEphemeris.hpp>
 
 // Automatic - uses VSOP87
 auto pos = PlanetaryEphemeris::getPosition(CelestialBody::EARTH, jd_tdb);
@@ -54,8 +54,8 @@ auto pos = PlanetaryEphemeris::getPosition(CelestialBody::EARTH, jd_tdb);
 ### 2. Using JPL DE Ephemerides
 
 ```cpp
-#include <orbfit/ephemeris/JPLDEProvider.hpp>
-#include <orbfit/ephemeris/EphemerisFactory.hpp>
+#include <astdyn/ephemeris/JPLDEProvider.hpp>
+#include <astdyn/ephemeris/EphemerisFactory.hpp>
 
 // Create JPL DE441 provider
 auto provider = std::make_unique<JPLDEProvider>(
@@ -73,7 +73,7 @@ auto mars_state = provider->getState(CelestialBody::MARS, jd_tdb);
 ### 3. Asteroid Perturbations
 
 ```cpp
-#include <orbfit/ephemeris/AsteroidPerturbations.hpp>
+#include <astdyn/ephemeris/AsteroidPerturbations.hpp>
 
 // Load default AST17 asteroids (16 most massive)
 AsteroidPerturbations asteroids;
@@ -108,7 +108,7 @@ AsteroidPerturbations custom_asteroids("my_asteroids.csv");
 ### 5. Integration with Propagator
 
 ```cpp
-#include <orbfit/propagation/Propagator.hpp>
+#include <astdyn/propagation/Propagator.hpp>
 
 // Create propagator with asteroid perturbations
 PropagatorSettings settings;

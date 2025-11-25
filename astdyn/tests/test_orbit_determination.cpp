@@ -6,23 +6,23 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/orbit_determination/Residuals.hpp"
-#include "orbfit/orbit_determination/StateTransitionMatrix.hpp"
-#include "orbfit/orbit_determination/DifferentialCorrector.hpp"
-#include "orbfit/propagation/OrbitalElements.hpp"
-#include "orbfit/propagation/Propagator.hpp"
-#include "orbfit/ephemeris/PlanetaryEphemeris.hpp"
-#include "orbfit/observations/Observation.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/orbit_determination/Residuals.hpp"
+#include "astdyn/orbit_determination/StateTransitionMatrix.hpp"
+#include "astdyn/orbit_determination/DifferentialCorrector.hpp"
+#include "astdyn/propagation/OrbitalElements.hpp"
+#include "astdyn/propagation/Propagator.hpp"
+#include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
+#include "astdyn/observations/Observation.hpp"
+#include "astdyn/core/Constants.hpp"
 #include <cmath>
 #include <memory>
 
-using namespace orbfit;
-using namespace orbfit::orbit_determination;
-using namespace orbfit::propagation;
-using namespace orbfit::observations;
-using namespace orbfit::ephemeris;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::orbit_determination;
+using namespace astdyn::propagation;
+using namespace astdyn::observations;
+using namespace astdyn::ephemeris;
+using namespace astdyn::constants;
 
 // ============================================================================
 // Test Fixtures

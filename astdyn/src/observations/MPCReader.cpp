@@ -5,15 +5,15 @@
  * @date 2025-11-23
  */
 
-#include "orbfit/observations/MPCReader.hpp"
-#include "orbfit/time/TimeScale.hpp"
-#include "orbfit/utils/StringUtils.hpp"
+#include "astdyn/observations/MPCReader.hpp"
+#include "astdyn/time/TimeScale.hpp"
+#include "astdyn/utils/StringUtils.hpp"
 #include <sstream>
 #include <iomanip>
 #include <cmath>
 #include <algorithm>
 
-namespace orbfit {
+namespace astdyn {
 namespace observations {
 
 using namespace utils;
@@ -280,4 +280,4 @@ std::string MPCReader::unpackProvisional(const std::string& packed) {
 }
 
 } // namespace observations
-} // namespace orbfit
+} // namespace astdyn

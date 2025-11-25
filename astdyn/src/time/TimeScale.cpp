@@ -5,7 +5,7 @@
  * @date 2025-11-23
  */
 
-#include <orbfit/time/TimeScale.hpp>
+#include <astdyn/time/TimeScale.hpp>
 #include <cmath>
 #include <chrono>
 #include <sstream>
@@ -13,7 +13,7 @@
 #include <fstream>
 #include <map>
 
-namespace orbfit {
+namespace astdyn {
 namespace time {
 
 // Static data for leap seconds
@@ -408,4 +408,4 @@ int get_leap_seconds(double mjd_utc) {
 }
 
 } // namespace time
-} // namespace orbfit
+} // namespace astdyn

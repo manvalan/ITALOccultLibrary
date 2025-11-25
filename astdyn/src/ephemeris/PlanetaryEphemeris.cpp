@@ -8,11 +8,11 @@
  * Accuracy: 1-20 arcsec over 1800-2050.
  */
 
-#include "orbfit/ephemeris/PlanetaryEphemeris.hpp"
-#include "orbfit/math/MathUtils.hpp"
+#include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
+#include "astdyn/math/MathUtils.hpp"
 #include <cmath>
 
-namespace orbfit {
+namespace astdyn {
 namespace ephemeris {
 
 using Eigen::Vector3d;
@@ -354,4 +354,4 @@ Vector3d PlanetaryEphemeris::computePerturbations(CelestialBody body, double T) 
 }
 
 } // namespace ephemeris
-} // namespace orbfit
+} // namespace astdyn

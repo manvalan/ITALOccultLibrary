@@ -5,18 +5,18 @@
  * @date 2025-11-24
  */
 
-#include "orbfit/orbit_determination/Residuals.hpp"
-#include "orbfit/core/Constants.hpp"
-#include "orbfit/observations/ObservatoryDatabase.hpp"
+#include "astdyn/orbit_determination/Residuals.hpp"
+#include "astdyn/core/Constants.hpp"
+#include "astdyn/observations/ObservatoryDatabase.hpp"
 #include <cmath>
 #include <algorithm>
 #include <numeric>
 
-namespace orbfit::orbit_determination {
+namespace astdyn::orbit_determination {
 
-using namespace orbfit::observations;
-using namespace orbfit::propagation;
-using namespace orbfit::constants;
+using namespace astdyn::observations;
+using namespace astdyn::propagation;
+using namespace astdyn::constants;
 
 // WGS84 ellipsoid parameters
 static constexpr double WGS84_A = 6378.137;        // Semi-major axis [km]
@@ -472,4 +472,4 @@ int ResidualCalculator::identify_outliers(
     return num_outliers;
 }
 
-} // namespace orbfit::orbit_determination
+} // namespace astdyn::orbit_determination

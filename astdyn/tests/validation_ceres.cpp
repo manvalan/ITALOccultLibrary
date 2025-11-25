@@ -11,22 +11,22 @@
  */
 
 #include <gtest/gtest.h>
-#include <orbfit/OrbFitEngine.hpp>
-#include <orbfit/propagation/OrbitalElements.hpp>
-#include <orbfit/core/Constants.hpp>
+#include <astdyn/AstDynEngine.hpp>
+#include <astdyn/propagation/OrbitalElements.hpp>
+#include <astdyn/core/Constants.hpp>
 #include <iostream>
 #include <iomanip>
 
-using namespace orbfit;
-using namespace orbfit::propagation;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::propagation;
+using namespace astdyn::constants;
 
 class CeresValidationTest : public ::testing::Test {
 protected:
-    std::unique_ptr<OrbFitEngine> engine;
+    std::unique_ptr<AstDynEngine> engine;
     
     void SetUp() override {
-        engine = std::make_unique<OrbFitEngine>();
+        engine = std::make_unique<AstDynEngine>();
         engine->set_verbose(true);
     }
 };

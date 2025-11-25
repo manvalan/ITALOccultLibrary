@@ -13,16 +13,16 @@
 
 #include <iostream>
 #include <iomanip>
-#include "orbfit/coordinates/CartesianState.hpp"
-#include "orbfit/coordinates/KeplerianElements.hpp"
-#include "orbfit/coordinates/EquinoctialElements.hpp"
-#include "orbfit/coordinates/CometaryElements.hpp"
-#include "orbfit/coordinates/ReferenceFrame.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/coordinates/CartesianState.hpp"
+#include "astdyn/coordinates/KeplerianElements.hpp"
+#include "astdyn/coordinates/EquinoctialElements.hpp"
+#include "astdyn/coordinates/CometaryElements.hpp"
+#include "astdyn/coordinates/ReferenceFrame.hpp"
+#include "astdyn/core/Constants.hpp"
 
-using namespace orbfit;
-using namespace orbfit::coordinates;
-using namespace orbfit::constants;
+using namespace astdyn;
+using namespace astdyn::coordinates;
+using namespace astdyn::constants;
 
 // Helper function for formatted output
 void print_separator(const std::string& title) {

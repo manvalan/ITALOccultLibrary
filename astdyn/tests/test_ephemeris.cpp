@@ -6,13 +6,13 @@
  */
 
 #include <gtest/gtest.h>
-#include "orbfit/ephemeris/PlanetaryData.hpp"
-#include "orbfit/ephemeris/PlanetaryEphemeris.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/ephemeris/PlanetaryData.hpp"
+#include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
+#include "astdyn/core/Constants.hpp"
 #include <cmath>
 
-using namespace orbfit;
-using namespace orbfit::ephemeris;
+using namespace astdyn;
+using namespace astdyn::ephemeris;
 
 // ============================================================================
 // PlanetaryData Tests

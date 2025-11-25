@@ -5,13 +5,13 @@
  * @date 2025-11-24
  */
 
-#include "orbfit/orbit_determination/StateTransitionMatrix.hpp"
-#include "orbfit/core/Constants.hpp"
+#include "astdyn/orbit_determination/StateTransitionMatrix.hpp"
+#include "astdyn/core/Constants.hpp"
 #include <stdexcept>
 
-namespace orbfit::orbit_determination {
+namespace astdyn::orbit_determination {
 
-using namespace orbfit::propagation;
+using namespace astdyn::propagation;
 
 // ============================================================================
 // StateTransitionMatrix Implementation
@@ -234,4 +234,4 @@ Eigen::Matrix<double, 2, 6> StateTransitionMatrix::compute_observation_partials(
     return partial_radec_state;
 }
 
-} // namespace orbfit::orbit_determination
+} // namespace astdyn::orbit_determination

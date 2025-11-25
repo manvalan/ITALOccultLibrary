@@ -5,11 +5,11 @@
  * @date 2025-11-23
  */
 
-#include "orbfit/observations/Observation.hpp"
+#include "astdyn/observations/Observation.hpp"
 #include <algorithm>
 #include <stdexcept>
 
-namespace orbfit {
+namespace astdyn {
 namespace observations {
 
 void ObservationSet::sortByTime() {
@@ -116,4 +116,4 @@ std::string observationTypeToString(ObservationType type) {
 }
 
 } // namespace observations
-} // namespace orbfit
+} // namespace astdyn

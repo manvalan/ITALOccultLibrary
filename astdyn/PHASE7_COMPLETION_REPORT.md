@@ -181,7 +181,7 @@ Total time: <1 ms
 ## Compilation Details
 
 ### Namespace Strategy:
-- Headers use fully qualified names: `orbfit::Vector3d`, `orbfit::propagation::Propagator`
+- Headers use fully qualified names: `astdyn::Vector3d`, `astdyn::propagation::Propagator`
 - Implementation files use `using namespace` for convenience
 - No namespace pollution at header scope
 
@@ -191,7 +191,7 @@ Total time: <1 ms
 
 ### Build System:
 - CMake integration complete
-- Test target: `orbfit_orbit_determination_tests`
+- Test target: `astdyn_orbit_determination_tests`
 - Clean compilation with AppleClang 17.0.0
 
 ## Performance Characteristics
@@ -232,7 +232,7 @@ Total time: <1 ms
 - [ ] Multi-arc fitting
 
 ### Validation Data (TODO):
-- [ ] Compare with OrbFit Fortran on same data
+- [ ] Compare with AstDyn Fortran on same data
 - [ ] Minor planet orbits from MPC
 - [ ] NEO orbits with short arcs
 - [ ] Comet orbits (high eccentricity)
@@ -246,9 +246,9 @@ Total time: <1 ms
 4. Keyholes and virtual impactors
 
 ### Follow-up (Phase 9):
-5. Main program: `orbfit_fit` (command-line orbit fitter)
+5. Main program: `astdyn_fit` (command-line orbit fitter)
 6. Observation file readers (MPC format)
-7. Orbit file writers (OrbFit .oel format)
+7. Orbit file writers (AstDyn .oel format)
 8. Configuration file parsing
 
 ### Long-term (Phase 10+):
@@ -265,5 +265,5 @@ Phase 7 successfully implements the mathematical core of orbit determination. Al
 
 ---
 **Generated**: 2025-11-24  
-**Author**: OrbFit C++ Conversion Team  
+**Author**: AstDyn C++ Conversion Team  
 **Compilation**: AppleClang 17.0.0, C++17, Eigen 3.4.0
