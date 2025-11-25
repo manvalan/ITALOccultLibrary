@@ -162,7 +162,7 @@ LOG_ERROR("Failed to converge: iteration limit reached");
 ## Struttura File Creati
 
 ```
-orbfit-cpp/
+astdyn/
 ├── include/orbfit/
 │   ├── math/
 │   │   ├── MathUtils.hpp        (336 righe)
@@ -235,8 +235,8 @@ orbfit-cpp/
 
 ## Conversioni da Fortran
 
-| Fortran (OrbFit) | C++ (orbfit-cpp) | Note |
-|------------------|------------------|------|
+| Fortran (OrbFit) | C++ (astdyn) | Note |
+|------------------|--------------|------|
 | `math_lib.f90` | `MathUtils.cpp` | Decomposizioni, norme, statistiche |
 | `linal_lib.f90` | `LinearAlgebra.cpp` | QR, SVD, minimi quadrati |
 | `time_scales.f90` | `TimeScale.cpp` | Conversioni temporali |
@@ -257,7 +257,7 @@ $ cd build && cmake .. && make -j4
 [100%] Built target example_basic
 
 $ ctest --output-on-failure
-Test project: /orbfit-cpp/build
+Test project: /astdyn/build
     Start  1: ConstantsTest.MathematicalConstants
 ...
    63/63 Test #63: LoggerTest.Macros .........   Passed

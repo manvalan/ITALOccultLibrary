@@ -7,7 +7,7 @@
 ### Struttura Creata
 
 ```
-orbfit-cpp/
+astdyn/
 ├── CMakeLists.txt                    # Build system principale
 ├── README.md                         # Documentazione utente
 ├── LICENSE                           # GPL-3.0
@@ -135,7 +135,7 @@ orbfit-cpp/
 
 #### Build del progetto:
 ```bash
-cd orbfit-cpp
+cd astdyn
 ./build.sh                    # Build Release
 ./build.sh --debug            # Build Debug
 ./build.sh --clean --docs     # Clean build + docs

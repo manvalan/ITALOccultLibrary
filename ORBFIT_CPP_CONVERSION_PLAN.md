@@ -64,7 +64,7 @@
 
 #### 1.1 Struttura del Progetto C++
 ```
-orbfit-cpp/
+astdyn/
 ├── CMakeLists.txt
 ├── include/
 │   ├── orbfit/

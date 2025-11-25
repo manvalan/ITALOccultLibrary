@@ -48,8 +48,8 @@ OrbFit C++ is a complete rewrite of the original Fortran 90 OrbFit software, bri
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/orbfit-cpp.git
-cd orbfit-cpp
+git clone https://github.com/manvalan/ITALOccultLibrary.git
+cd ITALOccultLibrary/astdyn
 
 # Create build directory
 mkdir build && cd build
@@ -186,7 +186,7 @@ Run specific test:
 ## 📁 Project Structure
 
 ```
-orbfit-cpp/
+astdyn/
 ├── CMakeLists.txt              # Root CMake configuration
 ├── README.md                   # This file
 ├── LICENSE                     # GPL-3.0 license
@@ -282,9 +282,9 @@ Original Fortran OrbFit © 1997-2020 OrbFit Consortium
 
 ## 📞 Contact
 
-- **Project Repository**: https://github.com/yourusername/orbfit-cpp
-- **Issue Tracker**: https://github.com/yourusername/orbfit-cpp/issues
-- **Documentation**: https://orbfit-cpp.readthedocs.io
+- **Project Repository**: https://github.com/manvalan/ITALOccultLibrary
+- **Issue Tracker**: https://github.com/manvalan/ITALOccultLibrary/issues
+- **Documentation**: Part of ITALOccultLibrary project
 
 ## 🗺️ Roadmap
 
