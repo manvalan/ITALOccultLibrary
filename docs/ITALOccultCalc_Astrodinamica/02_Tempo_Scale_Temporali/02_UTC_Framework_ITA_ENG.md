@@ -42,7 +42,7 @@ Dal 1972, i secondi intercalari sono stati inseriti per mantenere UTC entro ±0.
 | 2017-01-01 | 37 |
 | 2025 (attuale) | 37 |
 
-**Nota:** La IAU ha approvato l'abolizione dei leap seconds dal 2035.
+**Nota:** L'IAU ha approvato l'abolizione dei leap seconds dal 2035.
 
 #### 2.2.3 Gestione Leap Seconds nel Codice
 

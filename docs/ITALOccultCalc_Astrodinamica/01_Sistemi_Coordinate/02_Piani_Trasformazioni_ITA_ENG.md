@@ -128,12 +128,27 @@ La trasformazione da sistema inerziale (J2000) a sistema terrestre (ITRF) richie
 
 **Trasformazione semplificata (solo ERA):**
 
+L'**Earth Rotation Angle** (ERA) è definito dall'IERS Conventions (2010):
+
+```
+ERA = 2π × (0.7790572732640 + 1.00273781191135448 × Du)
+```
+
+Dove:
+- **0.7790572732640**: ERA al J2000.0 (in frazioni di giro), corrispondente a 280.46° GMST
+- **1.00273781191135448**: Rapporto tra giorno sidereo e giorno solare medio (1 + 1/365.2422)
+- **Du**: Giorni dal J2000.0 (MJD - 51544.5)
+
 ```cpp
 static Matrix3d j2000_to_itrf_simple(double mjd_ut1) {
-    // Earth Rotation Angle
-    double T = mjd_ut1 - constants::MJD2000;
+    // Earth Rotation Angle (IERS Conventions 2010, Eq. 5.15)
+    double Du = mjd_ut1 - constants::MJD2000;  // Giorni dal J2000.0
+    
+    // Costanti ERA (IERS Conventions 2010):
+    // - 0.7790572732640: ERA al J2000.0 (frazione di rotazione)
+    // - 1.00273781191135448: rapporto giorno sidereo/solare
     double era = 2.0 * constants::PI * 
-                 (0.7790572732640 + 1.00273781191135448 * T);
+                 (0.7790572732640 + 1.00273781191135448 * Du);
     
     // Normalizzazione a [0, 2π)
     era = std::fmod(era, 2.0 * constants::PI);
@@ -450,12 +465,27 @@ The transformation from inertial system (J2000) to terrestrial system (ITRF) req
 
 **Simplified transformation (ERA only):**
 
+The **Earth Rotation Angle** (ERA) is defined by IERS Conventions (2010):
+
+```
+ERA = 2π × (0.7790572732640 + 1.00273781191135448 × Du)
+```
+
+Where:
+- **0.7790572732640**: ERA at J2000.0 (in fractions of a turn), corresponding to 280.46° GMST
+- **1.00273781191135448**: Ratio between sidereal day and mean solar day (1 + 1/365.2422)
+- **Du**: Days from J2000.0 (MJD - 51544.5)
+
 ```cpp
 static Matrix3d j2000_to_itrf_simple(double mjd_ut1) {
-    // Earth Rotation Angle
-    double T = mjd_ut1 - constants::MJD2000;
+    // Earth Rotation Angle (IERS Conventions 2010, Eq. 5.15)
+    double Du = mjd_ut1 - constants::MJD2000;  // Days from J2000.0
+    
+    // ERA constants (IERS Conventions 2010):
+    // - 0.7790572732640: ERA at J2000.0 (fraction of rotation)
+    // - 1.00273781191135448: sidereal/solar day ratio
     double era = 2.0 * constants::PI * 
-                 (0.7790572732640 + 1.00273781191135448 * T);
+                 (0.7790572732640 + 1.00273781191135448 * Du);
     
     // Normalize to [0, 2π)
     era = std::fmod(era, 2.0 * constants::PI);
