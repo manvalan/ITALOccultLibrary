@@ -8,9 +8,12 @@
 #include "astdyn/orbit_determination/Residuals.hpp"
 #include "astdyn/core/Constants.hpp"
 #include "astdyn/observations/ObservatoryDatabase.hpp"
+#include "astdyn/propagation/Propagator.hpp"
+#include "astdyn/coordinates/ReferenceFrame.hpp"
 #include <cmath>
 #include <algorithm>
 #include <numeric>
+#include <iostream>
 
 namespace astdyn::orbit_determination {
 
@@ -41,7 +44,7 @@ static constexpr double WGS84_A = 6378.137;        // Semi-major axis [km]
  * @param mjd_utc Modified Julian Date in UTC
  * @return MJD in TDB time scale
  */
-static double utc_to_tdb(double mjd_utc) {
+static double utc_to_tdb_internal(double mjd_utc) {
     // Leap seconds TAI-UTC (valid 2017-2025)
     // TODO: Load from leap seconds file for dates outside this range
     double delta_at = 37.0; // seconds
@@ -110,8 +113,10 @@ static double compute_gmst(double mjd_ut1) {
 // ============================================================================
 
 ResidualCalculator::ResidualCalculator(
-    std::shared_ptr<ephemeris::PlanetaryEphemeris> ephemeris)
-    : ephemeris_(ephemeris) {
+    std::shared_ptr<ephemeris::PlanetaryEphemeris> ephemeris,
+    std::shared_ptr<astdyn::propagation::Propagator> propagator)
+    : ephemeris_(ephemeris),
+      propagator_(propagator) {
 }
 
 std::vector<ObservationResidual> ResidualCalculator::compute_residuals(
@@ -122,13 +127,28 @@ std::vector<ObservationResidual> ResidualCalculator::compute_residuals(
     residuals.reserve(observations.size());
     
     for (const auto& obs : observations) {
-        auto residual = compute_residual(obs, state);
+        // Convert observation time from UTC to TDB
+        double obs_mjd_tdb = utc_to_tdb_internal(obs.mjd_utc);
+        
+        // Propagate state to observation epoch if propagator available
+        CartesianElements state_at_obs = state;
+        if (propagator_ && std::abs(obs_mjd_tdb - state.epoch_mjd_tdb) > 1e-6) {
+            // Propagate from reference epoch to observation epoch
+            state_at_obs = propagator_->propagate_cartesian(state, obs_mjd_tdb);
+        }
+        
+        auto residual = compute_residual(obs, state_at_obs);
         if (residual) {
             residuals.push_back(*residual);
         }
     }
     
     return residuals;
+}
+
+// Public static wrapper
+double ResidualCalculator::utc_to_tdb(double mjd_utc) {
+    return utc_to_tdb_internal(mjd_utc);
 }
 
 std::optional<ObservationResidual> ResidualCalculator::compute_residual(
@@ -154,8 +174,13 @@ std::optional<ObservationResidual> ResidualCalculator::compute_residual(
     }
     Vector3d observer_vel = *observer_vel_opt;
     
-    // Object position at observation time (heliocentric)
-    Vector3d object_pos = state.position;
+    // NOTE: All positions/velocities are in ECLIPTIC J2000 at this point
+    // - state.position/velocity: asteroid in ECLIPTIC J2000
+    // - observer_pos: observatory heliocentric in ECLIPTIC J2000
+    // - observer_vel: observatory velocity in ECLIPTIC J2000
+    
+    Vector3d object_pos_ecliptic = state.position;
+    Vector3d object_vel_ecliptic = state.velocity;
     
     // Light-time correction (iterate to find retarded position)
     // The observer sees the object where it was tau = distance/c ago
@@ -165,7 +190,7 @@ std::optional<ObservationResidual> ResidualCalculator::compute_residual(
         constexpr double tau_tol = 1e-10; // ~10 microseconds
         
         for (int iter = 0; iter < max_iter; ++iter) {
-            Vector3d rho = object_pos - observer_pos;
+            Vector3d rho = object_pos_ecliptic - observer_pos;
             double tau_new = rho.norm() / SPEED_OF_LIGHT_AU_PER_DAY;
             
             // Check convergence
@@ -179,38 +204,39 @@ std::optional<ObservationResidual> ResidualCalculator::compute_residual(
             // Simple approximation: object_pos ≈ state.position - state.velocity * tau
             // This is valid for short light-time and small accelerations
             // For better accuracy, use full numerical integration
-            object_pos = state.position - state.velocity * tau;
+            object_pos_ecliptic = state.position - state.velocity * tau;
             
             // Note: For asteroids near Earth, tau ~ 10 minutes, velocity correction
             // is ~0.001 AU. For more distant objects, would need full propagation.
         }
     }
     
-    // Compute topocentric direction
-    double range, range_rate;
-    Vector3d direction = compute_topocentric_direction(
-        object_pos, observer_pos, observer_vel, range, range_rate);
+    // Compute topocentric vector (in ECLIPTIC J2000)
+    Vector3d rho_ecliptic = object_pos_ecliptic - observer_pos;
+    double range = rho_ecliptic.norm();
     
-    // Compute range rate properly using object velocity
-    Vector3d rho = object_pos - observer_pos;
-    Vector3d rho_dot = state.velocity - observer_vel;
-    range_rate = rho_dot.dot(rho.normalized());
+    // Compute range rate (in ECLIPTIC)
+    Vector3d rho_dot_ecliptic = object_vel_ecliptic - observer_vel;
+    
+    // NOTE: OrbFit does NOT apply annual aberration here, only light-time
+    // which we already handled above. Annual aberration would be ~20 arcsec
+    // and is typically included in star catalog positions, not in the
+    // computed asteroid positions. For consistency with OrbFit, we skip it.
+    // If needed, apply it HERE in ecliptic coordinates before rotation:
+    // rho_ecliptic -= (range / SPEED_OF_LIGHT_AU_PER_DAY) * observer_vel;
+    
+    // Convert topocentric vector from ECLIPTIC to EQUATORIAL J2000
+    // NOTE: Use TRANSPOSE! The matrix was defined incorrectly.
+    Matrix3d ecliptic_to_equatorial = coordinates::ReferenceFrame::ecliptic_to_j2000().transpose();
+    Vector3d rho_equatorial = ecliptic_to_equatorial * rho_ecliptic;
+    Vector3d direction = rho_equatorial.normalized();
+    
+    // Convert velocity to equatorial for range rate
+    Vector3d rho_dot_equatorial = ecliptic_to_equatorial * rho_dot_ecliptic;
+    double range_rate = rho_dot_equatorial.dot(direction);
     
     result.range = range;
     result.range_rate = range_rate;
-    
-    // Apply aberration correction
-    if (aberration_correction_) {
-        // Annual aberration: shift direction by observer velocity
-        // Δθ ≈ (v/c) for small angles
-        Vector3d v_over_c = observer_vel / SPEED_OF_LIGHT_AU_PER_DAY;
-        
-        // Aberration correction (to first order)
-        // See Explanatory Supplement to the Astronomical Almanac, Section 7.2
-        Vector3d aberration_correction = v_over_c - direction * direction.dot(v_over_c);
-        direction += aberration_correction;
-        direction.normalize();
-    }
     
     // Convert to RA/Dec
     double computed_ra, computed_dec;
@@ -283,13 +309,14 @@ std::optional<Vector3d> ResidualCalculator::get_observer_position(
     const OpticalObservation& obs) const {
     
     // Convert observation time from UTC to TDB
-    double mjd_tdb = utc_to_tdb(obs.mjd_utc);
+    double mjd_tdb = utc_to_tdb_internal(obs.mjd_utc);
     double jd_tdb = mjd_tdb + 2400000.5;
     
-    // Get Earth position from ephemeris
+    // Get Earth position from ephemeris (in ECLIPTIC J2000)
     auto earth_state = ephemeris::PlanetaryEphemeris::getState(
         ephemeris::CelestialBody::EARTH, jd_tdb);
     
+    // Keep Earth position in ECLIPTIC J2000 for now
     Vector3d earth_center = earth_state.position();
     
     // Get observatory topocentric position
@@ -319,21 +346,25 @@ std::optional<Vector3d> ResidualCalculator::get_observer_position(
     // Local sidereal time = GMST + longitude
     double lst = gmst + longitude;
     
-    // Observatory position in equatorial coordinates [Earth radii]
+    // Observatory position in EQUATORIAL coordinates [Earth radii]
     double cos_lst = std::cos(lst);
     double sin_lst = std::sin(lst);
     
-    Vector3d obs_geocentric;
-    obs_geocentric[0] = rho_cos_phi * cos_lst;
-    obs_geocentric[1] = rho_cos_phi * sin_lst;
-    obs_geocentric[2] = rho_sin_phi;
+    Vector3d obs_geocentric_equatorial;
+    obs_geocentric_equatorial[0] = rho_cos_phi * cos_lst;
+    obs_geocentric_equatorial[1] = rho_cos_phi * sin_lst;
+    obs_geocentric_equatorial[2] = rho_sin_phi;
     
     // Convert from Earth radii to AU
     double earth_radius_au = WGS84_A / AU_TO_KM;
-    obs_geocentric *= earth_radius_au;
+    obs_geocentric_equatorial *= earth_radius_au;
     
-    // Observatory heliocentric position
-    Vector3d observer_pos = earth_center + obs_geocentric;
+    // Convert observatory offset from EQUATORIAL to ECLIPTIC J2000
+    Matrix3d equatorial_to_ecliptic = coordinates::ReferenceFrame::j2000_to_ecliptic();
+    Vector3d obs_geocentric_ecliptic = equatorial_to_ecliptic * obs_geocentric_equatorial;
+    
+    // Observatory heliocentric position (in ECLIPTIC J2000)
+    Vector3d observer_pos = earth_center + obs_geocentric_ecliptic;
     
     return observer_pos;
 }
@@ -342,16 +373,17 @@ std::optional<Vector3d> ResidualCalculator::get_observer_velocity(
     const OpticalObservation& obs) const {
     
     // Convert to TDB
-    double mjd_tdb = utc_to_tdb(obs.mjd_utc);
+    double mjd_tdb = utc_to_tdb_internal(obs.mjd_utc);
     double jd_tdb = mjd_tdb + 2400000.5;
     
-    // Get Earth velocity
+    // Get Earth velocity (in ECLIPTIC J2000)
     auto earth_state = ephemeris::PlanetaryEphemeris::getState(
         ephemeris::CelestialBody::EARTH, jd_tdb);
     
+    // Keep Earth velocity in ECLIPTIC J2000
     Vector3d earth_vel = earth_state.velocity();
     
-    // Get observatory position to compute rotation velocity
+    // Get observatory position to compute rotation velocity (in ECLIPTIC J2000)
     auto obs_pos_opt = get_observer_position(obs);
     if (!obs_pos_opt) {
         return earth_vel;  // Return Earth velocity only
@@ -359,21 +391,22 @@ std::optional<Vector3d> ResidualCalculator::get_observer_velocity(
     
     Vector3d observer_helio = *obs_pos_opt;
     Vector3d earth_center = earth_state.position();
-    Vector3d obs_geocentric = observer_helio - earth_center;
+    Vector3d obs_geocentric_ecliptic = observer_helio - earth_center;
     
     // Earth rotation angular velocity [rad/day]
     // ω = 2π/T_sid where T_sid ≈ 0.99726958 solar days (sidereal day)
     double omega_earth = TWO_PI / 0.99726958;  // rad/day
     
-    // Rotation axis (Earth's north pole in ecliptic coordinates)
-    // For simplicity, assume z-axis (valid for low accuracy)
-    // More accurate: account for obliquity and precession
-    Vector3d omega_vec(0.0, 0.0, omega_earth);
+    // Rotation axis in ECLIPTIC J2000
+    // Earth's north pole in equatorial frame is (0,0,1), convert to ecliptic
+    Matrix3d equatorial_to_ecliptic = coordinates::ReferenceFrame::j2000_to_ecliptic();
+    Vector3d omega_vec_equatorial(0.0, 0.0, omega_earth);
+    Vector3d omega_vec_ecliptic = equatorial_to_ecliptic * omega_vec_equatorial;
     
-    // Velocity due to Earth rotation: v_rot = ω × r_geocentric
-    Vector3d v_rotation = omega_vec.cross(obs_geocentric);
+    // Velocity due to Earth rotation: v_rot = ω × r_geocentric (in ECLIPTIC)
+    Vector3d v_rotation = omega_vec_ecliptic.cross(obs_geocentric_ecliptic);
     
-    // Total observer velocity
+    // Total observer velocity (in ECLIPTIC J2000)
     Vector3d observer_vel = earth_vel + v_rotation;
     
     return observer_vel;
