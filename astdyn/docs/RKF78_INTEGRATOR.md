@@ -1,6 +1,6 @@
-# RKF78 Integrator - Documentazione Completa
+# AstDynPropagator - Documentazione Completa
 
-## Runge-Kutta-Fehlberg 7(8) per Propagazione Orbitale
+## Propagatore Orbitale ad Alta Precisione con RKF78
 
 **Autore**: AstDyS Team  
 **Data**: 29 Novembre 2025  
@@ -10,7 +10,7 @@
 
 ## 1. Panoramica
 
-L'integratore **RKF78** (Runge-Kutta-Fehlberg di ordine 7 con stima dell'errore di ordine 8) è un metodo numerico ad alta precisione per la propagazione orbitale di corpi celesti.
+**AstDynPropagator** è un propagatore orbitale ad alta precisione basato sull'integratore **RKF78** (Runge-Kutta-Fehlberg di ordine 7 con stima dell'errore di ordine 8).
 
 ### Caratteristiche Principali
 
