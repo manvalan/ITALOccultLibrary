@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.21)  26 NOV 2025 18:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.21)  26 NOV 2025 19:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1002,7 +1002,7 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 (./15_residui.aux) (./16_architettura.aux) (./17_moduli_core.aux)
 (./18_parser.aux) (./19_riferimento_api.aux) (./20_esempi.aux)
 (./21_validazione.aux) (./22_casi_studio.aux) (./23_prestazioni.aux)
-(./24_riferimenti.aux) (./25_appendici.aux))
+(./26_sviluppi_futuri.aux) (./24_riferimenti.aux) (./25_appendici.aux))
 \openout1 = `main_it.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 145.
@@ -1220,35 +1220,49 @@ LaTeX Font Info:    Font shape `U/msb/m/n' will be
 [18]
 
 [19]
+Underfull \vbox (badness 5726) has occurred while \output is active []
+
+
 
 [20]
 
-[21])
+[21]
+
+[22]
+
+[23]
+
+[24]
+
+[25]
+
+[26])
 \tf@toc=\write5
 \openout5 = `main_it.toc'.
 
- (./main_it.lof)
+ (./main_it.lof
+
+[27])
 \tf@lof=\write6
 \openout6 = `main_it.lof'.
 
+ (./main_it.lot
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-Underfull \vbox (badness 1389) has occurred while \output is active []
 
 
+[28]
 
-[22] (./main_it.lot)
+[29])
 \tf@lot=\write7
 \openout7 = `main_it.lot'.
 
 
 
-[23]
-
-[24
-
-]
+[30]
 
 [1
+
 
 ]
 
@@ -1282,6 +1296,11 @@ has been already used, duplicate ignored
 l.133     \item \textbf
                        {Livello algoritmico}: Integrazione numerica, gestion...
 ]
+
+LaTeX Warning: Reference `ch:case_studies' on page 7 undefined on input line 16
+5.
+
+
 
 [7]
 
@@ -2194,37 +2213,28 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
  (./16_architettura.tex
 Capitolo 16.
-)
+
 
 [181
 
 
 ]
-\openout2 = `17_moduli_core.aux'.
 
- (./17_moduli_core.tex
-
-[182
-
-
-
-
-]
-Capitolo 17.
+[182] (/usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 
 [183]
-\openout2 = `18_parser.aux'.
-
- (./18_parser.tex
-
-[184
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
+[184]
+Underfull \vbox (badness 2293) has occurred while \output is active []
 
-]
-Capitolo 18.
 
 
 [185]
@@ -2232,9 +2242,6 @@ Capitolo 18.
 [186]
 
 [187]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [188]
 
@@ -2243,45 +2250,163 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [190]
 
 [191]
-Overfull \hbox (73.26154pt too wide) in paragraph at lines 275--275
-[]     \T1/cmtt/m/n/12 203        C2024 01 15.13542 10 23 24.12 +12 34 05.6    
-     18.2 V      F51[] 
- []
-
-
 
 [192]
-Underfull \vbox (badness 2293) has occurred while \output is active []
 
-
-
-[193]
+[193])
 
 [194]
+\openout2 = `17_moduli_core.aux'.
 
-[195]
+ (./17_moduli_core.tex
+Capitolo 17.
 
-[196]
 
-[197]
-
-[198])
-
-[199]
-\openout2 = `19_riferimento_api.aux'.
-
- (./19_riferimento_api.tex
-
-[200
+[195
 
 
 
 
 ]
-Capitolo 19.
 
+[196]
+Underfull \vbox (badness 1331) has occurred while \output is active []
+
+
+
+[197]
+
+[198]
+
+[199]
+
+[200]
 
 [201]
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.268             // Soluzioni 7° 
+                                   e 8° ordine
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "B0.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.268             // Soluzioni 7° 
+                                   e 8° ordine
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.268             // Soluzioni 7° e 8° 
+                                         ordine
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "B0.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.268             // Soluzioni 7° e 8° 
+                                         ordine
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.269 ...ctor6d y7 = y + h * (/* combinazione 7° 
+                                                  ordine */);
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "B0.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.269 ...ctor6d y7 = y + h * (/* combinazione 7° 
+                                                  ordine */);
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.270 ...ctor6d y8 = y + h * (/* combinazione 8° 
+                                                  ordine */);
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+! LaTeX Error: Invalid UTF-8 byte "B0.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.270 ...ctor6d y8 = y + h * (/* combinazione 8° 
+                                                  ordine */);
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [202]
 
@@ -2295,118 +2420,197 @@ Capitolo 19.
 
 [207]
 
-[208]
+[208])
 
 [209]
+\openout2 = `18_parser.aux'.
 
-[210]
-Underfull \vbox (badness 2237) has occurred while \output is active []
+ (./18_parser.tex
 
+[210
+
+
+
+
+]
+Capitolo 18.
 
 
 [211]
 
 [212]
+
+[213]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[213])
-
 [214]
-\openout2 = `20_esempi.aux'.
 
- (./20_esempi.tex
-Capitolo 20.
-(/usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/09/23 1.10c listings language file
-)
-(/usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/09/23 1.10c listings language file
-)
+[215]
 
-[215
+[216]
+
+[217]
+Overfull \hbox (73.26154pt too wide) in paragraph at lines 275--275
+[]     \T1/cmtt/m/n/12 203        C2024 01 15.13542 10 23 24.12 +12 34 05.6    
+     18.2 V      F51[] 
+ []
+
+
+
+[218]
+Underfull \vbox (badness 2293) has occurred while \output is active []
+
+
+
+[219]
+
+[220]
+
+[221]
+
+[222]
+
+[223]
+
+[224])
+
+[225]
+\openout2 = `19_riferimento_api.aux'.
+
+ (./19_riferimento_api.tex
+
+[226
 
 
 
 
 ]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Capitolo 19.
 
-
-
-[216]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[217]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[218]
-
-[219]
-
-[220]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[221]
-
-[222]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[223]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[224]
-
-[225]
-Underfull \vbox (badness 2293) has occurred while \output is active []
-
-
-
-[226]
 
 [227]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [228]
 
 [229]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [230]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [231]
 
 [232]
 
-[233])
+[233]
 
 [234]
 
-[235
+[235]
+
+[236]
+Underfull \vbox (badness 2237) has occurred while \output is active []
+
+
+
+[237]
+
+[238]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[239])
+
+[240]
+\openout2 = `20_esempi.aux'.
+
+ (./20_esempi.tex
+Capitolo 20.
+
+
+[241
+
+
+
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[242]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[243]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[244]
+
+[245]
+
+[246]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[247]
+
+[248]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[249]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[250]
+
+[251]
+Underfull \vbox (badness 2293) has occurred while \output is active []
+
+
+
+[252]
+
+[253]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[254]
+
+[255]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[256]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[257]
+
+[258]
+
+[259])
+
+[260]
+
+[261
 
 
 
 ]
 
-[236]
+[262]
 \openout2 = `21_validazione.aux'.
 
  (./21_validazione.tex
@@ -2419,12 +2623,12 @@ o-du-ca ri-sul-ta-ti cor-ret-ti. Que-
 
 
 
-[237
+[263
 
 
 ]
 
-[238
+[264
 pdfTeX warning (ext4): destination with the same identifier (name{table.21.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2438,7 +2642,7 @@ has been already used, duplicate ignored
 l.85     \item \textbf
                       {Configurazione}: Criteri convergenza corrispondenti]
 
-[239
+[265
 pdfTeX warning (ext4): destination with the same identifier (name{table.21.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2452,7 +2656,7 @@ has been already used, duplicate ignored
 l.160 \end{table}
                  ]
 
-[240
+[266
 pdfTeX warning (ext4): destination with the same identifier (name{table.21.5}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2466,7 +2670,7 @@ has been already used, duplicate ignored
 l.197 \end{itemize}
                    ]
 
-[241
+[267
 pdfTeX warning (ext4): destination with the same identifier (name{table.21.7}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2474,7 +2678,7 @@ has been already used, duplicate ignored
 l.247     \item \textbf
                        {Copertura unit test}: 96\% su tutti i moduli])
 
-[242]
+[268]
 \openout2 = `22_casi_studio.aux'.
 
  (./22_casi_studio.tex
@@ -2488,7 +2692,7 @@ LaTeX Warning: Command \textdegree invalid in math mode on input line 17.
 Missing character: There is no � in font pplr7t!
 
 
-[243
+[269
 
 
 
@@ -2503,9 +2707,9 @@ LaTeX Warning: Command \textdegree invalid in math mode on input line 38.
 Missing character: There is no � in font pplr7t!
 
 
-[244]
+[270]
 
-[245
+[271
 pdfTeX warning (ext4): destination with the same identifier (name{table.22.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2528,7 +2732,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[246
+[272
 pdfTeX warning (ext4): destination with the same identifier (name{table.22.4}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2542,7 +2746,7 @@ has been already used, duplicate ignored
 l.186 
       ]
 
-[247
+[273
 pdfTeX warning (ext4): destination with the same identifier (name{table.22.6}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2556,7 +2760,7 @@ has been already used, duplicate ignored
 l.227 \subsection{Effemeridi JPL Horizons}
                                           ]
 
-[248
+[274
 pdfTeX warning (ext4): destination with the same identifier (name{table.22.8}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2570,7 +2774,7 @@ has been already used, duplicate ignored
 l.299 
       ]
 
-[249
+[275
 pdfTeX warning (ext4): destination with the same identifier (name{table.22.10})
  has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2584,21 +2788,21 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.22.11})
 l.335 \end{itemize}
                    ])
 
-[250]
+[276]
 \openout2 = `23_prestazioni.aux'.
 
  (./23_prestazioni.tex
 Capitolo 23.
 
 
-[251
+[277
 
 
 
 
 ]
 
-[252
+[278
 pdfTeX warning (ext4): destination with the same identifier (name{table.23.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2621,7 +2825,7 @@ Underfull \vbox (badness 2443) has occurred while \output is active []
 
 
 
-[253
+[279
 pdfTeX warning (ext4): destination with the same identifier (name{table.23.4}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2638,7 +2842,7 @@ Underfull \vbox (badness 1571) has occurred while \output is active []
 
 
 
-[254
+[280
 pdfTeX warning (ext4): destination with the same identifier (name{table.23.6}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2652,7 +2856,7 @@ has been already used, duplicate ignored
 l.212 
       ])
 
-[255
+[281
 pdfTeX warning (ext4): destination with the same identifier (name{table.23.8}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -2666,11 +2870,79 @@ has been already used, duplicate ignored
 l.195 \include{23_prestazioni}
                               ]
 
-[256
+[282
 
 
 
 ]
+
+[283]
+
+[284]
+\openout2 = `26_sviluppi_futuri.aux'.
+
+ (./26_sviluppi_futuri.tex
+Capitolo 24.
+
+
+[285
+
+
+]
+
+[286]
+
+[287]
+
+[288]
+
+[289]
+Overfull \hbox (0.58054pt too wide) in paragraph at lines 195--196
+[]\T1/ppl/b/n/12 Pianificato\T1/ppl/m/n/12 : Re-go-la-riz-za-zio-ne di Kustaanh
+eimo-Stiefel (KS) per ri-mo-zio-ne del-
+ []
+
+
+
+[290]
+
+[291]
+
+[292] (/usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+
+[293]
+
+[294]
+
+[295]
+Overfull \hbox (5.35312pt too wide) in paragraph at lines 459--459
+[]  \T1/cmtt/m/n/12 Body: { "observations": [...], "method": "differential_corr
+ection" }[] 
+ []
+
+
+
+[296]
+
+[297]
+
+[298]
+
+[299]
+Overfull \hbox (17.7001pt too wide) in paragraph at lines 623--623
+[]  \T1/cmtt/m/n/12 title = {AstDyn: Modern C++ Library for Asteroid Orbit Dete
+rmination},[] 
+ []
+
+
+
+[300]
+
+[301])
+
+[302]
 \openout2 = `24_riferimenti.aux'.
 
  (./24_riferimenti.tex
@@ -2678,7 +2950,10 @@ Underfull \vbox (badness 3068) has occurred while \output is active []
 
 
 
-[257
+[303
+
+
+
 
 
 ]
@@ -2695,14 +2970,14 @@ t/orbfit/ \T1/ppl/m/n/12 - Soft-ware de-ter-mi-na-zio-ne or-
 
 
 
-[258])
+[304])
 
-[259]
+[305]
 \openout2 = `25_appendici.aux'.
 
  (./25_appendici.tex
 
-[260
+[306
 
 
 
@@ -2712,43 +2987,43 @@ Underfull \vbox (badness 2469) has occurred while \output is active []
 
 
 
-[261
-pdfTeX warning (ext4): destination with the same identifier (name{table.23.10})
- has been already used, duplicate ignored
+[307
+pdfTeX warning (ext4): destination with the same identifier (name{table.24.1}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.72 
      
-pdfTeX warning (ext4): destination with the same identifier (name{table.23.11})
- has been already used, duplicate ignored
+pdfTeX warning (ext4): destination with the same identifier (name{table.24.2}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.72 
      ]
 
-[262
-pdfTeX warning (ext4): destination with the same identifier (name{table.23.12})
- has been already used, duplicate ignored
+[308
+pdfTeX warning (ext4): destination with the same identifier (name{table.24.3}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.130 
       
-pdfTeX warning (ext4): destination with the same identifier (name{table.23.13})
- has been already used, duplicate ignored
+pdfTeX warning (ext4): destination with the same identifier (name{table.24.4}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.130 
       
-pdfTeX warning (ext4): destination with the same identifier (name{table.23.14})
- has been already used, duplicate ignored
+pdfTeX warning (ext4): destination with the same identifier (name{table.24.5}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.130 
       ]
 
-[263
-pdfTeX warning (ext4): destination with the same identifier (name{table.23.15})
- has been already used, duplicate ignored
+[309
+pdfTeX warning (ext4): destination with the same identifier (name{table.24.6}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.160 ...\sqrt{\frac{1+e}{1-e}} \tan \frac{E}{2}$$
@@ -2757,23 +3032,23 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[264
-pdfTeX warning (ext4): destination with the same identifier (name{table.23.16})
- has been already used, duplicate ignored
+[310
+pdfTeX warning (ext4): destination with the same identifier (name{table.24.7}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.228 
       ]
 
-[265
-pdfTeX warning (ext4): destination with the same identifier (name{table.23.17})
- has been already used, duplicate ignored
+[311
+pdfTeX warning (ext4): destination with the same identifier (name{table.24.8}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.247     \item $
                  i$: Inclinazione])
 
-[266] (./main_it.aux (./00_frontespizio.aux) (./00_prefazione.aux)
+[312] (./main_it.aux (./00_frontespizio.aux) (./00_prefazione.aux)
 (./01_introduzione.aux) (./02_sistemi_tempo.aux) (./03_sistemi_coordinate.aux)
 (./04_sistemi_riferimento.aux) (./05_elementi_orbitali.aux)
 (./06_problema_due_corpi.aux) (./07_perturbazioni.aux)
@@ -2783,29 +3058,24 @@ l.247     \item $
 (./15_residui.aux) (./16_architettura.aux) (./17_moduli_core.aux)
 (./18_parser.aux) (./19_riferimento_api.aux) (./20_esempi.aux)
 (./21_validazione.aux) (./22_casi_studio.aux) (./23_prestazioni.aux)
-(./24_riferimenti.aux) (./25_appendici.aux))
+(./26_sviluppi_futuri.aux) (./24_riferimenti.aux) (./25_appendici.aux))
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were undefined references.
 
+Package rerunfilecheck Info: File `main_it.out' has not changed.
+(rerunfilecheck)             Checksum: 440D3A5ABBABAE5F4A9E5F279D81C937;153527.
 
-Package rerunfilecheck Warning: File `main_it.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main_it.out':
-(rerunfilecheck)             Before: 3E4B6866CF7B038B7F8675DDFC764ADC;113868
-(rerunfilecheck)             After:  3BDFAEB55FD8B85C5689B451590C4E4A;133311.
  ) 
 Here is how much of TeX's memory you used:
- 45274 strings out of 473190
- 992453 string characters out of 5715799
- 1948568 words of memory out of 5000000
- 64037 multiletter control sequences out of 15000+600000
+ 47196 strings out of 473190
+ 1021947 string characters out of 5715799
+ 1950652 words of memory out of 5000000
+ 64831 multiletter control sequences out of 15000+600000
  628724 words of font info for 202 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,19n,87p,724b,2254s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -2824,10 +3094,10 @@ exmf-dist/fonts/type1/public/cm-super/sftt1200.pfb></usr/local/texlive/2025/tex
 mf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2025/texmf-dist
 /fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/
 type1/urw/palatino/uplri8a.pfb>
-Output written on main_it.pdf (290 pages, 964195 bytes).
+Output written on main_it.pdf (342 pages, 1152080 bytes).
 PDF statistics:
- 7685 PDF objects out of 8907 (max. 8388607)
- 7287 compressed objects within 73 object streams
- 3613 named destinations out of 4296 (max. 500000)
- 4439 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 10026 PDF objects out of 10688 (max. 8388607)
+ 9553 compressed objects within 96 object streams
+ 4732 named destinations out of 5155 (max. 500000)
+ 5991 words of extra memory for PDF output out of 10000 (max. 10000000)
 

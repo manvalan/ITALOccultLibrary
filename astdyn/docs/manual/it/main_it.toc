@@ -458,201 +458,300 @@
 \contentsline {subsection}{\numberline {15.9.3}Valutazione Arco Orbitale}{177}{subsection.15.9.3}%
 \contentsline {section}{\numberline {15.10}Sommario}{178}{section.15.10}%
 \contentsline {part}{IV\hspace {1em}Implementazione della Libreria AstDyn}{179}{part.4}%
-\contentsline {chapter}{\numberline {16}Architettura della Libreria}{181}{chapter.16}%
-\contentsline {chapter}{\numberline {17}Moduli Core}{183}{chapter.17}%
-\contentsline {chapter}{\numberline {18}Sistema Parser}{185}{chapter.18}%
-\contentsline {section}{\numberline {18.1}Introduzione}{185}{section.18.1}%
-\contentsline {subsection}{\numberline {18.1.1}Formati Supportati}{185}{subsection.18.1.1}%
-\contentsline {section}{\numberline {18.2}Interfaccia Parser}{185}{section.18.2}%
-\contentsline {subsection}{\numberline {18.2.1}Classe Base IParser}{185}{subsection.18.2.1}%
-\contentsline {subsection}{\numberline {18.2.2}Vantaggi del Design}{186}{subsection.18.2.2}%
-\contentsline {section}{\numberline {18.3}Parser OrbFit .eq1}{186}{section.18.3}%
-\contentsline {subsection}{\numberline {18.3.1}Specifica del Formato}{186}{subsection.18.3.1}%
-\contentsline {subsection}{\numberline {18.3.2}Implementazione}{187}{subsection.18.3.2}%
-\contentsline {subsection}{\numberline {18.3.3}Utilizzo}{189}{subsection.18.3.3}%
-\contentsline {section}{\numberline {18.4}Factory Parser}{190}{section.18.4}%
-\contentsline {subsection}{\numberline {18.4.1}Pattern Factory}{190}{subsection.18.4.1}%
-\contentsline {subsection}{\numberline {18.4.2}Utilizzo}{192}{subsection.18.4.2}%
-\contentsline {section}{\numberline {18.5}Parser Osservazioni MPC}{192}{section.18.5}%
-\contentsline {subsection}{\numberline {18.5.1}Formato 80 Colonne}{192}{subsection.18.5.1}%
-\contentsline {subsection}{\numberline {18.5.2}MPCObservationParser}{193}{subsection.18.5.2}%
-\contentsline {section}{\numberline {18.6}Parser Personalizzati}{194}{section.18.6}%
-\contentsline {subsection}{\numberline {18.6.1}Creazione di un Nuovo Parser}{194}{subsection.18.6.1}%
-\contentsline {subsection}{\numberline {18.6.2}Formato JSON Esempio}{196}{subsection.18.6.2}%
-\contentsline {section}{\numberline {18.7}Gestione Errori}{196}{section.18.7}%
-\contentsline {subsection}{\numberline {18.7.1}Categorie di Errori}{196}{subsection.18.7.1}%
-\contentsline {subsection}{\numberline {18.7.2}Gestione Robusta}{197}{subsection.18.7.2}%
-\contentsline {subsection}{\numberline {18.7.3}Validazione}{197}{subsection.18.7.3}%
-\contentsline {section}{\numberline {18.8}Testing}{198}{section.18.8}%
-\contentsline {subsection}{\numberline {18.8.1}Unit Test}{198}{subsection.18.8.1}%
-\contentsline {section}{\numberline {18.9}Sommario}{198}{section.18.9}%
-\contentsline {chapter}{\numberline {19}Riferimento API}{201}{chapter.19}%
-\contentsline {section}{\numberline {19.1}Panoramica}{201}{section.19.1}%
-\contentsline {subsection}{\numberline {19.1.1}Organizzazione}{201}{subsection.19.1.1}%
-\contentsline {section}{\numberline {19.2}Costanti Core}{202}{section.19.2}%
-\contentsline {subsection}{\numberline {19.2.1}astdyn::constants}{202}{subsection.19.2.1}%
-\contentsline {section}{\numberline {19.3}Utility Matematiche}{203}{section.19.3}%
-\contentsline {subsection}{\numberline {19.3.1}astdyn::math}{203}{subsection.19.3.1}%
-\contentsline {subsubsection}{normalize\_angle}{203}{subsection.19.3.1}%
-\contentsline {subsubsection}{cross\_product}{203}{lstnumber.-8.2}%
-\contentsline {subsubsection}{rotation\_matrix}{204}{lstnumber.-9.1}%
-\contentsline {section}{\numberline {19.4}Sistemi Temporali}{204}{section.19.4}%
-\contentsline {subsection}{\numberline {19.4.1}astdyn::time::TimeConverter}{204}{subsection.19.4.1}%
-\contentsline {subsubsection}{utc\_to\_tt}{204}{subsection.19.4.1}%
-\contentsline {subsubsection}{tt\_to\_tdb}{204}{lstnumber.-11.1}%
-\contentsline {section}{\numberline {19.5}Elementi Orbitali}{205}{section.19.5}%
-\contentsline {subsection}{\numberline {19.5.1}astdyn::orbit::KeplerianElements}{205}{subsection.19.5.1}%
-\contentsline {subsubsection}{Definizione Classe}{205}{subsection.19.5.1}%
-\contentsline {section}{\numberline {19.6}Propagazione Orbitale}{206}{section.19.6}%
-\contentsline {subsection}{\numberline {19.6.1}astdyn::propagation::OrbitPropagator}{206}{subsection.19.6.1}%
-\contentsline {subsubsection}{Definizione Classe}{206}{subsection.19.6.1}%
-\contentsline {section}{\numberline {19.7}Osservazioni}{207}{section.19.7}%
-\contentsline {subsection}{\numberline {19.7.1}astdyn::observations::Observation}{207}{subsection.19.7.1}%
-\contentsline {section}{\numberline {19.8}Determinazione Orbitale}{207}{section.19.8}%
-\contentsline {subsection}{\numberline {19.8.1}astdyn::orbit\_determination::DifferentialCorrector}{207}{subsection.19.8.1}%
-\contentsline {subsubsection}{Metodo correct}{207}{subsection.19.8.1}%
-\contentsline {section}{\numberline {19.9}Parser I/O}{208}{section.19.9}%
-\contentsline {subsection}{\numberline {19.9.1}astdyn::io::ParserFactory}{208}{subsection.19.9.1}%
-\contentsline {subsubsection}{create}{208}{subsection.19.9.1}%
-\contentsline {section}{\numberline {19.10}Interfacce Effemeridi}{208}{section.19.10}%
-\contentsline {subsection}{\numberline {19.10.1}astdyn::ephemeris::IEphemeris}{208}{subsection.19.10.1}%
-\contentsline {subsection}{\numberline {19.10.2}Implementazioni}{209}{subsection.19.10.2}%
-\contentsline {subsubsection}{JPLEphemeris}{209}{subsection.19.10.2}%
-\contentsline {section}{\numberline {19.11}Modelli di Forza}{210}{section.19.11}%
-\contentsline {subsection}{\numberline {19.11.1}astdyn::forces::ForceModel}{210}{subsection.19.11.1}%
-\contentsline {section}{\numberline {19.12}Integratori Numerici}{211}{section.19.12}%
-\contentsline {subsection}{\numberline {19.12.1}astdyn::integration::IIntegrator}{211}{subsection.19.12.1}%
-\contentsline {subsection}{\numberline {19.12.2}Implementazioni Disponibili}{211}{subsection.19.12.2}%
-\contentsline {section}{\numberline {19.13}Utility Analisi}{212}{section.19.13}%
-\contentsline {subsection}{\numberline {19.13.1}astdyn::analysis::ResidualAnalyzer}{212}{subsection.19.13.1}%
-\contentsline {section}{\numberline {19.14}Esempio Completo}{212}{section.19.14}%
-\contentsline {subsection}{\numberline {19.14.1}Workflow Determinazione Orbitale}{212}{subsection.19.14.1}%
-\contentsline {section}{\numberline {19.15}Sommario}{214}{section.19.15}%
-\contentsline {chapter}{\numberline {20}Esempi e Tutorial}{215}{chapter.20}%
-\contentsline {section}{\numberline {20.1}Introduzione}{215}{section.20.1}%
-\contentsline {subsection}{\numberline {20.1.1}Prerequisiti}{215}{subsection.20.1.1}%
-\contentsline {section}{\numberline {20.2}Esempio 1: Propagazione Orbitale Base}{215}{section.20.2}%
-\contentsline {subsection}{\numberline {20.2.1}Obiettivo}{215}{subsection.20.2.1}%
-\contentsline {subsection}{\numberline {20.2.2}Codice}{215}{subsection.20.2.2}%
-\contentsline {subsection}{\numberline {20.2.3}Compilazione}{219}{subsection.20.2.3}%
-\contentsline {subsection}{\numberline {20.2.4}Output Atteso}{219}{subsection.20.2.4}%
-\contentsline {section}{\numberline {20.3}Esempio 2: Generazione Effemeridi}{220}{section.20.3}%
-\contentsline {subsection}{\numberline {20.3.1}Obiettivo}{220}{subsection.20.3.1}%
-\contentsline {subsection}{\numberline {20.3.2}Codice}{220}{subsection.20.3.2}%
-\contentsline {section}{\numberline {20.4}Esempio 3: Determinazione Orbitale}{222}{section.20.4}%
-\contentsline {subsection}{\numberline {20.4.1}Obiettivo}{222}{subsection.20.4.1}%
-\contentsline {subsection}{\numberline {20.4.2}Codice}{222}{subsection.20.4.2}%
-\contentsline {section}{\numberline {20.5}Esempio 4: Lettura Osservazioni MPC}{225}{section.20.5}%
-\contentsline {subsection}{\numberline {20.5.1}Obiettivo}{225}{subsection.20.5.1}%
-\contentsline {subsection}{\numberline {20.5.2}Codice}{226}{subsection.20.5.2}%
-\contentsline {section}{\numberline {20.6}Esempio 5: Matrice Transizione Stato}{227}{section.20.6}%
-\contentsline {subsection}{\numberline {20.6.1}Obiettivo}{227}{subsection.20.6.1}%
-\contentsline {subsection}{\numberline {20.6.2}Codice}{227}{subsection.20.6.2}%
-\contentsline {section}{\numberline {20.7}Esempio 6: Modello Forza Personalizzato}{229}{section.20.7}%
-\contentsline {subsection}{\numberline {20.7.1}Obiettivo}{229}{subsection.20.7.1}%
-\contentsline {subsection}{\numberline {20.7.2}Codice}{229}{subsection.20.7.2}%
-\contentsline {section}{\numberline {20.8}Compilazione ed Esecuzione Esempi}{232}{section.20.8}%
-\contentsline {subsection}{\numberline {20.8.1}CMakeLists.txt}{232}{subsection.20.8.1}%
-\contentsline {subsection}{\numberline {20.8.2}Comandi Compilazione}{233}{subsection.20.8.2}%
-\contentsline {section}{\numberline {20.9}Sommario}{233}{section.20.9}%
-\contentsline {part}{V\hspace {1em}Validazione e Applicazioni}{235}{part.5}%
-\contentsline {chapter}{\numberline {21}Validazione e Testing}{237}{chapter.21}%
-\contentsline {section}{\numberline {21.1}Introduzione}{237}{section.21.1}%
-\contentsline {subsection}{\numberline {21.1.1}Strategia di Validazione}{237}{subsection.21.1.1}%
-\contentsline {section}{\numberline {21.2}Framework Unit Testing}{237}{section.21.2}%
-\contentsline {subsection}{\numberline {21.2.1}Integrazione Google Test}{237}{subsection.21.2.1}%
-\contentsline {section}{\numberline {21.3}Test Accuratezza Numerica}{238}{section.21.3}%
-\contentsline {subsection}{\numberline {21.3.1}Problema Due Corpi}{238}{subsection.21.3.1}%
-\contentsline {section}{\numberline {21.4}Confronto con OrbFit}{238}{section.21.4}%
-\contentsline {subsection}{\numberline {21.4.1}Metodologia}{238}{subsection.21.4.1}%
-\contentsline {subsection}{\numberline {21.4.2}Confronto Propagazione}{239}{subsection.21.4.2}%
-\contentsline {subsection}{\numberline {21.4.3}Confronto Determinazione Orbitale}{239}{subsection.21.4.3}%
-\contentsline {section}{\numberline {21.5}Confronto JPL Horizons}{240}{section.21.5}%
-\contentsline {subsection}{\numberline {21.5.1}Risultati}{240}{subsection.21.5.1}%
-\contentsline {section}{\numberline {21.6}Stress Testing}{240}{section.21.6}%
-\contentsline {subsection}{\numberline {21.6.1}Eccentricita' Estreme}{240}{subsection.21.6.1}%
-\contentsline {subsection}{\numberline {21.6.2}Integrazione Lungo Termine}{240}{subsection.21.6.2}%
-\contentsline {section}{\numberline {21.7}Validazione Prestazioni}{241}{section.21.7}%
-\contentsline {subsection}{\numberline {21.7.1}Velocita' Integrazione}{241}{subsection.21.7.1}%
-\contentsline {section}{\numberline {21.8}Integrazione Continua}{241}{section.21.8}%
-\contentsline {section}{\numberline {21.9}Limitazioni Note}{241}{section.21.9}%
-\contentsline {section}{\numberline {21.10}Sommario}{242}{section.21.10}%
-\contentsline {chapter}{\numberline {22}Caso di Studio: (203) Pompeja}{243}{chapter.22}%
-\contentsline {section}{\numberline {22.1}Introduzione}{243}{section.22.1}%
-\contentsline {subsection}{\numberline {22.1.1}Perche' Pompeja?}{243}{subsection.22.1.1}%
-\contentsline {section}{\numberline {22.2}Asteroide (203) Pompeja}{243}{section.22.2}%
-\contentsline {subsection}{\numberline {22.2.1}Proprieta' Fisiche}{243}{subsection.22.2.1}%
-\contentsline {subsection}{\numberline {22.2.2}Caratteristiche Orbitali}{244}{subsection.22.2.2}%
-\contentsline {section}{\numberline {22.3}Dati Osservativi}{244}{section.22.3}%
-\contentsline {subsection}{\numberline {22.3.1}Sorgente Dati}{244}{subsection.22.3.1}%
-\contentsline {subsection}{\numberline {22.3.2}Sommario Osservazioni}{245}{subsection.22.3.2}%
-\contentsline {section}{\numberline {22.4}Determinazione Orbitale Iniziale}{245}{section.22.4}%
-\contentsline {subsection}{\numberline {22.4.1}Metodo Gauss}{245}{subsection.22.4.1}%
-\contentsline {subsection}{\numberline {22.4.2}Soluzione Iniziale}{245}{subsection.22.4.2}%
-\contentsline {section}{\numberline {22.5}Correzione Differenziale}{246}{section.22.5}%
-\contentsline {subsection}{\numberline {22.5.1}Storia Iterazioni}{246}{subsection.22.5.1}%
-\contentsline {subsection}{\numberline {22.5.2}Elementi Orbitali Finali}{246}{subsection.22.5.2}%
-\contentsline {section}{\numberline {22.6}Analisi Residui}{247}{section.22.6}%
-\contentsline {subsection}{\numberline {22.6.1}Statistiche Residui}{247}{subsection.22.6.1}%
-\contentsline {subsection}{\numberline {22.6.2}Distribuzione Residui}{247}{subsection.22.6.2}%
-\contentsline {section}{\numberline {22.7}Confronto con Soluzione Riferimento}{247}{section.22.7}%
-\contentsline {subsection}{\numberline {22.7.1}Riferimento OrbFit}{247}{subsection.22.7.1}%
-\contentsline {subsection}{\numberline {22.7.2}Effemeridi JPL Horizons}{248}{subsection.22.7.2}%
-\contentsline {section}{\numberline {22.8}Covarianza e Incertezze}{248}{section.22.8}%
-\contentsline {subsection}{\numberline {22.8.1}Matrice Covarianza Parametri}{248}{subsection.22.8.1}%
-\contentsline {subsection}{\numberline {22.8.2}Propagazione Incertezza Posizione}{249}{subsection.22.8.2}%
-\contentsline {section}{\numberline {22.9}Metriche Prestazioni}{249}{section.22.9}%
-\contentsline {subsection}{\numberline {22.9.1}Costo Computazionale}{249}{subsection.22.9.1}%
-\contentsline {subsection}{\numberline {22.9.2}Uso Memoria}{249}{subsection.22.9.2}%
-\contentsline {section}{\numberline {22.10}Conclusioni}{250}{section.22.10}%
-\contentsline {chapter}{\numberline {23}Benchmark Prestazioni}{251}{chapter.23}%
-\contentsline {section}{\numberline {23.1}Introduzione}{251}{section.23.1}%
-\contentsline {subsection}{\numberline {23.1.1}Ambiente Benchmark}{251}{subsection.23.1.1}%
-\contentsline {section}{\numberline {23.2}Prestazioni Propagazione Orbitale}{251}{section.23.2}%
-\contentsline {subsection}{\numberline {23.2.1}Propagazione Singola}{251}{subsection.23.2.1}%
-\contentsline {subsection}{\numberline {23.2.2}Propagazione Batch}{252}{subsection.23.2.2}%
-\contentsline {subsection}{\numberline {23.2.3}Effetto Complessita' Modello Forze}{252}{subsection.23.2.3}%
-\contentsline {section}{\numberline {23.3}Prestazioni Determinazione Orbitale}{253}{section.23.3}%
-\contentsline {subsection}{\numberline {23.3.1}Timing Correzione Differenziale}{253}{subsection.23.3.1}%
-\contentsline {subsection}{\numberline {23.3.2}Scalabilita' con Numero Osservazioni}{253}{subsection.23.3.2}%
-\contentsline {section}{\numberline {23.4}Confronto con Altri Strumenti}{254}{section.23.4}%
-\contentsline {subsection}{\numberline {23.4.1}OrbFit 5.0.5}{254}{subsection.23.4.1}%
-\contentsline {subsection}{\numberline {23.4.2}Strumenti Python}{254}{subsection.23.4.2}%
-\contentsline {section}{\numberline {23.5}Uso Memoria}{254}{section.23.5}%
-\contentsline {subsection}{\numberline {23.5.1}Allocazione Heap}{254}{subsection.23.5.1}%
-\contentsline {subsection}{\numberline {23.5.2}Scalabilita' con Dimensione Problema}{255}{subsection.23.5.2}%
-\contentsline {section}{\numberline {23.6}Sommario}{255}{section.23.6}%
-\contentsline {chapter}{Riferimenti}{257}{chapter*.2}%
-\contentsline {section}{\numberline {23.7}Libri di Testo}{257}{section.23.7}%
-\contentsline {subsection}{\numberline {23.7.1}Meccanica Celeste}{257}{subsection.23.7.1}%
-\contentsline {subsection}{\numberline {23.7.2}Metodi Numerici}{257}{subsection.23.7.2}%
-\contentsline {section}{\numberline {23.8}Articoli Scientifici}{258}{section.23.8}%
-\contentsline {subsection}{\numberline {23.8.1}Determinazione Orbitale}{258}{subsection.23.8.1}%
-\contentsline {subsection}{\numberline {23.8.2}Sistemi Temporali}{258}{subsection.23.8.2}%
-\contentsline {section}{\numberline {23.9}Software e Strumenti}{258}{section.23.9}%
-\contentsline {subsection}{\numberline {23.9.1}Software Determinazione Orbitale}{258}{subsection.23.9.1}%
-\contentsline {subsection}{\numberline {23.9.2}Effemeridi}{258}{subsection.23.9.2}%
-\contentsline {subsection}{\numberline {23.9.3}Osservazioni}{259}{subsection.23.9.3}%
-\contentsline {section}{\numberline {23.10}Standard e Convenzioni}{259}{section.23.10}%
-\contentsline {section}{\numberline {23.11}Risorse Online}{259}{section.23.11}%
-\contentsline {chapter}{Appendici}{261}{chapter*.3}%
-\contentsline {section}{\numberline {23.12}Costanti Fisiche}{261}{section.23.12}%
-\contentsline {subsection}{\numberline {23.12.1}Costanti Fondamentali}{261}{subsection.23.12.1}%
-\contentsline {subsection}{\numberline {23.12.2}Parametri Sistema Solare}{261}{subsection.23.12.2}%
-\contentsline {section}{\numberline {23.13}Elementi Orbitali Planetari}{262}{section.23.13}%
-\contentsline {subsection}{\numberline {23.13.1}Elementi Medi J2000.0}{262}{subsection.23.13.1}%
-\contentsline {section}{\numberline {23.14}Conversioni Unit\`a}{262}{section.23.14}%
-\contentsline {subsection}{\numberline {23.14.1}Conversioni Angolari}{262}{subsection.23.14.1}%
-\contentsline {subsection}{\numberline {23.14.2}Conversioni Temporali}{262}{subsection.23.14.2}%
-\contentsline {subsection}{\numberline {23.14.3}Conversioni Distanza}{263}{subsection.23.14.3}%
-\contentsline {section}{\numberline {23.15}Formule Utili}{263}{section.23.15}%
-\contentsline {subsection}{\numberline {23.15.1}Problema Due Corpi}{263}{subsection.23.15.1}%
-\contentsline {subsection}{\numberline {23.15.2}Anomalie}{263}{subsection.23.15.2}%
-\contentsline {subsection}{\numberline {23.15.3}Trasformazioni Coordinate}{264}{subsection.23.15.3}%
-\contentsline {section}{\numberline {23.16}Codici Osservatorio MPC}{264}{section.23.16}%
-\contentsline {subsection}{\numberline {23.16.1}Osservatori Principali}{264}{subsection.23.16.1}%
-\contentsline {section}{\numberline {23.17}Acronimi e Abbreviazioni}{265}{section.23.17}%
-\contentsline {section}{\numberline {23.18}Convenzioni Notazione}{265}{section.23.18}%
-\contentsline {subsection}{\numberline {23.18.1}Vettori e Matrici}{265}{subsection.23.18.1}%
-\contentsline {subsection}{\numberline {23.18.2}Elementi Orbitali}{265}{subsection.23.18.2}%
-\contentsline {subsection}{\numberline {23.18.3}Sistemi Coordinate}{266}{subsection.23.18.3}%
+\contentsline {chapter}{\numberline {16}Architettura Software}{181}{chapter.16}%
+\contentsline {section}{\numberline {16.1}Introduzione}{181}{section.16.1}%
+\contentsline {section}{\numberline {16.2}Principi di Design}{181}{section.16.2}%
+\contentsline {subsection}{\numberline {16.2.1}Separazione delle Responsabilità}{181}{subsection.16.2.1}%
+\contentsline {subsection}{\numberline {16.2.2}Design Basato su Interfacce}{182}{subsection.16.2.2}%
+\contentsline {subsection}{\numberline {16.2.3}Header-Only vs. Compilato}{182}{subsection.16.2.3}%
+\contentsline {section}{\numberline {16.3}Organizzazione dei Moduli}{183}{section.16.3}%
+\contentsline {subsection}{\numberline {16.3.1}Struttura delle Directory}{183}{subsection.16.3.1}%
+\contentsline {subsection}{\numberline {16.3.2}Organizzazione dei Namespace}{185}{subsection.16.3.2}%
+\contentsline {section}{\numberline {16.4}Componenti Core}{186}{section.16.4}%
+\contentsline {subsection}{\numberline {16.4.1}Costanti e Tipi}{186}{subsection.16.4.1}%
+\contentsline {subsection}{\numberline {16.4.2}Versione e Configurazione}{187}{subsection.16.4.2}%
+\contentsline {section}{\numberline {16.5}Gestione delle Dipendenze}{187}{section.16.5}%
+\contentsline {subsection}{\numberline {16.5.1}Dipendenze Esterne}{187}{subsection.16.5.1}%
+\contentsline {subsection}{\numberline {16.5.2}Sistema di Build CMake}{188}{subsection.16.5.2}%
+\contentsline {section}{\numberline {16.6}Gestione degli Errori}{189}{section.16.6}%
+\contentsline {subsection}{\numberline {16.6.1}Strategia}{189}{subsection.16.6.1}%
+\contentsline {subsection}{\numberline {16.6.2}Logging}{190}{subsection.16.6.2}%
+\contentsline {section}{\numberline {16.7}Gestione della Memoria}{190}{section.16.7}%
+\contentsline {subsection}{\numberline {16.7.1}Ownership}{190}{subsection.16.7.1}%
+\contentsline {subsection}{\numberline {16.7.2}Dataset Grandi}{191}{subsection.16.7.2}%
+\contentsline {section}{\numberline {16.8}Threading e Parallelismo}{191}{section.16.8}%
+\contentsline {subsection}{\numberline {16.8.1}Stato Attuale}{191}{subsection.16.8.1}%
+\contentsline {subsection}{\numberline {16.8.2}Piani Futuri}{191}{subsection.16.8.2}%
+\contentsline {section}{\numberline {16.9}Strategia di Testing}{192}{section.16.9}%
+\contentsline {subsection}{\numberline {16.9.1}Test Unitari}{192}{subsection.16.9.1}%
+\contentsline {subsection}{\numberline {16.9.2}Test di Integrazione}{192}{subsection.16.9.2}%
+\contentsline {subsection}{\numberline {16.9.3}Benchmark Prestazionali}{192}{subsection.16.9.3}%
+\contentsline {section}{\numberline {16.10}Documentazione}{193}{section.16.10}%
+\contentsline {subsection}{\numberline {16.10.1}Documentazione Inline}{193}{subsection.16.10.1}%
+\contentsline {subsection}{\numberline {16.10.2}Documentazione Esterna}{193}{subsection.16.10.2}%
+\contentsline {section}{\numberline {16.11}Riepilogo}{194}{section.16.11}%
+\contentsline {chapter}{\numberline {17}Moduli Core}{195}{chapter.17}%
+\contentsline {section}{\numberline {17.1}Introduzione}{195}{section.17.1}%
+\contentsline {section}{\numberline {17.2}Elementi Orbitali}{195}{section.17.2}%
+\contentsline {subsection}{\numberline {17.2.1}KeplerianElements}{195}{subsection.17.2.1}%
+\contentsline {subsection}{\numberline {17.2.2}CometaryElements}{197}{subsection.17.2.2}%
+\contentsline {subsection}{\numberline {17.2.3}CartesianState}{198}{subsection.17.2.3}%
+\contentsline {section}{\numberline {17.3}Modelli di Forza}{198}{section.17.3}%
+\contentsline {subsection}{\numberline {17.3.1}Interfaccia ForceModel}{198}{subsection.17.3.1}%
+\contentsline {subsection}{\numberline {17.3.2}Gravità a Massa Puntiforme}{199}{subsection.17.3.2}%
+\contentsline {subsection}{\numberline {17.3.3}Modello di Forza Combinato}{200}{subsection.17.3.3}%
+\contentsline {section}{\numberline {17.4}Integrazione Numerica}{200}{section.17.4}%
+\contentsline {subsection}{\numberline {17.4.1}Interfaccia Integrator}{200}{subsection.17.4.1}%
+\contentsline {subsection}{\numberline {17.4.2}Runge-Kutta-Fehlberg 7(8)}{201}{subsection.17.4.2}%
+\contentsline {section}{\numberline {17.5}Propagazione Orbitale}{203}{section.17.5}%
+\contentsline {subsection}{\numberline {17.5.1}Classe Propagator}{203}{subsection.17.5.1}%
+\contentsline {section}{\numberline {17.6}Osservazioni}{205}{section.17.6}%
+\contentsline {subsection}{\numberline {17.6.1}Classe Observation}{205}{subsection.17.6.1}%
+\contentsline {subsection}{\numberline {17.6.2}MPC Reader}{206}{subsection.17.6.2}%
+\contentsline {section}{\numberline {17.7}Database Osservatori}{207}{section.17.7}%
+\contentsline {subsection}{\numberline {17.7.1}ObservatoryCoordinates}{207}{subsection.17.7.1}%
+\contentsline {section}{\numberline {17.8}Riepilogo}{208}{section.17.8}%
+\contentsline {chapter}{\numberline {18}Sistema Parser}{211}{chapter.18}%
+\contentsline {section}{\numberline {18.1}Introduzione}{211}{section.18.1}%
+\contentsline {subsection}{\numberline {18.1.1}Formati Supportati}{211}{subsection.18.1.1}%
+\contentsline {section}{\numberline {18.2}Interfaccia Parser}{211}{section.18.2}%
+\contentsline {subsection}{\numberline {18.2.1}Classe Base IParser}{211}{subsection.18.2.1}%
+\contentsline {subsection}{\numberline {18.2.2}Vantaggi del Design}{212}{subsection.18.2.2}%
+\contentsline {section}{\numberline {18.3}Parser OrbFit .eq1}{212}{section.18.3}%
+\contentsline {subsection}{\numberline {18.3.1}Specifica del Formato}{212}{subsection.18.3.1}%
+\contentsline {subsection}{\numberline {18.3.2}Implementazione}{213}{subsection.18.3.2}%
+\contentsline {subsection}{\numberline {18.3.3}Utilizzo}{215}{subsection.18.3.3}%
+\contentsline {section}{\numberline {18.4}Factory Parser}{216}{section.18.4}%
+\contentsline {subsection}{\numberline {18.4.1}Pattern Factory}{216}{subsection.18.4.1}%
+\contentsline {subsection}{\numberline {18.4.2}Utilizzo}{218}{subsection.18.4.2}%
+\contentsline {section}{\numberline {18.5}Parser Osservazioni MPC}{218}{section.18.5}%
+\contentsline {subsection}{\numberline {18.5.1}Formato 80 Colonne}{218}{subsection.18.5.1}%
+\contentsline {subsection}{\numberline {18.5.2}MPCObservationParser}{219}{subsection.18.5.2}%
+\contentsline {section}{\numberline {18.6}Parser Personalizzati}{220}{section.18.6}%
+\contentsline {subsection}{\numberline {18.6.1}Creazione di un Nuovo Parser}{220}{subsection.18.6.1}%
+\contentsline {subsection}{\numberline {18.6.2}Formato JSON Esempio}{222}{subsection.18.6.2}%
+\contentsline {section}{\numberline {18.7}Gestione Errori}{222}{section.18.7}%
+\contentsline {subsection}{\numberline {18.7.1}Categorie di Errori}{222}{subsection.18.7.1}%
+\contentsline {subsection}{\numberline {18.7.2}Gestione Robusta}{223}{subsection.18.7.2}%
+\contentsline {subsection}{\numberline {18.7.3}Validazione}{223}{subsection.18.7.3}%
+\contentsline {section}{\numberline {18.8}Testing}{224}{section.18.8}%
+\contentsline {subsection}{\numberline {18.8.1}Unit Test}{224}{subsection.18.8.1}%
+\contentsline {section}{\numberline {18.9}Sommario}{224}{section.18.9}%
+\contentsline {chapter}{\numberline {19}Riferimento API}{227}{chapter.19}%
+\contentsline {section}{\numberline {19.1}Panoramica}{227}{section.19.1}%
+\contentsline {subsection}{\numberline {19.1.1}Organizzazione}{227}{subsection.19.1.1}%
+\contentsline {section}{\numberline {19.2}Costanti Core}{228}{section.19.2}%
+\contentsline {subsection}{\numberline {19.2.1}astdyn::constants}{228}{subsection.19.2.1}%
+\contentsline {section}{\numberline {19.3}Utility Matematiche}{229}{section.19.3}%
+\contentsline {subsection}{\numberline {19.3.1}astdyn::math}{229}{subsection.19.3.1}%
+\contentsline {subsubsection}{normalize\_angle}{229}{subsection.19.3.1}%
+\contentsline {subsubsection}{cross\_product}{229}{lstnumber.-37.2}%
+\contentsline {subsubsection}{rotation\_matrix}{230}{lstnumber.-38.1}%
+\contentsline {section}{\numberline {19.4}Sistemi Temporali}{230}{section.19.4}%
+\contentsline {subsection}{\numberline {19.4.1}astdyn::time::TimeConverter}{230}{subsection.19.4.1}%
+\contentsline {subsubsection}{utc\_to\_tt}{230}{subsection.19.4.1}%
+\contentsline {subsubsection}{tt\_to\_tdb}{230}{lstnumber.-40.1}%
+\contentsline {section}{\numberline {19.5}Elementi Orbitali}{231}{section.19.5}%
+\contentsline {subsection}{\numberline {19.5.1}astdyn::orbit::KeplerianElements}{231}{subsection.19.5.1}%
+\contentsline {subsubsection}{Definizione Classe}{231}{subsection.19.5.1}%
+\contentsline {section}{\numberline {19.6}Propagazione Orbitale}{232}{section.19.6}%
+\contentsline {subsection}{\numberline {19.6.1}astdyn::propagation::OrbitPropagator}{232}{subsection.19.6.1}%
+\contentsline {subsubsection}{Definizione Classe}{232}{subsection.19.6.1}%
+\contentsline {section}{\numberline {19.7}Osservazioni}{233}{section.19.7}%
+\contentsline {subsection}{\numberline {19.7.1}astdyn::observations::Observation}{233}{subsection.19.7.1}%
+\contentsline {section}{\numberline {19.8}Determinazione Orbitale}{233}{section.19.8}%
+\contentsline {subsection}{\numberline {19.8.1}astdyn::orbit\_determination::DifferentialCorrector}{233}{subsection.19.8.1}%
+\contentsline {subsubsection}{Metodo correct}{233}{subsection.19.8.1}%
+\contentsline {section}{\numberline {19.9}Parser I/O}{234}{section.19.9}%
+\contentsline {subsection}{\numberline {19.9.1}astdyn::io::ParserFactory}{234}{subsection.19.9.1}%
+\contentsline {subsubsection}{create}{234}{subsection.19.9.1}%
+\contentsline {section}{\numberline {19.10}Interfacce Effemeridi}{234}{section.19.10}%
+\contentsline {subsection}{\numberline {19.10.1}astdyn::ephemeris::IEphemeris}{234}{subsection.19.10.1}%
+\contentsline {subsection}{\numberline {19.10.2}Implementazioni}{235}{subsection.19.10.2}%
+\contentsline {subsubsection}{JPLEphemeris}{235}{subsection.19.10.2}%
+\contentsline {section}{\numberline {19.11}Modelli di Forza}{236}{section.19.11}%
+\contentsline {subsection}{\numberline {19.11.1}astdyn::forces::ForceModel}{236}{subsection.19.11.1}%
+\contentsline {section}{\numberline {19.12}Integratori Numerici}{237}{section.19.12}%
+\contentsline {subsection}{\numberline {19.12.1}astdyn::integration::IIntegrator}{237}{subsection.19.12.1}%
+\contentsline {subsection}{\numberline {19.12.2}Implementazioni Disponibili}{237}{subsection.19.12.2}%
+\contentsline {section}{\numberline {19.13}Utility Analisi}{238}{section.19.13}%
+\contentsline {subsection}{\numberline {19.13.1}astdyn::analysis::ResidualAnalyzer}{238}{subsection.19.13.1}%
+\contentsline {section}{\numberline {19.14}Esempio Completo}{238}{section.19.14}%
+\contentsline {subsection}{\numberline {19.14.1}Workflow Determinazione Orbitale}{238}{subsection.19.14.1}%
+\contentsline {section}{\numberline {19.15}Sommario}{240}{section.19.15}%
+\contentsline {chapter}{\numberline {20}Esempi e Tutorial}{241}{chapter.20}%
+\contentsline {section}{\numberline {20.1}Introduzione}{241}{section.20.1}%
+\contentsline {subsection}{\numberline {20.1.1}Prerequisiti}{241}{subsection.20.1.1}%
+\contentsline {section}{\numberline {20.2}Esempio 1: Propagazione Orbitale Base}{241}{section.20.2}%
+\contentsline {subsection}{\numberline {20.2.1}Obiettivo}{241}{subsection.20.2.1}%
+\contentsline {subsection}{\numberline {20.2.2}Codice}{241}{subsection.20.2.2}%
+\contentsline {subsection}{\numberline {20.2.3}Compilazione}{245}{subsection.20.2.3}%
+\contentsline {subsection}{\numberline {20.2.4}Output Atteso}{245}{subsection.20.2.4}%
+\contentsline {section}{\numberline {20.3}Esempio 2: Generazione Effemeridi}{246}{section.20.3}%
+\contentsline {subsection}{\numberline {20.3.1}Obiettivo}{246}{subsection.20.3.1}%
+\contentsline {subsection}{\numberline {20.3.2}Codice}{246}{subsection.20.3.2}%
+\contentsline {section}{\numberline {20.4}Esempio 3: Determinazione Orbitale}{248}{section.20.4}%
+\contentsline {subsection}{\numberline {20.4.1}Obiettivo}{248}{subsection.20.4.1}%
+\contentsline {subsection}{\numberline {20.4.2}Codice}{248}{subsection.20.4.2}%
+\contentsline {section}{\numberline {20.5}Esempio 4: Lettura Osservazioni MPC}{251}{section.20.5}%
+\contentsline {subsection}{\numberline {20.5.1}Obiettivo}{251}{subsection.20.5.1}%
+\contentsline {subsection}{\numberline {20.5.2}Codice}{252}{subsection.20.5.2}%
+\contentsline {section}{\numberline {20.6}Esempio 5: Matrice Transizione Stato}{253}{section.20.6}%
+\contentsline {subsection}{\numberline {20.6.1}Obiettivo}{253}{subsection.20.6.1}%
+\contentsline {subsection}{\numberline {20.6.2}Codice}{253}{subsection.20.6.2}%
+\contentsline {section}{\numberline {20.7}Esempio 6: Modello Forza Personalizzato}{255}{section.20.7}%
+\contentsline {subsection}{\numberline {20.7.1}Obiettivo}{255}{subsection.20.7.1}%
+\contentsline {subsection}{\numberline {20.7.2}Codice}{255}{subsection.20.7.2}%
+\contentsline {section}{\numberline {20.8}Compilazione ed Esecuzione Esempi}{258}{section.20.8}%
+\contentsline {subsection}{\numberline {20.8.1}CMakeLists.txt}{258}{subsection.20.8.1}%
+\contentsline {subsection}{\numberline {20.8.2}Comandi Compilazione}{259}{subsection.20.8.2}%
+\contentsline {section}{\numberline {20.9}Sommario}{259}{section.20.9}%
+\contentsline {part}{V\hspace {1em}Validazione e Applicazioni}{261}{part.5}%
+\contentsline {chapter}{\numberline {21}Validazione e Testing}{263}{chapter.21}%
+\contentsline {section}{\numberline {21.1}Introduzione}{263}{section.21.1}%
+\contentsline {subsection}{\numberline {21.1.1}Strategia di Validazione}{263}{subsection.21.1.1}%
+\contentsline {section}{\numberline {21.2}Framework Unit Testing}{263}{section.21.2}%
+\contentsline {subsection}{\numberline {21.2.1}Integrazione Google Test}{263}{subsection.21.2.1}%
+\contentsline {section}{\numberline {21.3}Test Accuratezza Numerica}{264}{section.21.3}%
+\contentsline {subsection}{\numberline {21.3.1}Problema Due Corpi}{264}{subsection.21.3.1}%
+\contentsline {section}{\numberline {21.4}Confronto con OrbFit}{264}{section.21.4}%
+\contentsline {subsection}{\numberline {21.4.1}Metodologia}{264}{subsection.21.4.1}%
+\contentsline {subsection}{\numberline {21.4.2}Confronto Propagazione}{265}{subsection.21.4.2}%
+\contentsline {subsection}{\numberline {21.4.3}Confronto Determinazione Orbitale}{265}{subsection.21.4.3}%
+\contentsline {section}{\numberline {21.5}Confronto JPL Horizons}{266}{section.21.5}%
+\contentsline {subsection}{\numberline {21.5.1}Risultati}{266}{subsection.21.5.1}%
+\contentsline {section}{\numberline {21.6}Stress Testing}{266}{section.21.6}%
+\contentsline {subsection}{\numberline {21.6.1}Eccentricita' Estreme}{266}{subsection.21.6.1}%
+\contentsline {subsection}{\numberline {21.6.2}Integrazione Lungo Termine}{266}{subsection.21.6.2}%
+\contentsline {section}{\numberline {21.7}Validazione Prestazioni}{267}{section.21.7}%
+\contentsline {subsection}{\numberline {21.7.1}Velocita' Integrazione}{267}{subsection.21.7.1}%
+\contentsline {section}{\numberline {21.8}Integrazione Continua}{267}{section.21.8}%
+\contentsline {section}{\numberline {21.9}Limitazioni Note}{267}{section.21.9}%
+\contentsline {section}{\numberline {21.10}Sommario}{268}{section.21.10}%
+\contentsline {chapter}{\numberline {22}Caso di Studio: (203) Pompeja}{269}{chapter.22}%
+\contentsline {section}{\numberline {22.1}Introduzione}{269}{section.22.1}%
+\contentsline {subsection}{\numberline {22.1.1}Perche' Pompeja?}{269}{subsection.22.1.1}%
+\contentsline {section}{\numberline {22.2}Asteroide (203) Pompeja}{269}{section.22.2}%
+\contentsline {subsection}{\numberline {22.2.1}Proprieta' Fisiche}{269}{subsection.22.2.1}%
+\contentsline {subsection}{\numberline {22.2.2}Caratteristiche Orbitali}{270}{subsection.22.2.2}%
+\contentsline {section}{\numberline {22.3}Dati Osservativi}{270}{section.22.3}%
+\contentsline {subsection}{\numberline {22.3.1}Sorgente Dati}{270}{subsection.22.3.1}%
+\contentsline {subsection}{\numberline {22.3.2}Sommario Osservazioni}{271}{subsection.22.3.2}%
+\contentsline {section}{\numberline {22.4}Determinazione Orbitale Iniziale}{271}{section.22.4}%
+\contentsline {subsection}{\numberline {22.4.1}Metodo Gauss}{271}{subsection.22.4.1}%
+\contentsline {subsection}{\numberline {22.4.2}Soluzione Iniziale}{271}{subsection.22.4.2}%
+\contentsline {section}{\numberline {22.5}Correzione Differenziale}{272}{section.22.5}%
+\contentsline {subsection}{\numberline {22.5.1}Storia Iterazioni}{272}{subsection.22.5.1}%
+\contentsline {subsection}{\numberline {22.5.2}Elementi Orbitali Finali}{272}{subsection.22.5.2}%
+\contentsline {section}{\numberline {22.6}Analisi Residui}{273}{section.22.6}%
+\contentsline {subsection}{\numberline {22.6.1}Statistiche Residui}{273}{subsection.22.6.1}%
+\contentsline {subsection}{\numberline {22.6.2}Distribuzione Residui}{273}{subsection.22.6.2}%
+\contentsline {section}{\numberline {22.7}Confronto con Soluzione Riferimento}{273}{section.22.7}%
+\contentsline {subsection}{\numberline {22.7.1}Riferimento OrbFit}{273}{subsection.22.7.1}%
+\contentsline {subsection}{\numberline {22.7.2}Effemeridi JPL Horizons}{274}{subsection.22.7.2}%
+\contentsline {section}{\numberline {22.8}Covarianza e Incertezze}{274}{section.22.8}%
+\contentsline {subsection}{\numberline {22.8.1}Matrice Covarianza Parametri}{274}{subsection.22.8.1}%
+\contentsline {subsection}{\numberline {22.8.2}Propagazione Incertezza Posizione}{275}{subsection.22.8.2}%
+\contentsline {section}{\numberline {22.9}Metriche Prestazioni}{275}{section.22.9}%
+\contentsline {subsection}{\numberline {22.9.1}Costo Computazionale}{275}{subsection.22.9.1}%
+\contentsline {subsection}{\numberline {22.9.2}Uso Memoria}{275}{subsection.22.9.2}%
+\contentsline {section}{\numberline {22.10}Conclusioni}{276}{section.22.10}%
+\contentsline {chapter}{\numberline {23}Benchmark Prestazioni}{277}{chapter.23}%
+\contentsline {section}{\numberline {23.1}Introduzione}{277}{section.23.1}%
+\contentsline {subsection}{\numberline {23.1.1}Ambiente Benchmark}{277}{subsection.23.1.1}%
+\contentsline {section}{\numberline {23.2}Prestazioni Propagazione Orbitale}{277}{section.23.2}%
+\contentsline {subsection}{\numberline {23.2.1}Propagazione Singola}{277}{subsection.23.2.1}%
+\contentsline {subsection}{\numberline {23.2.2}Propagazione Batch}{278}{subsection.23.2.2}%
+\contentsline {subsection}{\numberline {23.2.3}Effetto Complessita' Modello Forze}{278}{subsection.23.2.3}%
+\contentsline {section}{\numberline {23.3}Prestazioni Determinazione Orbitale}{279}{section.23.3}%
+\contentsline {subsection}{\numberline {23.3.1}Timing Correzione Differenziale}{279}{subsection.23.3.1}%
+\contentsline {subsection}{\numberline {23.3.2}Scalabilita' con Numero Osservazioni}{279}{subsection.23.3.2}%
+\contentsline {section}{\numberline {23.4}Confronto con Altri Strumenti}{280}{section.23.4}%
+\contentsline {subsection}{\numberline {23.4.1}OrbFit 5.0.5}{280}{subsection.23.4.1}%
+\contentsline {subsection}{\numberline {23.4.2}Strumenti Python}{280}{subsection.23.4.2}%
+\contentsline {section}{\numberline {23.5}Uso Memoria}{280}{section.23.5}%
+\contentsline {subsection}{\numberline {23.5.1}Allocazione Heap}{280}{subsection.23.5.1}%
+\contentsline {subsection}{\numberline {23.5.2}Scalabilita' con Dimensione Problema}{281}{subsection.23.5.2}%
+\contentsline {section}{\numberline {23.6}Sommario}{281}{section.23.6}%
+\contentsline {part}{VI\hspace {1em}Prospettive Future}{283}{part.6}%
+\contentsline {chapter}{\numberline {24}Sviluppi Futuri}{285}{chapter.24}%
+\contentsline {section}{\numberline {24.1}Introduzione}{285}{section.24.1}%
+\contentsline {section}{\numberline {24.2}Forze Non Gravitazionali}{285}{section.24.2}%
+\contentsline {subsection}{\numberline {24.2.1}Pressione di Radiazione Solare}{285}{subsection.24.2.1}%
+\contentsline {subsection}{\numberline {24.2.2}Degassamento Cometario}{286}{subsection.24.2.2}%
+\contentsline {subsection}{\numberline {24.2.3}Relatività Generale}{287}{subsection.24.2.3}%
+\contentsline {section}{\numberline {24.3}Propagazione delle Incertezze}{288}{section.24.3}%
+\contentsline {subsection}{\numberline {24.3.1}Propagazione della Covarianza}{288}{subsection.24.3.1}%
+\contentsline {subsection}{\numberline {24.3.2}Metodi Monte Carlo}{289}{subsection.24.3.2}%
+\contentsline {section}{\numberline {24.4}Gestione degli Incontri Ravvicinati}{290}{section.24.4}%
+\contentsline {subsection}{\numberline {24.4.1}Tecniche di Regolarizzazione}{290}{subsection.24.4.1}%
+\contentsline {subsection}{\numberline {24.4.2}Analisi di Incontri Iperbolici}{291}{subsection.24.4.2}%
+\contentsline {section}{\numberline {24.5}Elaborazione Parallela}{291}{section.24.5}%
+\contentsline {subsection}{\numberline {24.5.1}Parallelizzazione OpenMP}{291}{subsection.24.5.1}%
+\contentsline {subsection}{\numberline {24.5.2}Accelerazione GPU}{292}{subsection.24.5.2}%
+\contentsline {section}{\numberline {24.6}Integratori Aggiuntivi}{292}{section.24.6}%
+\contentsline {subsection}{\numberline {24.6.1}Integratori Simplettici}{292}{subsection.24.6.1}%
+\contentsline {subsection}{\numberline {24.6.2}Metodi Impliciti}{293}{subsection.24.6.2}%
+\contentsline {section}{\numberline {24.7}Binding Python}{293}{section.24.7}%
+\contentsline {subsection}{\numberline {24.7.1}Interfaccia pybind11}{293}{subsection.24.7.1}%
+\contentsline {subsection}{\numberline {24.7.2}Distribuzione del Pacchetto}{294}{subsection.24.7.2}%
+\contentsline {section}{\numberline {24.8}Integrazione con Machine Learning}{294}{section.24.8}%
+\contentsline {subsection}{\numberline {24.8.1}Modelli Surrogati con Reti Neurali}{294}{subsection.24.8.1}%
+\contentsline {section}{\numberline {24.9}Osservazioni Avanzate}{295}{section.24.9}%
+\contentsline {subsection}{\numberline {24.9.1}Osservazioni Radar}{295}{subsection.24.9.1}%
+\contentsline {subsection}{\numberline {24.9.2}Astrometria Gaia}{296}{subsection.24.9.2}%
+\contentsline {section}{\numberline {24.10}Servizio Web / Deployment Cloud}{296}{section.24.10}%
+\contentsline {subsection}{\numberline {24.10.1}API RESTful}{296}{subsection.24.10.1}%
+\contentsline {subsection}{\numberline {24.10.2}Interfaccia Web}{297}{subsection.24.10.2}%
+\contentsline {section}{\numberline {24.11}Integrazione Pipeline Dati}{297}{section.24.11}%
+\contentsline {subsection}{\numberline {24.11.1}Elaborazione Automatizzata di Survey}{297}{subsection.24.11.1}%
+\contentsline {section}{\numberline {24.12}Modelli di Errore Migliorati}{297}{section.24.12}%
+\contentsline {subsection}{\numberline {24.12.1}Stima Robusta}{297}{subsection.24.12.1}%
+\contentsline {section}{\numberline {24.13}Supporto Multi-Piattaforma}{298}{section.24.13}%
+\contentsline {subsection}{\numberline {24.13.1}Build WebAssembly}{298}{subsection.24.13.1}%
+\contentsline {subsection}{\numberline {24.13.2}Piattaforme Mobile}{299}{subsection.24.13.2}%
+\contentsline {section}{\numberline {24.14}Roadmap di Sviluppo}{299}{section.24.14}%
+\contentsline {subsection}{\numberline {24.14.1}Versione 1.1 (Q2 2026)}{299}{subsection.24.14.1}%
+\contentsline {subsection}{\numberline {24.14.2}Versione 1.2 (Q4 2026)}{299}{subsection.24.14.2}%
+\contentsline {subsection}{\numberline {24.14.3}Versione 2.0 (2027)}{299}{subsection.24.14.3}%
+\contentsline {section}{\numberline {24.15}Contributi della Comunità}{300}{section.24.15}%
+\contentsline {subsection}{\numberline {24.15.1}Sviluppo Open Source}{300}{subsection.24.15.1}%
+\contentsline {subsection}{\numberline {24.15.2}Citazione di AstDyn}{300}{subsection.24.15.2}%
+\contentsline {section}{\numberline {24.16}Direzioni di Ricerca}{301}{section.24.16}%
+\contentsline {subsection}{\numberline {24.16.1}Algoritmi Innovativi}{301}{subsection.24.16.1}%
+\contentsline {subsection}{\numberline {24.16.2}Applicazioni Interdisciplinari}{301}{subsection.24.16.2}%
+\contentsline {section}{\numberline {24.17}Riepilogo}{301}{section.24.17}%
+\contentsline {chapter}{Riferimenti}{303}{chapter*.2}%
+\contentsline {section}{\numberline {24.18}Libri di Testo}{303}{section.24.18}%
+\contentsline {subsection}{\numberline {24.18.1}Meccanica Celeste}{303}{subsection.24.18.1}%
+\contentsline {subsection}{\numberline {24.18.2}Metodi Numerici}{303}{subsection.24.18.2}%
+\contentsline {section}{\numberline {24.19}Articoli Scientifici}{304}{section.24.19}%
+\contentsline {subsection}{\numberline {24.19.1}Determinazione Orbitale}{304}{subsection.24.19.1}%
+\contentsline {subsection}{\numberline {24.19.2}Sistemi Temporali}{304}{subsection.24.19.2}%
+\contentsline {section}{\numberline {24.20}Software e Strumenti}{304}{section.24.20}%
+\contentsline {subsection}{\numberline {24.20.1}Software Determinazione Orbitale}{304}{subsection.24.20.1}%
+\contentsline {subsection}{\numberline {24.20.2}Effemeridi}{304}{subsection.24.20.2}%
+\contentsline {subsection}{\numberline {24.20.3}Osservazioni}{305}{subsection.24.20.3}%
+\contentsline {section}{\numberline {24.21}Standard e Convenzioni}{305}{section.24.21}%
+\contentsline {section}{\numberline {24.22}Risorse Online}{305}{section.24.22}%
+\contentsline {chapter}{Appendici}{307}{chapter*.3}%
+\contentsline {section}{\numberline {24.23}Costanti Fisiche}{307}{section.24.23}%
+\contentsline {subsection}{\numberline {24.23.1}Costanti Fondamentali}{307}{subsection.24.23.1}%
+\contentsline {subsection}{\numberline {24.23.2}Parametri Sistema Solare}{307}{subsection.24.23.2}%
+\contentsline {section}{\numberline {24.24}Elementi Orbitali Planetari}{308}{section.24.24}%
+\contentsline {subsection}{\numberline {24.24.1}Elementi Medi J2000.0}{308}{subsection.24.24.1}%
+\contentsline {section}{\numberline {24.25}Conversioni Unit\`a}{308}{section.24.25}%
+\contentsline {subsection}{\numberline {24.25.1}Conversioni Angolari}{308}{subsection.24.25.1}%
+\contentsline {subsection}{\numberline {24.25.2}Conversioni Temporali}{308}{subsection.24.25.2}%
+\contentsline {subsection}{\numberline {24.25.3}Conversioni Distanza}{309}{subsection.24.25.3}%
+\contentsline {section}{\numberline {24.26}Formule Utili}{309}{section.24.26}%
+\contentsline {subsection}{\numberline {24.26.1}Problema Due Corpi}{309}{subsection.24.26.1}%
+\contentsline {subsection}{\numberline {24.26.2}Anomalie}{309}{subsection.24.26.2}%
+\contentsline {subsection}{\numberline {24.26.3}Trasformazioni Coordinate}{310}{subsection.24.26.3}%
+\contentsline {section}{\numberline {24.27}Codici Osservatorio MPC}{310}{section.24.27}%
+\contentsline {subsection}{\numberline {24.27.1}Osservatori Principali}{310}{subsection.24.27.1}%
+\contentsline {section}{\numberline {24.28}Acronimi e Abbreviazioni}{311}{section.24.28}%
+\contentsline {section}{\numberline {24.29}Convenzioni Notazione}{311}{section.24.29}%
+\contentsline {subsection}{\numberline {24.29.1}Vettori e Matrici}{311}{subsection.24.29.1}%
+\contentsline {subsection}{\numberline {24.29.2}Elementi Orbitali}{311}{subsection.24.29.2}%
+\contentsline {subsection}{\numberline {24.29.3}Sistemi Coordinate}{312}{subsection.24.29.3}%
