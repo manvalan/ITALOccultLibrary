@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include <Eigen/Dense>
 
 namespace ioccultcalc {
@@ -84,8 +85,17 @@ public:
     
     /**
      * @brief Distruttore
+     * @note Definito nel .cpp per PIMPL pattern con unique_ptr<Impl>
      */
-    ~ChebyshevRKF78Propagator() = default;
+    ~ChebyshevRKF78Propagator();
+    
+    // Move constructor e move assignment per PIMPL
+    ChebyshevRKF78Propagator(ChebyshevRKF78Propagator&&) noexcept;
+    ChebyshevRKF78Propagator& operator=(ChebyshevRKF78Propagator&&) noexcept;
+    
+    // Delete copy (PIMPL con unique_ptr non è copiabile)
+    ChebyshevRKF78Propagator(const ChebyshevRKF78Propagator&) = delete;
+    ChebyshevRKF78Propagator& operator=(const ChebyshevRKF78Propagator&) = delete;
     
     /**
      * @brief Propaga asteroide e ritorna posizioni per Chebyshev fitting
@@ -156,6 +166,10 @@ public:
      * @brief Aggiorna configurazione
      */
     void setConfig(const RKF78PropagationConfig& cfg);
+
+private:
+    class Impl;
+    std::unique_ptr<Impl> pImpl_;
 };
 
 /**
