@@ -1,277 +1,221 @@
 /**
  * @file astdyn_wrapper.cpp
- * @brief Implementazione wrapper AstDyn
+ * @brief Implementazione del wrapper AstDyn
  * @author IOccultCalc Integration Team
  * @date 1 Dicembre 2025
  */
 
 #include "astdyn_wrapper.h"
-#include <chrono>
-#include <stdexcept>
 #include <sstream>
+#include <chrono>
+#include <cmath>
+#include <fstream>
 
 namespace ioccultcalc {
 
-// ============================================================================
-// Costruttore / Distruttore
-// ============================================================================
-
-AstDynWrapper::AstDynWrapper(const AstDynConfig& config)
-    : config_(config), propagator_(nullptr), stats_()
-{
-    if (!config_.isValid()) {
-        throw std::invalid_argument("Invalid AstDynConfig");
+// Helper per estrarre il nome dell'oggetto dal file .eq1
+static std::string extractObjectNameFromEQ1(const std::string& filepath) {
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        return "";
     }
-    initialize();
+    
+    bool header_ended = false;
+    std::string line;
+    while (std::getline(file, line)) {
+        // Cerca fine dell'header
+        if (line.find("END_OF_HEADER") != std::string::npos) {
+            header_ended = true;
+            continue;
+        }
+        
+        // Dopo END_OF_HEADER, la prima linea non-commento è il nome/numero
+        if (header_ended) {
+            // Salta righe vuote e commenti
+            if (line.empty() || line[0] == '!') {
+                continue;
+            }
+            
+            // Rimuovi spazi bianchi iniziali e finali
+            size_t start = line.find_first_not_of(" \t\r\n");
+            size_t end = line.find_last_not_of(" \t\r\n");
+            
+            if (start != std::string::npos && end != std::string::npos) {
+                return line.substr(start, end - start + 1);
+            }
+        }
+    }
+    
+    return "";
+}
+
+AstDynWrapper::AstDynWrapper(const PropagationSettings& settings)
+    : settings_(settings)
+    , current_epoch_mjd_(0.0)
+    , initialized_(false)
+{
+    // Crea effemeridi planetarie (usa DE440 embedded di default)
+    ephemeris_ = std::make_shared<astdyn::ephemeris::PlanetaryEphemeris>();
+    
+    // Inizializza propagatore
+    initializePropagator();
 }
 
 AstDynWrapper::~AstDynWrapper() = default;
 
-AstDynWrapper::AstDynWrapper(AstDynWrapper&&) noexcept = default;
-AstDynWrapper& AstDynWrapper::operator=(AstDynWrapper&&) noexcept = default;
+void AstDynWrapper::initializePropagator() {
+    // Crea integratore RKF78
+    auto integrator = std::make_unique<astdyn::propagation::RKF78Integrator>(
+        settings_.initial_step,
+        settings_.tolerance
+    );
+    
+    // Configura perturbazioni
+    astdyn::propagation::PropagatorSettings prop_settings;
+    prop_settings.include_planets = settings_.include_planets;
+    prop_settings.include_relativity = settings_.include_relativity;
+    prop_settings.include_asteroids = settings_.include_asteroids;
+    prop_settings.perturb_mercury = settings_.perturb_mercury;
+    prop_settings.perturb_venus = settings_.perturb_venus;
+    prop_settings.perturb_earth = settings_.perturb_earth;
+    prop_settings.perturb_mars = settings_.perturb_mars;
+    prop_settings.perturb_jupiter = settings_.perturb_jupiter;
+    prop_settings.perturb_saturn = settings_.perturb_saturn;
+    prop_settings.perturb_uranus = settings_.perturb_uranus;
+    prop_settings.perturb_neptune = settings_.perturb_neptune;
+    
+    // Crea propagatore
+    propagator_ = std::make_unique<astdyn::propagation::Propagator>(
+        std::move(integrator),
+        ephemeris_,
+        prop_settings
+    );
+}
 
-// ============================================================================
-// Inizializzazione
-// ============================================================================
-
-void AstDynWrapper::initialize() {
+bool AstDynWrapper::loadFromEQ1File(const std::string& filepath) {
     try {
-        // Crea propagatore con tolleranza
-        propagator_ = std::make_unique<astdyn::AstDynPropagator>(
-            config_.tolerance,
-            config_.max_step_days
-        );
+        // Usa parser AstDyn
+        astdyn::io::parsers::OrbFitEQ1Parser parser;
+        current_elements_ = parser.parse(filepath);
         
-        // Configura perturbazioni
-        configurePerturbations();
+        // Salva epoca
+        current_epoch_mjd_ = current_elements_.epoch_mjd_tdb;
         
-        // Reset statistiche
-        stats_ = Statistics();
+        // Il parser AstDyn non estrae object_name dal file .eq1
+        // Lo leggiamo manualmente dalla prima linea non-commento
+        object_name_ = extractObjectNameFromEQ1(filepath);
+        
+        // Se non trovato, usa un nome vuoto
+        if (object_name_.empty()) {
+            object_name_ = "Unknown";
+        }
+        
+        initialized_ = true;
+        return true;
         
     } catch (const std::exception& e) {
-        std::ostringstream oss;
-        oss << "Failed to initialize AstDynPropagator: " << e.what();
-        throw std::runtime_error(oss.str());
+        initialized_ = false;
+        last_stats_ = std::string("Errore caricamento: ") + e.what();
+        return false;
     }
 }
 
-void AstDynWrapper::configurePerturbations() {
-    if (!propagator_) {
-        throw std::runtime_error("Propagator not initialized");
-    }
-    
-    stats_.num_perturbations = 0;
-    
-    // 1. Perturbazioni planetarie
-    if (config_.enable_planets) {
-        for (int i = 1; i <= config_.num_planets; ++i) {
-            propagator_->enablePlanet(i);
-            stats_.num_perturbations++;
-        }
-    }
-    
-    // 2. Relatività generale (Schwarzschild)
-    if (config_.enable_relativity) {
-        propagator_->enableRelativity();
-        stats_.num_perturbations++;
-    }
-    
-    // 3. Perturbazioni asteroidi (AST17: Cerere + Vesta)
-    if (config_.enable_asteroids) {
-        propagator_->enableAsteroidPerturbations();
-        stats_.num_perturbations += 2;  // Cerere + Vesta
-    }
-    
-    // 4. Carica ephemeris se specificato
-    if (!config_.ephemeris_path.empty()) {
-        propagator_->loadEphemeris(config_.ephemeris_path);
-    }
-}
-
-// ============================================================================
-// Propagazione
-// ============================================================================
-
-PropagationResult AstDynWrapper::propagate(
-    const Eigen::Vector3d& r0,
-    const Eigen::Vector3d& v0,
-    double t0,
-    double tf)
+void AstDynWrapper::setKeplerianElements(
+    double a, double e, double i,
+    double Omega, double omega, double M,
+    double epoch_mjd_tdb,
+    const std::string& name)
 {
-    PropagationResult result;
-    result.epoch_jd = tf;
+    // Salva elementi per uso futuro (usa parser format)
+    current_elements_.semi_major_axis = a;
+    current_elements_.eccentricity = e;
+    current_elements_.inclination = i;
+    current_elements_.longitude_asc_node = Omega;
+    current_elements_.argument_perihelion = omega;
+    current_elements_.mean_anomaly = M;
+    current_elements_.epoch_mjd_tdb = epoch_mjd_tdb;
+    current_elements_.object_name = name;
     
-    // Validazione input
-    std::string error;
-    if (!validateInput(r0, v0, t0, tf, error)) {
-        result.success = false;
-        result.error_message = error;
-        return result;
+    current_epoch_mjd_ = epoch_mjd_tdb;
+    object_name_ = name;
+    initialized_ = true;
+}
+
+CartesianStateICRF AstDynWrapper::propagateToEpoch(double target_mjd_tdb) {
+    if (!initialized_) {
+        throw std::runtime_error("AstDynWrapper: elementi non inizializzati. "
+                                 "Chiamare loadFromEQ1File() o setKeplerianElements() prima.");
     }
     
-    // Check inizializzazione
-    if (!propagator_) {
-        result.success = false;
-        result.error_message = "Propagator not initialized";
-        return result;
-    }
+    auto start = std::chrono::high_resolution_clock::now();
     
-    try {
-        // Timing
-        auto start = std::chrono::high_resolution_clock::now();
-        
-        // Crea stato iniziale AstDyn
-        astdyn::StateVector state_in;
-        state_in.position = r0;
-        state_in.velocity = v0;
-        state_in.epoch_jd = t0;
-        
-        // Propaga
-        astdyn::StateVector state_out = propagator_->propagate(
-            state_in, 
-            tf
-        );
-        
-        // Timing fine
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
-            end - start);
-        
-        // Popola risultato
-        result.position = state_out.position;
-        result.velocity = state_out.velocity;
-        result.epoch_jd = state_out.epoch_jd;
-        result.num_steps = propagator_->getLastStepCount();
-        result.computation_time_ms = duration.count() / 1000.0;
-        result.success = true;
-        
-        // Aggiorna statistiche
-        stats_.total_steps += result.num_steps;
-        stats_.total_time_ms += result.computation_time_ms;
-        if (result.num_steps > 0) {
-            stats_.avg_step_size_days = 
-                std::abs(tf - t0) / static_cast<double>(result.num_steps);
-        }
-        
-    } catch (const std::exception& e) {
-        result.success = false;
-        result.error_message = std::string("Propagation failed: ") + e.what();
-    }
+    // Crea KeplerianElements per propagazione (struct in propagation namespace)
+    astdyn::propagation::KeplerianElements kep_initial;
+    kep_initial.epoch_mjd_tdb = current_elements_.epoch_mjd_tdb;
+    kep_initial.semi_major_axis = current_elements_.semi_major_axis;
+    kep_initial.eccentricity = current_elements_.eccentricity;
+    kep_initial.inclination = current_elements_.inclination;
+    kep_initial.longitude_ascending_node = current_elements_.longitude_asc_node;
+    kep_initial.argument_perihelion = current_elements_.argument_perihelion;
+    kep_initial.mean_anomaly = current_elements_.mean_anomaly;
+    kep_initial.gravitational_parameter = astdyn::constants::GMS;  // AU³/day²
+    
+    // Propagazione con AstDyn
+    auto kep_final = propagator_->propagate_keplerian(kep_initial, target_mjd_tdb);
+    
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    
+    // Statistiche
+    std::ostringstream oss;
+    oss << "Propagazione: " << current_epoch_mjd_ << " → " << target_mjd_tdb 
+        << " MJD (" << (target_mjd_tdb - current_epoch_mjd_) << " giorni)\n"
+        << "Tempo: " << duration.count() << " ms";
+    last_stats_ = oss.str();
+    
+    // Converti in cartesiano (frame ECLM J2000)
+    auto cart_ecl = astdyn::propagation::keplerian_to_cartesian(kep_final);
+    
+    // Converti da ECLM J2000 a ICRF
+    return eclipticToICRF(cart_ecl, target_mjd_tdb);
+}
+
+CartesianStateICRF AstDynWrapper::eclipticToICRF(
+    const astdyn::propagation::CartesianElements& ecl_state,
+    double epoch_mjd_tdb)
+{
+    // Obliquità eclittica J2000
+    constexpr double epsilon = 23.4393 * M_PI / 180.0;
+    const double cos_eps = std::cos(epsilon);
+    const double sin_eps = std::sin(epsilon);
+    
+    // Rotazione posizione
+    const double x_ecl = ecl_state.position.x();
+    const double y_ecl = ecl_state.position.y();
+    const double z_ecl = ecl_state.position.z();
+    
+    Eigen::Vector3d pos_icrf;
+    pos_icrf.x() = x_ecl;
+    pos_icrf.y() = y_ecl * cos_eps - z_ecl * sin_eps;
+    pos_icrf.z() = y_ecl * sin_eps + z_ecl * cos_eps;
+    
+    // Rotazione velocità
+    const double vx_ecl = ecl_state.velocity.x();
+    const double vy_ecl = ecl_state.velocity.y();
+    const double vz_ecl = ecl_state.velocity.z();
+    
+    Eigen::Vector3d vel_icrf;
+    vel_icrf.x() = vx_ecl;
+    vel_icrf.y() = vy_ecl * cos_eps - vz_ecl * sin_eps;
+    vel_icrf.z() = vy_ecl * sin_eps + vz_ecl * cos_eps;
+    
+    // Crea risultato
+    CartesianStateICRF result;
+    result.position = pos_icrf;
+    result.velocity = vel_icrf;
+    result.epoch_mjd_tdb = epoch_mjd_tdb;
     
     return result;
-}
-
-std::vector<PropagationResult> AstDynWrapper::propagateMultiple(
-    const Eigen::Vector3d& r0,
-    const Eigen::Vector3d& v0,
-    double t0,
-    const std::vector<double>& output_times)
-{
-    std::vector<PropagationResult> results;
-    results.reserve(output_times.size());
-    
-    if (output_times.empty()) {
-        return results;
-    }
-    
-    // Propaga sequenzialmente (AstDyn è stabile per propagazioni continue)
-    Eigen::Vector3d r_current = r0;
-    Eigen::Vector3d v_current = v0;
-    double t_current = t0;
-    
-    for (double t_target : output_times) {
-        auto result = propagate(r_current, v_current, t_current, t_target);
-        
-        if (!result.success) {
-            // Propagazione fallita - ritorna risultati parziali
-            results.push_back(result);
-            break;
-        }
-        
-        results.push_back(result);
-        
-        // Aggiorna stato per prossima propagazione
-        r_current = result.position;
-        v_current = result.velocity;
-        t_current = result.epoch_jd;
-    }
-    
-    return results;
-}
-
-// ============================================================================
-// Configurazione
-// ============================================================================
-
-void AstDynWrapper::reconfigure(const AstDynConfig& config) {
-    if (!config.isValid()) {
-        throw std::invalid_argument("Invalid AstDynConfig");
-    }
-    
-    config_ = config;
-    reset();
-}
-
-void AstDynWrapper::reset() {
-    propagator_.reset();
-    stats_ = Statistics();
-    initialize();
-}
-
-// ============================================================================
-// Validazione
-// ============================================================================
-
-bool AstDynWrapper::validateInput(
-    const Eigen::Vector3d& r0,
-    const Eigen::Vector3d& v0,
-    double t0, double tf,
-    std::string& error) const
-{
-    // 1. Check valori finiti
-    if (!std::isfinite(r0.norm()) || !std::isfinite(v0.norm())) {
-        error = "Non-finite position or velocity";
-        return false;
-    }
-    
-    // 2. Check range posizione [0.1, 100 AU]
-    double r_mag = r0.norm();
-    if (r_mag < 0.1 || r_mag > 100.0) {
-        error = "Position out of range [0.1, 100] AU";
-        return false;
-    }
-    
-    // 3. Check velocità ragionevole [< 100 AU/day ≈ 173 km/s]
-    double v_mag = v0.norm();
-    if (v_mag > 100.0) {
-        error = "Velocity too large (> 100 AU/day)";
-        return false;
-    }
-    
-    // 4. Check epoche valide [1900-2100 circa]
-    if (t0 < 2415020.5 || t0 > 2488069.5) {  // JD 1900-2100
-        error = "Initial epoch out of range [1900-2100]";
-        return false;
-    }
-    if (tf < 2415020.5 || tf > 2488069.5) {
-        error = "Final epoch out of range [1900-2100]";
-        return false;
-    }
-    
-    // 5. Check intervallo ragionevole [< 1000 giorni]
-    double dt = std::abs(tf - t0);
-    if (dt > 1000.0) {
-        error = "Time span too large (> 1000 days)";
-        return false;
-    }
-    
-    // 6. Check t0 != tf
-    if (std::abs(tf - t0) < 1e-9) {
-        error = "Initial and final epochs are identical";
-        return false;
-    }
-    
-    return true;
 }
 
 } // namespace ioccultcalc

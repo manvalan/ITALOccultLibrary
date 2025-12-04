@@ -1,18 +1,21 @@
 /**
  * @file astdyn_wrapper.h
- * @brief Wrapper per interfacciare IOccultCalc con AstDyn library
+ * @brief Wrapper semplificato per AstDyn library
  * @author IOccultCalc Integration Team
  * @date 1 Dicembre 2025
  * 
- * Questo wrapper incapsula la configurazione e l'utilizzo di AstDynPropagator
- * per la propagazione di asteroidi con perturbazioni complete.
+ * Wrapper che incapsula l'uso di AstDyn per la propagazione orbitale.
+ * Basato sull'API reale di AstDyn v1.0.0
  */
 
 #ifndef IOCCULTCALC_ASTDYN_WRAPPER_H
 #define IOCCULTCALC_ASTDYN_WRAPPER_H
 
-#include <astdyn/AstDynPropagator.hpp>
-#include <astdyn/AstDynTypes.hpp>
+#include <astdyn/propagation/Propagator.hpp>
+#include <astdyn/propagation/Integrator.hpp>
+#include <astdyn/propagation/OrbitalElements.hpp>
+#include <astdyn/ephemeris/PlanetaryEphemeris.hpp>
+#include <astdyn/io/parsers/OrbFitEQ1Parser.hpp>
 #include <Eigen/Dense>
 #include <memory>
 #include <string>
@@ -20,275 +23,163 @@
 namespace ioccultcalc {
 
 /**
- * @brief Configurazione per la propagazione con AstDyn
+ * @struct PropagationSettings
+ * @brief Configurazione per la propagazione orbitale
  */
-struct AstDynConfig {
-    /// Tolleranza assoluta per RKF78 (default: 1e-12 AU)
-    double tolerance = 1e-12;
+struct PropagationSettings {
+    double tolerance = 1e-12;        ///< Tolleranza RKF78 [AU]
+    double initial_step = 0.1;       ///< Step iniziale [giorni]
+    bool include_planets = true;     ///< Perturbazioni planetarie
+    bool include_relativity = true;  ///< Relatività generale
+    bool include_asteroids = true;   ///< Perturbazioni asteroidi
+    bool perturb_mercury = true;
+    bool perturb_venus = true;
+    bool perturb_earth = true;
+    bool perturb_mars = true;
+    bool perturb_jupiter = true;
+    bool perturb_saturn = true;
+    bool perturb_uranus = true;
+    bool perturb_neptune = true;
     
-    /// Step massimo in giorni (default: 10 giorni)
-    double max_step_days = 10.0;
-    
-    /// Abilita perturbazioni planetarie (default: true)
-    bool enable_planets = true;
-    
-    /// Abilita relatività generale (Schwarzschild) (default: true)
-    bool enable_relativity = true;
-    
-    /// Abilita perturbazioni asteroidi (AST17) (default: true)
-    bool enable_asteroids = true;
-    
-    /// Numero di pianeti da considerare [1-8] (default: 8 - tutti)
-    int num_planets = 8;
-    
-    /// Ephemeris file path (default: vuoto - usa embedded DE440)
-    std::string ephemeris_path = "";
-    
-    /**
-     * @brief Verifica validità configurazione
-     */
-    bool isValid() const {
-        return tolerance > 0.0 && 
-               tolerance < 1e-6 &&
-               max_step_days > 0.0 &&
-               max_step_days <= 100.0 &&
-               num_planets >= 1 &&
-               num_planets <= 8;
+    /// Preset: massima accuratezza (JPL-compliant)
+    static PropagationSettings highAccuracy() {
+        PropagationSettings s;
+        s.tolerance = 1e-12;
+        s.initial_step = 0.1;
+        return s;  // Tutti i flag già true di default
     }
     
-    /**
-     * @brief Configurazione JPL-compliant (massima accuratezza)
-     */
-    static AstDynConfig jplCompliant() {
-        AstDynConfig cfg;
-        cfg.tolerance = 1e-12;
-        cfg.max_step_days = 5.0;
-        cfg.enable_planets = true;
-        cfg.enable_relativity = true;
-        cfg.enable_asteroids = true;
-        cfg.num_planets = 8;
-        return cfg;
-    }
-    
-    /**
-     * @brief Configurazione veloce (screening iniziale)
-     */
-    static AstDynConfig fast() {
-        AstDynConfig cfg;
-        cfg.tolerance = 1e-9;
-        cfg.max_step_days = 20.0;
-        cfg.enable_planets = true;
-        cfg.enable_relativity = false;
-        cfg.enable_asteroids = false;
-        cfg.num_planets = 4;  // Solo pianeti interni
-        return cfg;
-    }
-    
-    /**
-     * @brief Configurazione bilanciata (uso generale)
-     */
-    static AstDynConfig balanced() {
-        AstDynConfig cfg;
-        cfg.tolerance = 1e-11;
-        cfg.max_step_days = 10.0;
-        cfg.enable_planets = true;
-        cfg.enable_relativity = true;
-        cfg.enable_asteroids = true;
-        cfg.num_planets = 8;
-        return cfg;
+    /// Preset: veloce (screening)
+    static PropagationSettings fast() {
+        PropagationSettings s;
+        s.tolerance = 1e-9;
+        s.initial_step = 0.5;
+        s.include_relativity = false;
+        s.include_asteroids = false;
+        s.perturb_uranus = false;
+        s.perturb_neptune = false;
+        return s;
     }
 };
 
 /**
- * @brief Risultato della propagazione
+ * @struct CartesianStateICRF
+ * @brief Stato cartesiano in frame ICRF (equatoriale J2000)
  */
-struct PropagationResult {
-    /// Stato finale (ICRF, AU, AU/day)
-    Eigen::Vector3d position;
-    Eigen::Vector3d velocity;
+struct CartesianStateICRF {
+    Eigen::Vector3d position;  ///< Posizione [AU]
+    Eigen::Vector3d velocity;  ///< Velocità [AU/day]
+    double epoch_mjd_tdb;      ///< Epoca [MJD TDB]
     
-    /// Epoca finale (JD TDB)
-    double epoch_jd;
-    
-    /// Numero di step eseguiti
-    int num_steps = 0;
-    
-    /// Tempo computazionale (ms)
-    double computation_time_ms = 0.0;
-    
-    /// Success flag
-    bool success = false;
-    
-    /// Messaggio di errore (se !success)
-    std::string error_message;
-    
-    /**
-     * @brief Verifica validità risultato
-     */
-    bool isValid() const {
-        return success &&
-               std::isfinite(position.norm()) &&
-               std::isfinite(velocity.norm()) &&
-               position.norm() > 0.1 &&
-               position.norm() < 100.0;  // Range ragionevole [AU]
+    CartesianStateICRF() : epoch_mjd_tdb(0.0) {
+        position = Eigen::Vector3d::Zero();
+        velocity = Eigen::Vector3d::Zero();
     }
 };
 
 /**
- * @brief Wrapper per AstDynPropagator con configurazione semplificata
+ * @class AstDynWrapper
+ * @brief Wrapper semplificato per propagazione con AstDyn
  * 
  * Esempio d'uso:
  * @code
- * AstDynWrapper wrapper(AstDynConfig::jplCompliant());
- * 
- * Eigen::Vector3d r0(1.0, 0.0, 0.0);
- * Eigen::Vector3d v0(0.0, 0.017, 0.0);
- * double t0 = 2460000.5;
- * double tf = 2460100.5;
- * 
- * auto result = wrapper.propagate(r0, v0, t0, tf);
- * if (result.success) {
- *     std::cout << "Position: " << result.position.transpose() << std::endl;
- * }
+ *   // Crea wrapper con configurazione default
+ *   AstDynWrapper wrapper;
+ *   
+ *   // Carica elementi da file .eq1
+ *   wrapper.loadFromEQ1File("17030.eq1");
+ *   
+ *   // Propaga a epoch target
+ *   auto state = wrapper.propagateToEpoch(61007.0);  // MJD TDB
+ *   
+ *   std::cout << "Posizione: " << state.position.transpose() << std::endl;
  * @endcode
  */
 class AstDynWrapper {
 public:
     /**
      * @brief Costruttore con configurazione
-     * @param config Configurazione propagatore
+     * @param settings Impostazioni propagazione (default: highAccuracy)
      */
-    explicit AstDynWrapper(const AstDynConfig& config = AstDynConfig::balanced());
+    explicit AstDynWrapper(const PropagationSettings& settings = PropagationSettings::highAccuracy());
     
     /**
      * @brief Distruttore
      */
     ~AstDynWrapper();
     
-    // Non copiabile (contiene unique_ptr)
-    AstDynWrapper(const AstDynWrapper&) = delete;
-    AstDynWrapper& operator=(const AstDynWrapper&) = delete;
-    
-    // Movibile
-    AstDynWrapper(AstDynWrapper&&) noexcept;
-    AstDynWrapper& operator=(AstDynWrapper&&) noexcept;
+    /**
+     * @brief Carica elementi orbitali da file .eq1
+     * @param filepath Percorso file .eq1 (formato OEF2.0 AstDyS)
+     * @return true se caricamento riuscito
+     */
+    bool loadFromEQ1File(const std::string& filepath);
     
     /**
-     * @brief Propaga stato da t0 a tf
-     * @param r0 Posizione iniziale ICRF [AU]
-     * @param v0 Velocità iniziale ICRF [AU/day]
-     * @param t0 Epoca iniziale [JD TDB]
-     * @param tf Epoca finale [JD TDB]
-     * @return Risultato propagazione
+     * @brief Imposta elementi orbitali kepleriani manualmente
+     * @param a Semiasse maggiore [AU]
+     * @param e Eccentricità
+     * @param i Inclinazione [rad]
+     * @param Omega Longitudine nodo ascendente [rad]
+     * @param omega Argomento perielio [rad]
+     * @param M Anomalia media [rad]
+     * @param epoch_mjd_tdb Epoca [MJD TDB]
+     * @param name Nome oggetto (opzionale)
      */
-    PropagationResult propagate(
-        const Eigen::Vector3d& r0,
-        const Eigen::Vector3d& v0,
-        double t0,
-        double tf
-    );
+    void setKeplerianElements(double a, double e, double i, 
+                              double Omega, double omega, double M,
+                              double epoch_mjd_tdb,
+                              const std::string& name = "");
     
     /**
-     * @brief Propaga stato con output intermedi
-     * @param r0 Posizione iniziale ICRF [AU]
-     * @param v0 Velocità iniziale ICRF [AU/day]
-     * @param t0 Epoca iniziale [JD TDB]
-     * @param output_times Epoche desiderate [JD TDB]
-     * @return Vettore di risultati (uno per ogni epoca)
+     * @brief Propaga orbita a epoca target
+     * @param target_mjd_tdb Epoca target [MJD TDB]
+     * @return Stato cartesiano in frame ICRF
+     * @throws std::runtime_error Se elementi non inizializzati
      */
-    std::vector<PropagationResult> propagateMultiple(
-        const Eigen::Vector3d& r0,
-        const Eigen::Vector3d& v0,
-        double t0,
-        const std::vector<double>& output_times
-    );
+    CartesianStateICRF propagateToEpoch(double target_mjd_tdb);
     
     /**
-     * @brief Riconfigura propagatore
-     * @param config Nuova configurazione
+     * @brief Ottiene epoca corrente elementi orbitali
+     * @return Epoca [MJD TDB]
      */
-    void reconfigure(const AstDynConfig& config);
+    double getCurrentEpoch() const { return current_epoch_mjd_; }
     
     /**
-     * @brief Ottieni configurazione corrente
+     * @brief Ottiene nome oggetto corrente
+     * @return Nome oggetto
      */
-    const AstDynConfig& getConfig() const { return config_; }
+    std::string getObjectName() const { return object_name_; }
     
     /**
-     * @brief Verifica se propagatore è inizializzato
+     * @brief Verifica se elementi sono stati caricati
+     * @return true se elementi validi disponibili
      */
-    bool isInitialized() const { return propagator_ != nullptr; }
+    bool isInitialized() const { return initialized_; }
     
     /**
-     * @brief Reset propagatore (forza reinizializzazione)
+     * @brief Ottiene statistiche ultima propagazione
+     * @return Stringa con informazioni (step, tempo, ecc.)
      */
-    void reset();
-    
-    /**
-     * @brief Ottieni statistiche ultimo run
-     */
-    struct Statistics {
-        int total_steps = 0;
-        double total_time_ms = 0.0;
-        double avg_step_size_days = 0.0;
-        int num_perturbations = 0;
-    };
-    Statistics getStatistics() const { return stats_; }
+    std::string getLastPropagationStats() const { return last_stats_; }
 
 private:
-    /// Configurazione corrente
-    AstDynConfig config_;
+    PropagationSettings settings_;
+    std::shared_ptr<astdyn::ephemeris::PlanetaryEphemeris> ephemeris_;
+    std::unique_ptr<astdyn::propagation::Propagator> propagator_;
     
-    /// Propagatore AstDyn (pimpl)
-    std::unique_ptr<astdyn::AstDynPropagator> propagator_;
+    astdyn::io::IOrbitParser::OrbitalElements current_elements_;
+    double current_epoch_mjd_;
+    std::string object_name_;
+    bool initialized_;
+    std::string last_stats_;
     
-    /// Statistiche
-    Statistics stats_;
+    /// Inizializza propagatore con settings correnti
+    void initializePropagator();
     
-    /**
-     * @brief Inizializza propagatore con configurazione corrente
-     */
-    void initialize();
-    
-    /**
-     * @brief Configura perturbazioni
-     */
-    void configurePerturbations();
-    
-    /**
-     * @brief Valida input propagazione
-     */
-    bool validateInput(const Eigen::Vector3d& r0,
-                       const Eigen::Vector3d& v0,
-                       double t0, double tf,
-                       std::string& error) const;
-};
-
-/**
- * @brief Factory per creare wrapper preconfigurati
- */
-class AstDynWrapperFactory {
-public:
-    /**
-     * @brief Crea wrapper per occultazioni (massima accuratezza)
-     */
-    static std::unique_ptr<AstDynWrapper> forOccultations() {
-        return std::make_unique<AstDynWrapper>(AstDynConfig::jplCompliant());
-    }
-    
-    /**
-     * @brief Crea wrapper per screening veloce
-     */
-    static std::unique_ptr<AstDynWrapper> forScreening() {
-        return std::make_unique<AstDynWrapper>(AstDynConfig::fast());
-    }
-    
-    /**
-     * @brief Crea wrapper bilanciato
-     */
-    static std::unique_ptr<AstDynWrapper> forGeneral() {
-        return std::make_unique<AstDynWrapper>(AstDynConfig::balanced());
-    }
+    /// Conversione frame ECLM J2000 → ICRF
+    static CartesianStateICRF eclipticToICRF(const astdyn::propagation::CartesianElements& ecl_state,
+                                             double epoch_mjd_tdb);
 };
 
 } // namespace ioccultcalc
