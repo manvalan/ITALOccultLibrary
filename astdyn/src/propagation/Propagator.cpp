@@ -5,6 +5,7 @@
 
 #include "astdyn/propagation/Propagator.hpp"
 #include <cmath>
+#include <iostream>
 
 namespace astdyn::propagation {
 
@@ -66,9 +67,12 @@ Eigen::Vector3d Propagator::planetary_perturbations(const Eigen::Vector3d& posit
                                                    double mjd_tdb) {
     Eigen::Vector3d perturbation = Eigen::Vector3d::Zero();
     
+    // Convert MJD to JD for ephemeris calls
+    double jd_tdb = mjd_tdb + 2400000.5;
+    
     // Helper lambda for computing perturbation from one planet
     auto add_planet_perturbation = [&](CelestialBody planet, double planet_gm) {
-        Eigen::Vector3d planet_pos = ephemeris::PlanetaryEphemeris::getPosition(planet, mjd_tdb);
+        Eigen::Vector3d planet_pos = ephemeris::PlanetaryEphemeris::getPosition(planet, jd_tdb);
         Eigen::Vector3d delta = planet_pos - position;
         double delta_norm = delta.norm();
         double delta3 = delta_norm * delta_norm * delta_norm;
