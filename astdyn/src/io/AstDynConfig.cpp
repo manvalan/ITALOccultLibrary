@@ -7,6 +7,7 @@
 #include "astdyn/propagation/OrbitalElements.hpp"
 #include "astdyn/observations/MPCReader.hpp"
 #include "astdyn/core/Constants.hpp"
+#include "astdyn/time/TimeScale.hpp"
 #include <fstream>
 #include <sstream>
 #include <algorithm>
@@ -261,7 +262,14 @@ std::vector<RWOObservation> RWOFileHandler::read(const std::string& filename) {
     
     std::string line;
     while (std::getline(file, line)) {
+        // Skip short lines
         if (line.length() < 80) continue;
+        
+        // Skip comment lines (starting with !)
+        if (!line.empty() && line[0] == '!') continue;
+        
+        // Skip header lines (starting with % or #)
+        if (!line.empty() && (line[0] == '%' || line[0] == '#')) continue;
         
         try {
             RWOObservation rwo = parseLine(line);
@@ -290,16 +298,68 @@ void RWOFileHandler::write(const std::string& filename,
 RWOObservation RWOFileHandler::parseLine(const std::string& line) {
     RWOObservation rwo;
     
-    // First 80 columns: standard MPC format
-    // Use MPCReader to parse the base observation
-    std::vector<OpticalObservation> obs_vec;
+    // RWO format (AstDyS format - similar to MPC but with different column positions)
+    // Columns 1-12: Object designation
+    // Column 14: Observation type (O=optical, S=satellite, etc.)
+    // Column 16: Note/discovery asterisk
+    // Columns 18-37: Date (YYYY MM DD.dddddddddd)
+    // Columns 55-66: RA (HH MM SS.sss)
+    // Columns 68-79: Dec (sDD MM SS.ss)
+    
     try {
-        // Create temporary file with single line
-        std::string temp = line.substr(0, 80);
-        // Parse using MPC format (simplified - would need full MPCReader integration)
+        if (line.length() < 114) {
+            throw std::runtime_error("RWO line too short (need at least 114 chars for Dec)");
+        }
         
-        // For now, basic parsing:
+        // Parse object designation (columns 1-12)
         rwo.observation.object_designation = line.substr(0, 12);
+        // Trim trailing spaces
+        size_t end = rwo.observation.object_designation.find_last_not_of(" ");
+        if (end != std::string::npos) {
+            rwo.observation.object_designation = rwo.observation.object_designation.substr(0, end + 1);
+        }
+        
+        // Parse discovery asterisk (column 16)
+        if (line.length() > 15 && line[15] != ' ') {
+            rwo.observation.is_discovery = (line[15] == '*' || line[15] == 'A');
+        }
+        
+        // Parse date (columns 18-34, starting at index 17): "YYYY MM DD.dddddddddd"  
+        std::string date_str = line.substr(17, 17);
+        
+        std::istringstream date_iss(date_str);
+        int year, month;
+        double day;
+        date_iss >> year >> month >> day;
+        
+        // Convert to MJD
+        int day_int = static_cast<int>(day);
+        double fraction = day - day_int;
+        rwo.observation.mjd_utc = astdyn::time::calendar_to_mjd(year, month, day_int, fraction);
+        
+        // Parse RA (columns 51-62, starting at index 50): "HH MM SS.sss"
+        std::string ra_str = line.substr(50, 12);
+        std::istringstream ra_iss(ra_str);
+        int ra_h, ra_m;
+        double ra_s;
+        ra_iss >> ra_h >> ra_m >> ra_s;
+        double ra_deg = ra_h * 15.0 + ra_m * 0.25 + ra_s * (15.0 / 3600.0);
+        rwo.observation.ra = ra_deg * constants::DEG_TO_RAD;
+        
+        // Parse Dec (columns 104-115, starting at index 103): "sDD MM SS.ss"
+        std::string dec_str = line.substr(103, 12);
+        char sign = dec_str[0];
+        std::istringstream dec_iss(dec_str.substr(1));
+        int dec_d, dec_m;
+        double dec_s;
+        dec_iss >> dec_d >> dec_m >> dec_s;
+        double dec_deg = dec_d + dec_m / 60.0 + dec_s / 3600.0;
+        if (sign == '-') dec_deg = -dec_deg;
+        rwo.observation.dec = dec_deg * constants::DEG_TO_RAD;
+        
+        // Set default uncertainties
+        rwo.observation.sigma_ra = 0.5 * constants::ARCSEC_TO_RAD;
+        rwo.observation.sigma_dec = 0.5 * constants::ARCSEC_TO_RAD;
         
     } catch (...) {
         throw std::runtime_error("Failed to parse RWO line");
@@ -307,12 +367,22 @@ RWOObservation RWOFileHandler::parseLine(const std::string& line) {
     
     // Extended columns (if present): weights, residuals
     if (line.length() > 80) {
-        std::istringstream iss(line.substr(80));
-        iss >> rwo.weight_ra >> rwo.weight_dec 
-            >> rwo.residual_ra >> rwo.residual_dec
-            >> rwo.selection_flag;
-        
-        rwo.outlier = (rwo.weight_ra == 0.0 || rwo.weight_dec == 0.0);
+        try {
+            std::istringstream iss(line.substr(80));
+            iss >> rwo.weight_ra >> rwo.weight_dec 
+                >> rwo.residual_ra >> rwo.residual_dec
+                >> rwo.selection_flag;
+            
+            rwo.outlier = (rwo.weight_ra == 0.0 || rwo.weight_dec == 0.0);
+        } catch (...) {
+            // If extended columns fail to parse, use defaults
+            rwo.weight_ra = 1.0;
+            rwo.weight_dec = 1.0;
+            rwo.residual_ra = 0.0;
+            rwo.residual_dec = 0.0;
+            rwo.selection_flag = 1;
+            rwo.outlier = false;
+        }
     }
     
     return rwo;
