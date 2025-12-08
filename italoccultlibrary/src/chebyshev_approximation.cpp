@@ -368,18 +368,18 @@ bool ChebyshevApproximation::loadFromFile(const std::string& filename) {
     while (std::getline(file, line)) {
         if (line.find("start_epoch") != std::string::npos) {
             std::istringstream iss(line);
-            std::string dummy;
-            iss >> dummy >> dummy >> start_epoch;
+            std::string hash, key, equals;
+            iss >> hash >> key >> equals >> start_epoch;
         }
         if (line.find("end_epoch") != std::string::npos) {
             std::istringstream iss(line);
-            std::string dummy;
-            iss >> dummy >> dummy >> end_epoch;
+            std::string hash, key, equals;
+            iss >> hash >> key >> equals >> end_epoch;
         }
         if (line.find("num_coefficients") != std::string::npos) {
             std::istringstream iss(line);
-            std::string dummy;
-            iss >> dummy >> dummy >> num_coeff;
+            std::string hash, key, equals;
+            iss >> hash >> key >> equals >> num_coeff;
         }
         if (line.empty() || line[0] != '#') break;
     }
@@ -387,17 +387,28 @@ bool ChebyshevApproximation::loadFromFile(const std::string& filename) {
     // Leggi coefficienti
     try {
         for (size_t comp = 0; comp < 3; ++comp) {
-            for (size_t i = 0; i < num_coefficients_; ++i) {
-                if (std::getline(file, line)) {
-                    if (!line.empty() && line[0] != '#') {
-                        coefficients_[comp].coefficients[i] = std::stod(line);
-                    }
+            size_t i = 0;
+            while (i < num_coefficients_ && std::getline(file, line)) {
+                if (line.empty() || line[0] == '#') continue;
+                
+                try {
+                    coefficients_[comp].coefficients[i] = std::stod(line);
+                    i++;
+                } catch (...) {
+                    continue;
                 }
             }
         }
         
         start_epoch_ = start_epoch;
         end_epoch_ = end_epoch;
+        
+        // Update normalization intervals for all components
+        for (size_t i = 0; i < 3; ++i) {
+            coefficients_[i].t_min = start_epoch;
+            coefficients_[i].t_max = end_epoch;
+        }
+
         fitted_ = true;
         return true;
         

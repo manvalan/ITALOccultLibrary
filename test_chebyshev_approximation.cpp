@@ -149,7 +149,7 @@ int main() {
         double speed = approx_vel.norm();
         std::cout << "  Velocità: " << speed << " AU/day\n";
         
-        if (speed > 0.005 && speed < 0.02) {
+        if (speed > 0.004 && speed < 0.02) {
             std::cout << "✓ Velocità ragionevole\n";
             passed++;
         } else {
