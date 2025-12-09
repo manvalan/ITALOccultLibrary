@@ -100,15 +100,44 @@ Derivate:
     \frac{\partial \delta}{\partial \rho_z} &= \frac{\sqrt{\rho_x^2 + \rho_y^2}}{\rho^2}
 \end{align}
 
+\subsection{Rotazione del Sistema di Riferimento}
+
+Un aspetto critico dell'implementazione pratica è la gestione dei diversi sistemi di coordinate.
+Tipicamente, l'integrazione numerica e la propagazione STM sono eseguite nel riferimento **Eliocentrico Eclittico J2000** (per allinearsi con le effemeridi planetarie come VSOP87), mentre le osservazioni sono riportate nel riferimento **Topocentrico Equatoriale J2000** (RA/Dec).
+
+Pertanto, la regola della catena deve includere una matrice di rotazione $\mathbf{R}_{\text{ecl}\to\text{eq}}$:
+
+\begin{equation}
+    \mathbf{H}_i = \frac{\partial (\alpha, \delta)}{\partial \mathbf{r}_{\text{eq}}} \cdot \mathbf{R}_{\text{ecl}\to\text{eq}} \cdot \Phi_{\text{ecl}}(t_i, t_0)
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\frac{\partial (\alpha, \delta)}{\partial \mathbf{r}_{\text{eq}}}$ sono le derivate geometriche nel riferimento equatoriale.
+    \item $\mathbf{R}_{\text{ecl}\to\text{eq}}$ è la matrice di rotazione per l'obliquità dell'eclittica ($\epsilon \approx 23.44^\circ$).
+    \item $\Phi_{\text{ecl}}(t_i, t_0)$ è la STM nel riferimento eclittico.
+\end{itemize}
+
+Trascurare questa rotazione durante il calcolo delle derivate parziali porterà alla divergenza del fit, poiché la direzione del gradiente sarà errata.
+
+\subsection{Correzione per il Tempo Luce}
+
+Lo stato $\mathbf{y}(t_i)$ usato nell'equazione di osservazione è in realtà lo stato al tempo ritardato $t_i - \tau$, dove $\tau$ è il tempo di viaggio della luce. Le derivate parziali dovrebbero tecnicamente tenere conto di questo spostamento temporale, ma per asteroidi della fascia principale, l'approssimazione $\frac{\partial \mathbf{y}(t_i-\tau)}{\partial \mathbf{y}_0} \approx \Phi(t_i, t_0)$ è solitamente sufficiente.
+
 \subsection{Derivate Complete}
 
-Combinare le derivate geometriche con $\Phi$:
+Combinare le derivate geometriche, la rotazione e $\Phi$:
 
 \begin{equation}
     \mathbf{H}_i = \begin{bmatrix}
-        \frac{\partial \alpha}{\partial x} & \frac{\partial \alpha}{\partial y} & \frac{\partial \alpha}{\partial z} & 0 & 0 & 0 \\
-        \frac{\partial \delta}{\partial x} & \frac{\partial \delta}{\partial y} & \frac{\partial \delta}{\partial z} & 0 & 0 & 0
-    \end{bmatrix} \Phi(t_i, t_0)
+        \frac{\partial \alpha}{\partial x_{\text{eq}}} & \frac{\partial \alpha}{\partial y_{\text{eq}}} & \frac{\partial \alpha}{\partial z_{\text{eq}}} & 0 & 0 & 0 \\
+        \frac{\partial \delta}{\partial x_{\text{eq}}} & \frac{\partial \delta}{\partial y_{\text{eq}}} & \frac{\partial \delta}{\partial z_{\text{eq}}} & 0 & 0 & 0
+    \end{bmatrix} 
+    \begin{bmatrix}
+        \mathbf{R} & \mathbf{0} \\
+        \mathbf{0} & \mathbf{R}
+    \end{bmatrix}
+    \Phi_{\text{ecl}}(t_i, t_0)
 \end{equation}
 
 Nota: RA/Dec dipendono solo dalla posizione, non dalla velocità, nelle derivate geometriche. La velocità influenza le osservazioni attraverso la propagazione ($\Phi$).

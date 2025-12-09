@@ -16,24 +16,15 @@
 #ifndef ASTDYN_LEAST_SQUARES_FITTER_HPP
 #define ASTDYN_LEAST_SQUARES_FITTER_HPP
 
+#include <Eigen/Core>
 #include <Eigen/Dense>
 #include <vector>
 #include <functional>
+#include "astdyn/orbit_determination/CommonTypes.hpp"
 
 namespace astdyn::orbit_determination {
 
 /**
- * @brief Observation with residual
- */
-struct ObservationResidual {
-    double epoch_mjd;
-    double ra_obs_deg;          ///< Observed RA [deg]
-    double dec_obs_deg;         ///< Observed Dec [deg]
-    double ra_comp_deg;         ///< Computed RA [deg]
-    double dec_comp_deg;        ///< Computed Dec [deg]
-    double ra_residual_arcsec;  ///< RA*(O-C) [arcsec]
-    double dec_residual_arcsec; ///< Dec(O-C) [arcsec]
-    double weight_ra;           ///< Weight (1/σ²)
     double weight_dec;
     bool rejected;              ///< Outlier flag
 };

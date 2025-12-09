@@ -14,25 +14,9 @@
 
 #include <Eigen/Dense>
 #include <string>
+#include "astdyn/ephemeris/CelestialBody.hpp"
 
 namespace astdyn::ephemeris {
-
-/**
- * @brief Celestial body identifiers
- */
-enum class CelestialBody {
-    SUN = 10,
-    MERCURY = 1,
-    VENUS = 2,
-    EARTH = 3,
-    MARS = 4,
-    JUPITER = 5,
-    SATURN = 6,
-    URANUS = 7,
-    NEPTUNE = 8,
-    PLUTO = 9,
-    MOON = 301
-};
 
 /**
  * @brief Abstract base class for ephemeris providers

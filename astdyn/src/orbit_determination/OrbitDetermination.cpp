@@ -5,13 +5,16 @@
 
 #include "astdyn/orbit_determination/OrbitDetermination.hpp"
 #include "astdyn/propagation/AnalyticalJacobian.hpp"
+#include "astdyn/ephemeris/VSOP87Provider.hpp"
 #include <cmath>
 #include <iostream>
+#include <iomanip>
 
 namespace astdyn::orbit_determination {
 
-// Gravitational parameter (Sun)
-constexpr double GM_SUN = 2.959122082855911e-4;  // AU^3/day^2
+// Gravitational parameter (Sun) in AU^3/day^2
+// k = 0.01720209895 -> k^2 = 0.0002959122082855911
+constexpr double GM_SUN_OD = 2.959122082855911e-4;
 
 // 2-body force function
 static Eigen::Vector<double, 6> kepler_force(double t, const Eigen::Vector<double, 6>& x) {
@@ -19,7 +22,7 @@ static Eigen::Vector<double, 6> kepler_force(double t, const Eigen::Vector<doubl
     Eigen::Vector3d v = x.tail<3>();
     
     double r3 = std::pow(r.norm(), 3);
-    Eigen::Vector3d a = -GM_SUN * r / r3;
+    Eigen::Vector3d a = -GM_SUN_OD * r / r3;
     
     Eigen::Vector<double, 6> dxdt;
     dxdt.head<3>() = v;
@@ -29,17 +32,24 @@ static Eigen::Vector<double, 6> kepler_force(double t, const Eigen::Vector<doubl
 
 // Jacobian function
 static Eigen::Matrix<double, 6, 6> kepler_jacobian(double t, const Eigen::Vector<double, 6>& x) {
-    return propagation::AnalyticalJacobian::two_body(x, GM_SUN);
+    return propagation::AnalyticalJacobian::two_body(x, GM_SUN_OD);
 }
 
 OrbitDetermination::OrbitDetermination() {
     // Create components
-    auto integrator = std::make_unique<propagation::RKF78Integrator>(0.1, 1e-12);
+    // RKF78 with strictly tight tolerance for OD
+    auto integrator = std::make_unique<propagation::RKF78Integrator>(0.1, 1e-13);
     stm_propagator_ = std::make_unique<propagation::STMPropagator>(
         std::move(integrator), kepler_force, kepler_jacobian
     );
     
     residual_calculator_ = std::make_unique<ResidualCalculator>();
+    
+    // Use VSOP87 for Earth ephemeris
+    // Note: VSOP87Provider must be fully defined
+    auto ephemeris = std::make_shared<ephemeris::VSOP87Provider>();
+    residual_calculator_->set_ephemeris_provider(ephemeris);
+    
     fitter_ = std::make_unique<LeastSquaresFitter>();
 }
 
@@ -94,14 +104,14 @@ FitResult OrbitDetermination::fit() {
     fitter_->set_tolerance(tolerance_);
     fitter_->set_outlier_threshold(outlier_threshold_);
     
-    // Residual function - FIXED: propagate to observation epoch!
+    // Residual function - Propagate to observation epoch!
     auto residual_func = [this](const Eigen::Vector<double, 6>& state, double epoch) {
         std::vector<ObservationResidual> residuals;
         for (const auto& obs : observations_) {
-            // CRITICAL: Propagate state from epoch to observation time
+            // Propagate from epoch to observation time
             auto prop_result = stm_propagator_->propagate(state, epoch, obs.epoch_mjd);
             
-            // Compute residual with propagated state
+            // Compute residual with propagated state (Topocentric + Light-time in ResidualCalculator)
             auto res_calc_result = residual_calculator_->compute_residual(
                 obs, prop_result.state, obs.epoch_mjd
             );
@@ -110,8 +120,8 @@ FitResult OrbitDetermination::fit() {
             obs_res.epoch_mjd = res_calc_result.epoch_mjd;
             obs_res.ra_obs_deg = obs.ra_deg;
             obs_res.dec_obs_deg = obs.dec_deg;
-            obs_res.ra_comp_deg = res_calc_result.ra_computed_deg;
-            obs_res.dec_comp_deg = res_calc_result.dec_computed_deg;
+            obs_res.ra_computed_deg = res_calc_result.ra_computed_deg;
+            obs_res.dec_computed_deg = res_calc_result.dec_computed_deg;
             obs_res.ra_residual_arcsec = res_calc_result.ra_residual_arcsec;
             obs_res.dec_residual_arcsec = res_calc_result.dec_residual_arcsec;
             obs_res.weight_ra = obs.weight;
@@ -193,8 +203,8 @@ Eigen::Vector<double, 6> OrbitDetermination::elements_to_cartesian(
     
     Eigen::Vector3d r_orb(r * cos_nu, r * sin_nu, 0.0);
     
-    double h = std::sqrt(GM_SUN * a * (1 - e * e));
-    Eigen::Vector3d v_orb(-GM_SUN / h * sin_nu, GM_SUN / h * (e + cos_nu), 0.0);
+    double h = std::sqrt(GM_SUN_OD * a * (1 - e * e));
+    Eigen::Vector3d v_orb(-GM_SUN_OD / h * sin_nu, GM_SUN_OD / h * (e + cos_nu), 0.0);
     
     // Rotation matrices
     double cos_Omega = std::cos(Omega);

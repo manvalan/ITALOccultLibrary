@@ -1,45 +1,20 @@
 /**
  * @file PlanetaryData.hpp
  * @brief Planetary masses, radii, and physical constants
- * @author ITALOccult AstDyn Team
  * @date 2025-11-23
- * 
- * Provides physical and orbital data for solar system bodies.
- * 
- * Sources:
- * - IAU 2015 nominal values
- * - DE440/441 JPL ephemeris system
- * - Horizons System (JPL/NASA)
  */
 
-#ifndef ASTDYN_EPHEMERIS_PLANETARYDATA_HPP
-#define ASTDYN_EPHEMERIS_PLANETARYDATA_HPP
+#ifndef ASTDYN_PLANETARY_DATA_HPP
+#define ASTDYN_PLANETARY_DATA_HPP
 
-#include "astdyn/core/Types.hpp"
-#include "astdyn/core/Constants.hpp"
+#include <cmath>
+#include <array>
+#include <vector>
 #include <string>
 #include <map>
+#include "astdyn/ephemeris/CelestialBody.hpp"
 
-namespace astdyn {
-namespace ephemeris {
-
-/**
- * @brief Planetary body identifiers (compatible with JPL Horizons)
- */
-enum class CelestialBody {
-    SUN = 10,
-    MERCURY = 1,
-    VENUS = 2,
-    EARTH = 3,
-    MARS = 4,
-    JUPITER = 5,
-    SATURN = 6,
-    URANUS = 7,
-    NEPTUNE = 8,
-    PLUTO = 9,
-    MOON = 301,
-    EARTH_MOON_BARYCENTER = 3
-};
+namespace astdyn::ephemeris {
 
 /**
  * @brief Physical and orbital data for a celestial body
@@ -60,7 +35,6 @@ class PlanetaryData {
 public:
     // ========================================================================
     // Gravitational Parameters (GM) [km³/s²]
-    // Source: DE440/441, IAU 2015
     // ========================================================================
     
     static constexpr double GM_SUN     = 1.32712440041279419e11; ///< Sun
@@ -77,7 +51,6 @@ public:
     
     // ========================================================================
     // Mean Radii [km]
-    // Source: IAU 2015
     // ========================================================================
     
     static constexpr double RADIUS_SUN     = 695700.0;   ///< Sun
@@ -94,7 +67,6 @@ public:
     
     // ========================================================================
     // Masses [kg]
-    // Source: IAU 2015 nominal values
     // ========================================================================
     
     static constexpr double MASS_SUN     = 1.98847e30;   ///< Sun
@@ -113,11 +85,6 @@ public:
     // Helper Functions
     // ========================================================================
     
-    /**
-     * @brief Get gravitational parameter for a body
-     * @param body Celestial body identifier
-     * @return GM [km³/s²]
-     */
     static double getGM(CelestialBody body) {
         switch (body) {
             case CelestialBody::SUN: return GM_SUN;
@@ -135,11 +102,6 @@ public:
         }
     }
     
-    /**
-     * @brief Get mean radius for a body
-     * @param body Celestial body identifier
-     * @return Radius [km]
-     */
     static double getRadius(CelestialBody body) {
         switch (body) {
             case CelestialBody::SUN: return RADIUS_SUN;
@@ -157,33 +119,6 @@ public:
         }
     }
     
-    /**
-     * @brief Get mass for a body
-     * @param body Celestial body identifier
-     * @return Mass [kg]
-     */
-    static double getMass(CelestialBody body) {
-        switch (body) {
-            case CelestialBody::SUN: return MASS_SUN;
-            case CelestialBody::MERCURY: return MASS_MERCURY;
-            case CelestialBody::VENUS: return MASS_VENUS;
-            case CelestialBody::EARTH: return MASS_EARTH;
-            case CelestialBody::MARS: return MASS_MARS;
-            case CelestialBody::JUPITER: return MASS_JUPITER;
-            case CelestialBody::SATURN: return MASS_SATURN;
-            case CelestialBody::URANUS: return MASS_URANUS;
-            case CelestialBody::NEPTUNE: return MASS_NEPTUNE;
-            case CelestialBody::PLUTO: return MASS_PLUTO;
-            case CelestialBody::MOON: return MASS_MOON;
-            default: return 0.0;
-        }
-    }
-    
-    /**
-     * @brief Get body name
-     * @param body Celestial body identifier
-     * @return Name string
-     */
     static std::string getName(CelestialBody body) {
         switch (body) {
             case CelestialBody::SUN: return "Sun";
@@ -200,16 +135,8 @@ public:
             default: return "Unknown";
         }
     }
-    
-    /**
-     * @brief Get body data structure
-     * @param body Celestial body identifier
-     * @return PlanetaryBody struct with all data
-     */
-    static PlanetaryBody getBodyData(CelestialBody body);
 };
 
-} // namespace ephemeris
-} // namespace astdyn
+} // namespace astdyn::ephemeris
 
-#endif // ASTDYN_EPHEMERIS_PLANETARYDATA_HPP
+#endif // ASTDYN_PLANETARY_DATA_HPP

@@ -1,37 +1,20 @@
-/**
- * @file VSOP87Provider.hpp
- * @brief VSOP87 ephemeris provider (built-in, no dependencies)
- * @author AstDyn Team
- * @date 2025-12-09
- */
-
 #ifndef ASTDYN_VSOP87_PROVIDER_HPP
 #define ASTDYN_VSOP87_PROVIDER_HPP
 
-#include "EphemerisProvider.hpp"
+#include "astdyn/ephemeris/EphemerisProvider.hpp"
 #include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
 
 namespace astdyn::ephemeris {
 
-/**
- * @brief VSOP87 analytical ephemeris provider
- * 
- * Built-in provider using VSOP87 analytical series.
- * No external dependencies, fast, good accuracy for 1800-2050.
- * 
- * Accuracy: ~1-20 arcsec
- * Speed: Very fast
- * Dependencies: None
- */
-class VSOP87Provider : public EphemerisProvider {
+class VSOP87Provider : public astdyn::ephemeris::EphemerisProvider {
 public:
     VSOP87Provider() = default;
     
-    Eigen::Vector3d getPosition(CelestialBody body, double jd_tdb) override {
+    Eigen::Vector3d getPosition(astdyn::ephemeris::CelestialBody body, double jd_tdb) override {
         return PlanetaryEphemeris::getPosition(body, jd_tdb);
     }
     
-    Eigen::Vector3d getVelocity(CelestialBody body, double jd_tdb) override {
+    Eigen::Vector3d getVelocity(astdyn::ephemeris::CelestialBody body, double jd_tdb) override {
         return PlanetaryEphemeris::getVelocity(body, jd_tdb);
     }
     
@@ -40,11 +23,11 @@ public:
     }
     
     double getAccuracy() const override {
-        return 20.0;  // ~20 arcsec
+        return 20.0;
     }
     
     bool isAvailable() const override {
-        return true;  // Always available (built-in)
+        return true;
     }
 };
 

@@ -100,15 +100,44 @@ Partials:
     \frac{\partial \delta}{\partial \rho_z} &= \frac{\sqrt{\rho_x^2 + \rho_y^2}}{\rho^2}
 \end{align}
 
+\subsection{Frame Rotation and Coordinate Systems}
+
+A critical aspect of practical implementation is handling different coordinate systems.
+Typically, numerical integration and STM propagation are performed in the \textbf{Heliocentric Ecliptic J2000} frame (to align with planetary ephemerides like VSOP87), while observations are reported in the \textbf{Topocentric Equatorial J2000} frame (RA/Dec).
+
+Therefore, the chain rule must include a rotation matrix $\mathbf{R}_{\text{ecl}\to\text{eq}}$:
+
+\begin{equation}
+    \mathbf{H}_i = \frac{\partial (\alpha, \delta)}{\partial \mathbf{r}_{\text{eq}}} \cdot \mathbf{R}_{\text{ecl}\to\text{eq}} \cdot \Phi_{\text{ecl}}(t_i, t_0)
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $\frac{\partial (\alpha, \delta)}{\partial \mathbf{r}_{\text{eq}}}$ are the geometric partials in the equatorial frame.
+    \item $\mathbf{R}_{\text{ecl}\to\text{eq}}$ is the rotation matrix for the obliquity of the ecliptic ($\epsilon \approx 23.44^\circ$).
+    \item $\Phi_{\text{ecl}}(t_i, t_0)$ is the STM in the ecliptic frame.
+\end{itemize}
+
+Neglecting this rotation when computing partials will lead to fit divergence, as the gradient direction will be incorrect.
+
+\subsection{Light-Time Correction}
+
+The state $\mathbf{y}(t_i)$ used in the observation equation is actually the state at the retarded time $t_i - \tau$, where $\tau$ is the light travel time. The partial derivatives should technically account for this time shift, but for main belt asteroids, the approximation $\frac{\partial \mathbf{y}(t_i-\tau)}{\partial \mathbf{y}_0} \approx \Phi(t_i, t_0)$ is usually sufficient.
+
 \subsection{Full Partials}
 
-Combine geometric partials with $\Phi$:
+Combine geometric partials, rotation, and $\Phi$:
 
 \begin{equation}
     \mathbf{H}_i = \begin{bmatrix}
-        \frac{\partial \alpha}{\partial x} & \frac{\partial \alpha}{\partial y} & \frac{\partial \alpha}{\partial z} & 0 & 0 & 0 \\
-        \frac{\partial \delta}{\partial x} & \frac{\partial \delta}{\partial y} & \frac{\partial \delta}{\partial z} & 0 & 0 & 0
-    \end{bmatrix} \Phi(t_i, t_0)
+        \frac{\partial \alpha}{\partial x_{\text{eq}}} & \frac{\partial \alpha}{\partial y_{\text{eq}}} & \frac{\partial \alpha}{\partial z_{\text{eq}}} & 0 & 0 & 0 \\
+        \frac{\partial \delta}{\partial x_{\text{eq}}} & \frac{\partial \delta}{\partial y_{\text{eq}}} & \frac{\partial \delta}{\partial z_{\text{eq}}} & 0 & 0 & 0
+    \end{bmatrix} 
+    \begin{bmatrix}
+        \mathbf{R} & \mathbf{0} \\
+        \mathbf{0} & \mathbf{R}
+    \end{bmatrix}
+    \Phi_{\text{ecl}}(t_i, t_0)
 \end{equation}
 
 Note: RA/Dec depend only on position, not velocity, in geometric partials. Velocity affects observations through propagation ($\Phi$).

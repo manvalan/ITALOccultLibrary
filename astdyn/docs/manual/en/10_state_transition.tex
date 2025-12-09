@@ -180,27 +180,44 @@ In practice, we integrate:
 
 \subsection{Implementation in AstDyn}
 
-\begin{lstlisting}[language=C++,caption={STM propagation}]
-#include <astdyn/propagation/Propagator.hpp>
+\begin{lstlisting}[language=C++,caption={STM propagation using STMPropagator}]
+#include "astdyn/propagation/STMPropagator.hpp"
+#include "astdyn/propagation/AnalyticalJacobian.hpp"
 
-using namespace astdyn;
+using namespace astdyn::propagation;
 
-Vector6d y0 = ...;  // Initial state
+// 1. Setup Force Function (e.g. 2-body)
+double mu = 1.327e11; // GM Sun
+auto force_func = [mu](double t, const Vector6d& y) {
+    Vector3d r = y.head<3>();
+    double r_norm = r.norm();
+    Vector3d acc = -mu * r / (r_norm * r_norm * r_norm);
+    Vector6d dydt;
+    dydt.head<3>() = y.tail<3>();
+    dydt.tail<3>() = acc;
+    return dydt;
+};
+
+// 2. Setup Jacobian Function (Analytical is faster/more precise)
+auto jac_func = [mu](double t, const Vector6d& y) {
+    return AnalyticalJacobian::two_body(y, mu);
+};
+
+// 3. Instantiate STMPropagator
+auto integrator = std::make_unique<RKF78Integrator>(0.1, 1e-12);
+STMPropagator stm_prop(std::move(integrator), force_func, jac_func);
+
+// 4. Propagate
+Vector6d y0 = ...; // Initial state
 double t0 = 60000.0;
 double tf = 60100.0;
 
-Propagator prop(force_model);
-prop.enable_stm(true);  // Enable STM computation
-
-// Propagate state and STM
-auto result = prop.propagate_with_stm(y0, t0, tf);
+auto result = stm_prop.propagate(y0, t0, tf);
 
 Vector6d yf = result.state;
-Matrix6d Phi = result.stm;  // 6x6 state transition matrix
+Matrix6d Phi = result.stm;
 
 std::cout << "STM determinant: " << Phi.determinant() << "\n";
-std::cout << "STM condition number: " 
-          << Phi.norm() * Phi.inverse().norm() << "\n";
 \end{lstlisting}
 
 \subsection{Computational Cost}

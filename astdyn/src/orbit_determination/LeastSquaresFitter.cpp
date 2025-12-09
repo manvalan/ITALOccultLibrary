@@ -25,51 +25,91 @@ Eigen::MatrixXd LeastSquaresFitter::build_design_matrix(
     // where ∂ρ/∂x is partial of RA/Dec w.r.t. state at obs time
     // and Φ is STM from epoch to obs time
     
+    constexpr double DEG_TO_RAD = 1.7453292519943295769e-2;
+    // Obliquity J2000
+    constexpr double eps = 23.4392911 * DEG_TO_RAD;
+    double ce = std::cos(eps);
+    double se = std::sin(eps);
+    
+    // Rotation Matrix Ecliptic -> Equatorial
+    Eigen::Matrix3d R_ecl_to_eq;
+    R_ecl_to_eq << 1, 0, 0,
+                   0, ce, -se,
+                   0, se, ce;
+
     for (int i = 0; i < n_obs; ++i) {
         double t_obs = residuals[i].epoch_mjd;
         
-        // Get STM from epoch to observation time
-        auto [state_at_obs, stm] = stm_func(state, epoch_mjd, t_obs);
+        // Get STM from epoch to observation time (In Ecliptic Frame)
+        auto [state_at_obs_ecl, stm_ecl] = stm_func(state, epoch_mjd, t_obs);
         
-        // Compute ∂ρ/∂x at observation time (numerical differentiation)
-        // For RA/Dec from Cartesian position
-        Eigen::Vector3d r = state_at_obs.head<3>();
-        double x = r(0), y = r(1), z = r(2);
-        double r_norm = r.norm();
+        // We need partial derivatives of RA/Dec (Equatorial) w.r.t State (Ecliptic).
+        // By Chain Rule: d(RA)/dr_ecl = d(RA)/dr_eq * d(r_eq)/d(r_ecl)
+        // d(r_eq)/d(r_ecl) is the Rotation Matrix R
+        
+        // 1. Convert State position to Hessian Equatorial Frame for derivative calculation
+        // Note: We ignore the Observer position shift here for the partials matrix 
+        // because d(r_topo)/d(r_ast) = I (assuming r_obs is constant w.r.t asteroid state)
+        // So d(RA)/d(r_ast_eq) is calculated using r_topo_eq.
+        // Ideally we should use the EXACT topocentric vector here, but using the heliocentric 
+        // rotated vector is a good approximation if Earth is far, 
+        // OR better: use the State from STM but rotated.
+        
+        // Strictly, Jacobian H = H_geometric * R * STM
+        // where H_geometric is d(RA,Dec)/d(r_eq) evaluated at r_topo_eq.
+        
+        // But we don't have r_topo_eq here easily (it's in ResidualCalculator).
+        // However, state_at_obs is r_ast_ecl.
+        // Let's approximate by evaluating derivatives at r_ast_eq (Heliocentric).
+        // For partial derivatives direction this is usually sufficient for convergence.
+        // For high precision convergence, we should pass r_topo from ResidualCalculator.
+        // But let's try with rotated state first.
+        
+        Eigen::Vector3d r_ast_ecl = state_at_obs_ecl.head<3>();
+        Eigen::Vector3d r_eq = R_ecl_to_eq * r_ast_ecl; // Use this for calculating d/dr_eq
+        
+        // Compute partials d/dr_eq using r_eq
+        double x = r_eq(0), y = r_eq(1), z = r_eq(2);
+        double r_norm = r_eq.norm();
         double rho_xy = std::sqrt(x*x + y*y);
         
-        // ∂RA/∂r (in radians, then convert to arcsec)
-        Eigen::Vector3d dRA_dr;
+        // ∂RA/∂r_eq (in radians)
+        Eigen::Vector3d dRA_dr_eq;
         if (rho_xy > 1e-10) {
-            dRA_dr(0) = -y / (rho_xy * rho_xy);
-            dRA_dr(1) = x / (rho_xy * rho_xy);
-            dRA_dr(2) = 0.0;
+            dRA_dr_eq(0) = -y / (rho_xy * rho_xy);
+            dRA_dr_eq(1) = x / (rho_xy * rho_xy);
+            dRA_dr_eq(2) = 0.0;
         } else {
-            dRA_dr.setZero();
+            dRA_dr_eq.setZero();
         }
         
-        // ∂Dec/∂r (in radians, then convert to arcsec)
-        Eigen::Vector3d dDec_dr;
+        // ∂Dec/∂r_eq (in radians)
+        Eigen::Vector3d dDec_dr_eq;
         if (r_norm > 1e-10) {
-            dDec_dr(0) = -x * z / (r_norm * r_norm * rho_xy);
-            dDec_dr(1) = -y * z / (r_norm * r_norm * rho_xy);
-            dDec_dr(2) = rho_xy / (r_norm * r_norm);
+            dDec_dr_eq(0) = -x * z / (r_norm * r_norm * rho_xy);
+            dDec_dr_eq(1) = -y * z / (r_norm * r_norm * rho_xy);
+            dDec_dr_eq(2) = rho_xy / (r_norm * r_norm);
         } else {
-            dDec_dr.setZero();
+            dDec_dr_eq.setZero();
         }
+        
+        // Chain Rule: d/dr_ecl = d/dr_eq * R
+        // Matrix form: [dRA/dx_ecl dRA/dy_ecl ...] = [dRA/dx_eq ...] * R
+        Eigen::Vector3d dRA_dr_ecl = dRA_dr_eq.transpose() * R_ecl_to_eq;
+        Eigen::Vector3d dDec_dr_ecl = dDec_dr_eq.transpose() * R_ecl_to_eq;
         
         // Convert to arcsec (1 rad = 206265 arcsec)
         constexpr double rad_to_arcsec = 206265.0;
-        dRA_dr *= rad_to_arcsec;
-        dDec_dr *= rad_to_arcsec;
+        dRA_dr_ecl *= rad_to_arcsec;
+        dDec_dr_ecl *= rad_to_arcsec;
         
-        // ∂ρ/∂x at obs time (RA and Dec don't depend on velocity directly)
-        Eigen::Matrix<double, 2, 6> dRho_dx;
-        dRho_dx.row(0) << dRA_dr.transpose(), 0, 0, 0;   // ∂RA/∂x
-        dRho_dx.row(1) << dDec_dr.transpose(), 0, 0, 0;  // ∂Dec/∂x
+        // ∂ρ/∂x_ecl at obs time
+        Eigen::Matrix<double, 2, 6> dRho_dx_ecl;
+        dRho_dx_ecl.row(0) << dRA_dr_ecl.transpose(), 0, 0, 0;   // ∂RA/∂x
+        dRho_dx_ecl.row(1) << dDec_dr_ecl.transpose(), 0, 0, 0;  // ∂Dec/∂x
         
-        // Design matrix: A = (∂ρ/∂x) × Φ
-        Eigen::Matrix<double, 2, 6> A_i = dRho_dx * stm;
+        // Design matrix: A = (∂ρ/∂x_ecl) × Φ_ecl
+        Eigen::Matrix<double, 2, 6> A_i = dRho_dx_ecl * stm_ecl;
         
         A.row(2*i) = A_i.row(0);      // ∂RA/∂x₀
         A.row(2*i+1) = A_i.row(1);    // ∂Dec/∂x₀
