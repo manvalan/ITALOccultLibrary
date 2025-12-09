@@ -87,15 +87,31 @@ public:
                 obs.ra = (ra_h + ra_m / 60.0 + ra_s / 3600.0) * 15.0 * M_PI / 180.0;  // Convert to radians
 
                 // Dec: sDD MM SS.ss (columns 84-95)
-                std::string dec_str = line.substr(83, 12);
-                char sign;
-                int dec_d, dec_m;
-                double dec_s;
-                std::istringstream dec_iss(dec_str);
-                dec_iss >> sign >> dec_d >> dec_m >> dec_s;
-                double dec_deg = dec_d + dec_m / 60.0 + dec_s / 3600.0;
-                if (sign == '-') dec_deg = -dec_deg;
-                obs.dec = dec_deg * M_PI / 180.0;  // Convert to radians
+                try {
+                    std::string dec_str = line.substr(83, 12);
+                    // Parse manually: sign, degrees, minutes, seconds
+                    char sign = dec_str[0];
+                    
+                    // Extract numbers (skip spaces)
+                    std::string deg_str, min_str, sec_str;
+                    size_t pos = 1;
+                    while (pos < dec_str.length() && std::isspace(dec_str[pos])) pos++;
+                    while (pos < dec_str.length() && std::isdigit(dec_str[pos])) deg_str += dec_str[pos++];
+                    while (pos < dec_str.length() && std::isspace(dec_str[pos])) pos++;
+                    while (pos < dec_str.length() && std::isdigit(dec_str[pos])) min_str += dec_str[pos++];
+                    while (pos < dec_str.length() && std::isspace(dec_str[pos])) pos++;
+                    while (pos < dec_str.length() && (std::isdigit(dec_str[pos]) || dec_str[pos] == '.')) sec_str += dec_str[pos++];
+                    
+                    int dec_d = deg_str.empty() ? 0 : std::stoi(deg_str);
+                    int dec_m = min_str.empty() ? 0 : std::stoi(min_str);
+                    double dec_s = sec_str.empty() ? 0.0 : std::stod(sec_str);
+                    
+                    double dec_deg = dec_d + dec_m / 60.0 + dec_s / 3600.0;
+                    if (sign == '-') dec_deg = -dec_deg;
+                    obs.dec = dec_deg * M_PI / 180.0;  // Convert to radians
+                } catch (...) {
+                    obs.dec = 0.0;  // Fallback
+                }
 
                 // Magnitude (columns 113-117, optional)
                 if (line.length() > 116) {
