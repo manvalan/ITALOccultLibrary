@@ -42,7 +42,7 @@ public:
      * @param tolerance Relative error tolerance (default 1e-13)
      * @param min_step Minimum allowed step size (default 1e-8)
      * @param max_step Maximum allowed step size (default 100.0)
-     * @param max_newton_iter Maximum Newton iterations per step (default 7)
+     * @param max_newton_iter Maximum Newton iterations per step (default 4, optimized)
      */
     explicit RadauIntegrator(double initial_step,
                             double tolerance = 1e-13,
