@@ -21,18 +21,58 @@ Eigen::MatrixXd LeastSquaresFitter::build_design_matrix(
     int n_obs = residuals.size();
     Eigen::MatrixXd A(2 * n_obs, 6);
     
-    // Numerical differentiation for ∂ρ/∂x
-    constexpr double eps = 1e-8;
+    // For each observation, compute: A_i = (∂ρ/∂x) × Φ(t_i, t_0)
+    // where ∂ρ/∂x is partial of RA/Dec w.r.t. state at obs time
+    // and Φ is STM from epoch to obs time
     
     for (int i = 0; i < n_obs; ++i) {
-        // For now: simplified - assume identity STM
-        // Full version would use actual STM from propagation
+        double t_obs = residuals[i].epoch_mjd;
         
-        // ∂RA/∂x ≈ [1, 0, 0, 0, 0, 0] (simplified)
-        // ∂Dec/∂x ≈ [0, 1, 0, 0, 0, 0] (simplified)
+        // Get STM from epoch to observation time
+        auto [state_at_obs, stm] = stm_func(state, epoch_mjd, t_obs);
         
-        A.row(2*i) << 1, 0, 0, 0, 0, 0;      // ∂RA/∂x
-        A.row(2*i+1) << 0, 1, 0, 0, 0, 0;    // ∂Dec/∂x
+        // Compute ∂ρ/∂x at observation time (numerical differentiation)
+        // For RA/Dec from Cartesian position
+        Eigen::Vector3d r = state_at_obs.head<3>();
+        double x = r(0), y = r(1), z = r(2);
+        double r_norm = r.norm();
+        double rho_xy = std::sqrt(x*x + y*y);
+        
+        // ∂RA/∂r (in radians, then convert to arcsec)
+        Eigen::Vector3d dRA_dr;
+        if (rho_xy > 1e-10) {
+            dRA_dr(0) = -y / (rho_xy * rho_xy);
+            dRA_dr(1) = x / (rho_xy * rho_xy);
+            dRA_dr(2) = 0.0;
+        } else {
+            dRA_dr.setZero();
+        }
+        
+        // ∂Dec/∂r (in radians, then convert to arcsec)
+        Eigen::Vector3d dDec_dr;
+        if (r_norm > 1e-10) {
+            dDec_dr(0) = -x * z / (r_norm * r_norm * rho_xy);
+            dDec_dr(1) = -y * z / (r_norm * r_norm * rho_xy);
+            dDec_dr(2) = rho_xy / (r_norm * r_norm);
+        } else {
+            dDec_dr.setZero();
+        }
+        
+        // Convert to arcsec (1 rad = 206265 arcsec)
+        constexpr double rad_to_arcsec = 206265.0;
+        dRA_dr *= rad_to_arcsec;
+        dDec_dr *= rad_to_arcsec;
+        
+        // ∂ρ/∂x at obs time (RA and Dec don't depend on velocity directly)
+        Eigen::Matrix<double, 2, 6> dRho_dx;
+        dRho_dx.row(0) << dRA_dr.transpose(), 0, 0, 0;   // ∂RA/∂x
+        dRho_dx.row(1) << dDec_dr.transpose(), 0, 0, 0;  // ∂Dec/∂x
+        
+        // Design matrix: A = (∂ρ/∂x) × Φ
+        Eigen::Matrix<double, 2, 6> A_i = dRho_dx * stm;
+        
+        A.row(2*i) = A_i.row(0);      // ∂RA/∂x₀
+        A.row(2*i+1) = A_i.row(1);    // ∂Dec/∂x₀
     }
     
     return A;
