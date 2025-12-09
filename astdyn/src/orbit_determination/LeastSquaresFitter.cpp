@@ -1,0 +1,204 @@
+/**
+ * @file LeastSquaresFitter.cpp
+ * @brief Implementation of least squares orbit fitter
+ */
+
+#include "astdyn/orbit_determination/LeastSquaresFitter.hpp"
+#include <cmath>
+#include <algorithm>
+
+namespace astdyn::orbit_determination {
+
+LeastSquaresFitter::LeastSquaresFitter() {}
+
+Eigen::MatrixXd LeastSquaresFitter::build_design_matrix(
+    const std::vector<ObservationResidual>& residuals,
+    const Eigen::Vector<double, 6>& state,
+    double epoch_mjd,
+    STMFunction stm_func
+) {
+    // Design matrix A: each observation contributes 2 rows (RA, Dec)
+    int n_obs = residuals.size();
+    Eigen::MatrixXd A(2 * n_obs, 6);
+    
+    // Numerical differentiation for ∂ρ/∂x
+    constexpr double eps = 1e-8;
+    
+    for (int i = 0; i < n_obs; ++i) {
+        // For now: simplified - assume identity STM
+        // Full version would use actual STM from propagation
+        
+        // ∂RA/∂x ≈ [1, 0, 0, 0, 0, 0] (simplified)
+        // ∂Dec/∂x ≈ [0, 1, 0, 0, 0, 0] (simplified)
+        
+        A.row(2*i) << 1, 0, 0, 0, 0, 0;      // ∂RA/∂x
+        A.row(2*i+1) << 0, 1, 0, 0, 0, 0;    // ∂Dec/∂x
+    }
+    
+    return A;
+}
+
+Eigen::Vector<double, 6> LeastSquaresFitter::solve_normal_equations(
+    const Eigen::MatrixXd& A,
+    const Eigen::VectorXd& residuals,
+    const Eigen::VectorXd& weights,
+    Eigen::Matrix<double, 6, 6>& covariance
+) {
+    // Weight matrix W = diag(weights)
+    Eigen::MatrixXd W = weights.asDiagonal();
+    
+    // Normal equations: (A^T W A) δx = A^T W Δρ
+    Eigen::Matrix<double, 6, 6> N = A.transpose() * W * A;
+    Eigen::Vector<double, 6> b = A.transpose() * W * residuals;
+    
+    // Solve using LU decomposition
+    Eigen::Vector<double, 6> dx = N.ldlt().solve(b);
+    
+    // Covariance: (A^T W A)^{-1}
+    covariance = N.inverse();
+    
+    return dx;
+}
+
+int LeastSquaresFitter::reject_outliers(std::vector<ObservationResidual>& residuals) {
+    if (!outlier_rejection_) return 0;
+    
+    // Compute RMS
+    double sum_sq = 0.0;
+    int count = 0;
+    
+    for (const auto& res : residuals) {
+        if (!res.rejected) {
+            sum_sq += res.ra_residual_arcsec * res.ra_residual_arcsec;
+            sum_sq += res.dec_residual_arcsec * res.dec_residual_arcsec;
+            count += 2;
+        }
+    }
+    
+    double rms = std::sqrt(sum_sq / count);
+    double threshold = outlier_threshold_ * rms;
+    
+    // Reject outliers
+    int num_rejected = 0;
+    for (auto& res : residuals) {
+        if (!res.rejected) {
+            double res_norm = std::sqrt(
+                res.ra_residual_arcsec * res.ra_residual_arcsec +
+                res.dec_residual_arcsec * res.dec_residual_arcsec
+            );
+            
+            if (res_norm > threshold) {
+                res.rejected = true;
+                num_rejected++;
+            }
+        }
+    }
+    
+    return num_rejected;
+}
+
+void LeastSquaresFitter::compute_statistics(
+    const std::vector<ObservationResidual>& residuals,
+    FitResult& result
+) {
+    double sum_ra_sq = 0.0;
+    double sum_dec_sq = 0.0;
+    int count = 0;
+    
+    for (const auto& res : residuals) {
+        if (!res.rejected) {
+            sum_ra_sq += res.ra_residual_arcsec * res.ra_residual_arcsec;
+            sum_dec_sq += res.dec_residual_arcsec * res.dec_residual_arcsec;
+            count++;
+        }
+    }
+    
+    result.num_observations = residuals.size();
+    result.num_rejected = std::count_if(residuals.begin(), residuals.end(),
+                                        [](const auto& r) { return r.rejected; });
+    
+    if (count > 0) {
+        result.rms_ra_arcsec = std::sqrt(sum_ra_sq / count);
+        result.rms_dec_arcsec = std::sqrt(sum_dec_sq / count);
+        result.rms_total_arcsec = std::sqrt((sum_ra_sq + sum_dec_sq) / (2 * count));
+    } else {
+        result.rms_ra_arcsec = 0.0;
+        result.rms_dec_arcsec = 0.0;
+        result.rms_total_arcsec = 0.0;
+    }
+    
+    result.chi_squared = (sum_ra_sq + sum_dec_sq) / (2 * count - 6);  // DOF = 2*n - 6
+}
+
+FitResult LeastSquaresFitter::fit(
+    const Eigen::Vector<double, 6>& initial_state,
+    double epoch_mjd,
+    ResidualFunction residual_func,
+    STMFunction stm_func
+) {
+    FitResult result;
+    result.state = initial_state;
+    result.converged = false;
+    result.num_iterations = 0;
+    
+    for (int iter = 0; iter < max_iterations_; ++iter) {
+        result.num_iterations = iter + 1;
+        
+        // Compute residuals
+        auto obs_residuals = residual_func(result.state, epoch_mjd);
+        
+        // Reject outliers
+        if (iter > 0) {
+            reject_outliers(obs_residuals);
+        }
+        
+        // Build design matrix
+        auto A = build_design_matrix(obs_residuals, result.state, epoch_mjd, stm_func);
+        
+        // Pack residuals into vector
+        int n_obs = obs_residuals.size();
+        Eigen::VectorXd residuals(2 * n_obs);
+        Eigen::VectorXd weights(2 * n_obs);
+        
+        for (int i = 0; i < n_obs; ++i) {
+            if (!obs_residuals[i].rejected) {
+                residuals(2*i) = obs_residuals[i].ra_residual_arcsec;
+                residuals(2*i+1) = obs_residuals[i].dec_residual_arcsec;
+                weights(2*i) = obs_residuals[i].weight_ra;
+                weights(2*i+1) = obs_residuals[i].weight_dec;
+            } else {
+                residuals(2*i) = 0.0;
+                residuals(2*i+1) = 0.0;
+                weights(2*i) = 0.0;
+                weights(2*i+1) = 0.0;
+            }
+        }
+        
+        // Solve normal equations
+        Eigen::Vector<double, 6> dx = solve_normal_equations(
+            A, residuals, weights, result.covariance
+        );
+        
+        // Update state
+        result.state += dx;
+        
+        // Check convergence
+        if (dx.norm() < tolerance_) {
+            result.converged = true;
+            result.residuals = obs_residuals;
+            compute_statistics(obs_residuals, result);
+            break;
+        }
+    }
+    
+    if (!result.converged) {
+        // Final statistics even if not converged
+        auto final_residuals = residual_func(result.state, epoch_mjd);
+        result.residuals = final_residuals;
+        compute_statistics(final_residuals, result);
+    }
+    
+    return result;
+}
+
+} // namespace astdyn::orbit_determination

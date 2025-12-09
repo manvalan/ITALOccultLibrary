@@ -18,6 +18,8 @@
 #include <Eigen/Dense>
 #include <vector>
 #include <string>
+#include <map>
+#include <functional>
 
 namespace astdyn::orbit_determination {
 
